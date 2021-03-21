@@ -1,0 +1,550 @@
+﻿[DzDestructablePosition]
+title = "设置可破坏物位置 [BZAPI]"
+description = "设置 ${可破坏物} 的坐标为 (${x}, ${y})"
+comment = ""
+category = TC_DESTRUCT
+[[.args]]
+type = destructable
+[[.args]]
+type = real
+default = 0
+[[.args]]
+type = real
+default = 0
+
+[DzSetUnitPosition]
+title = "设置单位位置 - 本地调用 [BZAPI]"
+description = "设置 ${单位} 的坐标为 (${x}, ${y})"
+comment = ""
+category = TC_UNIT
+[[.args]]
+type = unit
+[[.args]]
+type = real
+default = 0
+[[.args]]
+type = real
+default = 0
+
+[DzSetUnitTexture]
+title = "替换单位贴图 [BZAPI]"
+description = "替换 ${单位} 的 贴图:${path} TexId:${texId})"
+comment = "只能替换模型中有Replaceable ID x 贴图的模型，ID为索引。不会替换大头像中的模型"
+category = TC_UNIT
+[[.args]]
+type = unit
+[[.args]]
+type = string
+[[.args]]
+type = integer
+
+[DzSetUnitModel]
+title = "替换单位模型 [BZAPI]"
+description = "替换 ${单位} 的 模型:${path}"
+comment = "不会替换大头像中的模型"
+category = TC_UNIT
+[[.args]]
+type = unit
+[[.args]]
+type = string
+
+[DzSetUnitID]
+title = "替换单位类型 [BZAPI]"
+description = "替换 ${单位} 的 单位类型为:${type}"
+comment = "不会替换大头像中的模型"
+category = TC_UNIT
+[[.args]]
+type = unit
+[[.args]]
+type = unitcode
+default = 'hfoo'
+
+[DzSetMousePos]
+title = "设置鼠标的坐标"
+description = "设置鼠标的坐标为 (${x}, ${y})"
+comment = ""
+category = BZ_HW
+[[.args]]
+type = integer
+[[.args]]
+type = integer
+
+[DzSetMemory]
+title = "设置内存数值"
+description = "设置内存数据 ${地址} = ${数值}"
+comment = ""
+category = BZ_HW
+[[.args]]
+type = integer
+[[.args]]
+type = real
+
+[DzSyncData]
+title = "同步游戏数据"
+description = "同步 标签：${prefix}  发送数据：${data}"
+comment = ""
+category = BZ_SYNC
+[[.args]]
+type = string
+[[.args]]
+type = string
+
+[DzExecuteFunc]
+title = "异步执行函数"
+description = "异步执行函数 ${funcName}"
+comment = ""
+category = BZ_SYNC
+[[.args]]
+type = string
+
+[DzFrameSetPoint]
+title = "设置相对位置"
+description = "设置 ${frame} 的 ${Point} 锚点 (跟随Frame-->${relativeFrame} 的 ${relativePoint} 锚点) 偏移(${x}, ${y})"
+comment = ""
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = framepoints
+default = "FramePoints_Center"
+[[.args]]
+type = frame
+[[.args]]
+type = framepoints
+default = "FramePoints_Center"
+[[.args]]
+type = real
+default = 0
+min = -0.8
+max = 0.8
+[[.args]]
+type = real
+default = 0
+min = -0.6
+max = 0.6
+
+[DzFrameSetAbsolutePoint]
+title = "设置绝对位置"
+description = "设置 ${frame} 的 ${Point} 锚点 在 (${x}, ${y})"
+comment = ""
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = framepoints
+default = "FramePoints_Center"
+[[.args]]
+type = real
+default = 0
+min = -0.8
+max = 0.8
+[[.args]]
+type = real
+default = 0
+min = -0.6
+max = 0.6
+
+[DzFrameSetAllPoints]
+title = "移动所有锚点到Frame"
+description = "移动 ${frame} 的 所有锚点 到 ${frame} 上"
+comment = ""
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = frame
+
+[DzFrameSetScale]
+title = "设置缩放"
+description = "设置 ${frame} 的缩放 ${scale}"
+comment = ""
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = real
+default = 1
+
+[DzFrameSetSize]
+title = "设置大小"
+description = "设置 ${frame} （宽 ${w} 高 ${h}）"
+comment = ""
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = real
+default = 0
+[[.args]]
+type = real
+default = 0
+
+[DzFrameSetFocus]
+title = "设置焦点"
+description = "设置 ${frame} 获取焦点 ${enable}"
+comment = ""
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = boolean
+default = "true"
+
+[DzFrameSetText]
+title = "设置文本"
+description = "设置 ${frame} 的文本为 ${string}"
+comment = "(支持EditBox, TextFrame, TextArea, SimpleFontString、GlueEditBoxWar3、SlashChatBox、TimerTextFrame、TextButtonFrame、GlueTextButton)"
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = string
+
+[DzFrameSetTexture]
+title = "设置贴图"
+description = "设置 ${frame} 的贴图为:${texture} 是否平铺 ${flag}"
+comment = "（支持Backdrop、SimpleStatusBar）"
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = imagefile
+[[.args]]
+type = integer
+
+[DzFrameSetAlpha]
+title = "设置透明度(0-255)"
+description = "设置 ${frame} 的透明度为 ${alpha}"
+comment = ""
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = integer
+default = "255"
+
+[DzFrameSetVertexColor]
+title = "设置颜色"
+description = "设置 ${frame} 颜色 ${color}"
+comment = ""
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = integer
+default = "DzGetColor"
+
+[DzFrameSetTextSizeLimit]
+title = "设置字数限制"
+description = "设置 ${frame} 的字数限制为 ${size}"
+comment = ""
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = integer
+
+[DzFrameSetTooltip]
+title = "设置提示"
+description = "设置 ${frame} 的提示Frame为 ${tooltip} "
+comment = "设置tooltip"
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = integer
+
+[DzFrameCageMouse]
+title = "限制鼠标移动"
+description = "限制鼠标在 ${frame} 内: ${enable} "
+comment = ""
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = boolean
+default = "false"
+
+[DzFrameSetModel]
+title = "设置模型"
+description = "设置 ${frame} 的模型文件为 ${modelFile} ModelType:${modelType} Flag:${flag}"
+comment = ""
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = string
+[[.args]]
+type = integer
+default = "0"
+[[.args]]
+type = integer
+default = "0"
+
+[DzFrameSetAnimate]
+title = "设置动画"
+description = "设置 ${frame} 播放序号 ${alpha} 的动画  自动播放:${autocast}"
+comment = ""
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = integer
+default = "0"
+[[.args]]
+type = boolean
+default = "false"
+
+[DzFrameSetAnimateOffset]
+title = "设置动画进度"
+description = "设置 ${frame} 的动画进度为:${offset}"
+comment = "自动播放为false是可用"
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = real
+default = "0.5"
+
+[DzFrameSetScript]
+title = "注册UI事件回调(func name)"
+description = "注册 ${frame} 的 ${事件类型} 事件 运行:${func name} 是否同步:${sync}"
+comment = ""
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = frameevent
+[[.args]]
+type = string
+[[.args]]
+type = boolean
+default = "true"
+
+[DzFrameSetScriptByCode]
+title = "注册UI事件回调(func handle)"
+description = "注册 ${frame} 的 ${事件类型} 事件 运行:${code handle} 是否同步:${sync}"
+comment = "运行触发器时需要打开同步"
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = frameevent
+[[.args]]
+type = code
+[[.args]]
+type = boolean
+default = "true"
+
+[DzClickFrame]
+title = "点击"
+description = "点击 ${frame}"
+comment = ""
+category = BZ_GUI
+[[.args]]
+type = frame
+
+[DzFrameClearAllPoints]
+title = "清空所有锚点"
+description = "清空 ${frame} 的 全部锚点"
+comment = ""
+category = BZ_GUI
+[[.args]]
+type = frame
+
+[DzFrameSetMinMaxValue]
+title = "设置最大/最小值"
+description = "设置 ${frame} 的 最小值为 ${Min} 最大值为 ${Max}"
+comment = "（支持Slider、SimpleStatusBar、StatusBar）"
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = real
+default = "0"
+[[.args]]
+type = real
+default = "0"
+
+[DzFrameSetStepValue]
+title = "设置步进值"
+description = "设置 ${frame} 的 步进值 为 ${step}"
+comment = "（支持Slider）"
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = real
+default = "0"
+
+[DzFrameSetValue]
+title = "设置当前值"
+description = "设置 ${frame} 的 当前值 为 ${value}"
+comment = "（支持Slider、SimpleStatusBar、StatusBar）"
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = real
+default = "0"
+
+[DzFrameSetEnable]
+title = "启用/禁用"
+description = "设置 ${frame} 启用:${bottomHeight}"
+comment = ""
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = boolean
+default = "false"
+
+[DzFrameShow]
+title = "显示/隐藏"
+description = "设置 ${frame} 显示:${bottomHeight}"
+comment = ""
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = boolean
+default = "false"
+
+[DzDestroyFrame]
+title = "销毁"
+description = "销毁 ${frame}"
+comment = "销毁一个被重复创建过的Frame会导致游戏崩溃，重复创建同名Frame请使用Tag创建"
+category = BZ_GUI
+[[.args]]
+type = frame
+
+[DzLoadToc]
+title = "加载Toc文件列表"
+description = "加载--> ${fileName.toc}"
+comment = "载入自己的fdf列表文件"
+category = BZ_GUI
+[[.args]]
+type = anyfile
+
+[DzFrameHideInterface]
+title = "原生 - 隐藏界面元素"
+description = "隐藏所有界面UI"
+comment = "不再在地图初始化时调用则会残留小地图和时钟模型"
+category = BZ_GUI
+
+[DzEnableWideScreen]
+title = "原生 - 使用宽屏模式"
+description = "设置 宽屏模式:${bool}"
+comment = ""
+category = BZ_GUI
+[[.args]]
+type = boolean
+
+[DzSetCustomFovFix]
+title = "原生 - 修改屏幕比例(FOV)"
+description = "修改屏幕比例(FOV):${val}"
+comment = ""
+category = BZ_GUI
+[[.args]]
+type = real
+
+[DzFrameEditBlackBorders]
+title = "原生 - 修改游戏渲染黑边范围"
+description = "修改游戏渲染黑边: 上方高度:${upperHeight} 下方高度:${bottomHeight}"
+comment = ""
+category = BZ_GUI
+[[.args]]
+type = real
+default = 0
+[[.args]]
+type = real
+default = 0
+
+[DzSetWar3MapMap]
+title = "原生 - 设置小地图背景贴图"
+description = "修改小地图背景贴图为 ${bottomHeight}"
+comment = ""
+category = BZ_GUI
+[[.args]]
+type = string
+default = "war3mapMap.blp"
+
+[DzTriggerRegisterMouseEventMultiple]
+title = "注册 - 异步注册玩家鼠标事件"
+description = "当玩家 ${player} ${gamekeyaction} ${gamekey} 时"
+comment = "注意，这个事件只会异步执行！在使用前你最好知道异步应该如何使用。这个事件不能注销，请勿重复注册！"
+category = BZ_HW
+[[.args]]
+type = player
+default = Player00
+[[.args]]
+type = gamekeyaction
+default = "GameKeyAction_Press"
+[[.args]]
+type = mousekey
+default = "MouseKey_Mouse_Left"
+
+[DzTriggerRegisterKeyEventMultiple]
+title = "注册 - 异步注册玩家按键事件"
+description = "当玩家 ${player} ${gamekeyaction} ${gamekey} 时"
+comment = "注意，这个事件只会异步执行！在使用前你最好知道异步应该如何使用。这个事件不能注销，请勿重复注册！"
+category = BZ_HW
+[[.args]]
+type = player
+default = Player00
+[[.args]]
+type = gamekeyaction
+default = "GameKeyAction_Press"
+[[.args]]
+type = mousekey
+default = "MouseKey_Mouse_Left"
+
+[DzTriggerRegisterMouseWheelEventMultiple]
+title = "注册 - 异步注册玩家鼠标滚轮事件"
+description = "当玩家 ${player} 滑动鼠标滚轮 时"
+comment = "注意，这个事件只会异步执行！在使用前你最好知道异步应该如何使用。这个事件不能注销，请勿重复注册！"
+category = BZ_HW
+[[.args]]
+type = player
+default = Player00
+
+[DzTriggerRegisterMouseMoveEventMultiple]
+title = "注册 - 异步注册玩家鼠标移动事件"
+description = "当玩家 ${player} 移动鼠标 时"
+comment = "注意，这个事件只会异步执行！在使用前你最好知道异步应该如何使用。这个事件不能注销，请勿重复注册！"
+category = BZ_HW
+[[.args]]
+type = player
+default = Player00
+
+[DzTriggerRegisterWindowResizeEventMultiple]
+title = "注册 - 异步注册玩家窗口大小变化事件"
+description = "当玩家 ${player} 改变窗口大小 时"
+comment = "注意，这个事件只会异步执行！在玩家拖动窗口大小时会频繁执行！这个事件不能注销，请勿重复注册！"
+category = BZ_HW
+[[.args]]
+type = player
+default = Player00
+
+[DzFrameSetUpdateCallbackMultiple]
+title = "注册 - 异步注册玩家界面更新回调"
+description = "当玩家 ${player} 每帧绘制 时"
+comment = "注意，这个事件只会异步执行！帧数间隔不稳定，执行间隔也不同！这个事件不能注销，请勿重复注册！"
+category = BZ_HW
+[[.args]]
+type = player
+default = Player00
+
+[DzFrameSetScriptMultiple]
+title = "注册 - 异步注册Frame回调事件"
+description = "当玩家 ${player} ${frameevent} ${frame} 时"
+comment = "注意，这个事件只会异步执行！在使用前你最好知道异步应该如何使用。这个事件不能注销，请勿重复注册！"
+category = BZ_GUI
+[[.args]]
+type = player
+default = Player00
+[[.args]]
+type = frameevent
+default = "FrameEvent_Evenr_Pressed"
+[[.args]]
+type = frame

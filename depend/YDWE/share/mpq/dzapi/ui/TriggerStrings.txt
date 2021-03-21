@@ -1,0 +1,200 @@
+[TriggerEventStrings]
+
+
+[TriggerActionStrings]
+DzAPI_Map_MissionComplete=DzAPI-活动完成[DzAPI]
+DzAPI_Map_MissionComplete="DzAPI: ",~玩家,"完成任务[",~任务类型,"][",~任务名称,"]"
+DzAPI_Map_MissionCompleteHint="完成平台活动[RPG大厅限定]"
+
+
+
+DzAPI_Map_Stat_SetStat=设置房间显示的数据[DzAPI]
+DzAPI_Map_Stat_SetStat="设置 ",~whichPlayer," 房间的 ",~key," 项目显示 ",~value
+DzAPI_Map_Stat_SetStatHint="为服务器存档显示的数据，这里miao代表秒退次数！"
+
+DzAPI_Map_Ladder_SubmitBooleanData=天梯提交布尔值数据[DzAPI]
+DzAPI_Map_Ladder_SubmitBooleanData="提交 ",~whichPlayer," 天梯项目:",~key," 的目的  ",~value
+DzAPI_Map_Ladder_SubmitBooleanDataHint=""
+
+DzAPI_Map_Ladder_SetStat=天梯提交字符串数据[DzAPI]
+DzAPI_Map_Ladder_SetStat="提交 ",~whichPlayer," 天梯项目:",~key," 的值为:",~value
+DzAPI_Map_Ladder_SetStatHint=""
+
+DzAPI_Map_Ladder_SubmitIntegerData=天梯提交整数数据[DzAPI]
+DzAPI_Map_Ladder_SubmitIntegerData="提交 ",~whichPlayer," 天梯项目:",~key," 的值为:",~value
+DzAPI_Map_Ladder_SubmitIntegerDataHint=""
+
+DzAPI_Map_Stat_SubmitUnitIdData=天梯提交单位类型数据[DzAPI]
+DzAPI_Map_Stat_SubmitUnitIdData="提高 ",~whichPlayer," 天梯项目:",~key," 的值为:",~value
+DzAPI_Map_Stat_SubmitUnitIdDataHint=""
+
+DzAPI_Map_Ladder_SubmitAblityIdData=天梯提交技能数据[DzAPI]
+DzAPI_Map_Ladder_SubmitAblityIdData="提交 ",~whichPlayer," 天梯项目:",~key," 的值为:",~value
+DzAPI_Map_Ladder_SubmitAblityIdDataHint=""
+
+DzAPI_Map_Ladder_SubmitItemIdData=天梯提交物品数据[DzAPI]
+DzAPI_Map_Ladder_SubmitItemIdData="提交 ",~whichPlayer," 天梯项目:",~key," 的值为:",~value
+DzAPI_Map_Ladder_SubmitItemIdDataHint=""
+
+DzAPI_Map_Ladder_SubmitTitle=天梯提交获得称号[DzAPI]
+DzAPI_Map_Ladder_SubmitTitle="提交 ",~whichPlayer," 获得称号:",~key
+DzAPI_Map_Ladder_SubmitTitleHint=""
+
+DzAPI_Map_Ladder_SubmitPlayerRank=天梯提交玩家排名[DzAPI]
+DzAPI_Map_Ladder_SubmitPlayerRank="设置 ",~whichPlayer," 的游戏排名为:",~value
+DzAPI_Map_Ladder_SubmitPlayerRankHint=""
+
+DzAPI_Map_Ladder_SubmitPlayerExtraExp=设置玩家额外分 <dx>
+DzAPI_Map_Ladder_SubmitPlayerExtraExp="设置 ",~whichPlayer," 的额外分为 ",~value
+DzAPI_Map_Ladder_SubmitPlayerExtraExpHint=""
+
+DzAPI_Map_SaveServerValue=DzAPI-保存服务器存档[DzAPI]
+DzAPI_Map_SaveServerValue="DzAPI: ",~玩家,"保存存档[",~存档名称,"][",~存档内容,"]"
+DzAPI_Map_SaveServerValueHint="保存服务器存档"
+
+DzAPI_Map_StoreBoolean=服务器存储布尔值[DzAPI]
+DzAPI_Map_StoreBoolean="服务器存档:存储 ",~whichPlayer," 数据,名称:",~key,",值:",~value
+DzAPI_Map_StoreBooleanHint="这是经过封装的接口，实际Key会在原Key前面加”B”"
+
+DzAPI_Map_StoreInteger=服务器存储整数[DzAPI]
+DzAPI_Map_StoreInteger="服务器存档:存储 ",~whichPlayer," 数据,名称：",~key,",值:",~value
+DzAPI_Map_StoreIntegerHint="这是经过封装的接口，实际Key会在原Key前面加”I”"
+
+DzAPI_Map_StoreReal=服务器存储实数[DzAPI]
+DzAPI_Map_StoreReal="服务器存档:存储 ",~whichPlayer," 数据,名称：",~key,",值:",~value
+DzAPI_Map_StoreRealHint="这是经过封装的接口，实际Key会在原Key前面加”R”"
+
+
+DzAPI_Map_StoreString=服务器存储字符串[DzAPI]
+DzAPI_Map_StoreString="服务器存档:存储 ",~whichPlayer," 数据,名称:",~key,",值:",~value
+DzAPI_Map_StoreStringHint="这是经过封装的接口，实际Key会在原Key前面加”S”"
+
+DzAPI_Map_StoreUnitType=服务器存储单位类型[DzAPI]
+DzAPI_Map_StoreUnitType="服务器存档:存储 ",~whichPlayer," 数据,名称：",~key,",值:",~value
+DzAPI_Map_StoreUnitTypeHint="这是经过封装的接口，实际Key会在原Key前面加”I”"
+
+DzAPI_Map_StoreAbilityId=服务器存储技能Id[DzAPI]
+DzAPI_Map_StoreAbilityId="服务器存档:存储 ",~," 数据,名称：",~,",值:",~
+DzAPI_Map_StoreAbilityIdHint="这是经过封装的接口，实际Key会在原Key前面加”I”"
+
+DzAPI_Map_FlushStoredMission=清理服务器数据[DzAPI]
+DzAPI_Map_FlushStoredMission="服务器数据：清理",~whichPlayer,"数据,名称： ",~key
+DzAPI_Map_FlushStoredMissionHint="清理封装的接口记得在前面加对应的B、I、R、S"
+
+DzAPI_Map_OrpgTrigger=触发boss击杀
+DzAPI_Map_OrpgTrigger="设置 ",~whichPlayer," 触发击杀 ",~bosskey
+DzAPI_Map_OrpgTriggerHint=""
+
+DzAPI_Map_SavePublicArchive=公共存档存储数据[DzAPI]
+DzAPI_Map_SavePublicArchive="在公共存档:存储 ",~whichPlayer," 数据,名称：",~key,",值:",~value
+DzAPI_Map_SavePublicArchiveHint=""
+
+DzAPI_Map_UseConsumablesItem=局数消耗商品调用[DzAPI]
+DzAPI_Map_UseConsumablesItem="设置该局消耗 ",~whichPlayer," 的商品：",~key," 一个"
+DzAPI_Map_UseConsumablesItemHint=""
+
+[TriggerCallStrings]
+DzAPI_Map_IsRedVIP=判断是否是红V[DzAPI]
+DzAPI_Map_IsRedVIP="判断 ",~player," 是否是红V"
+DzAPI_Map_IsRedVIPHint=""
+
+DzAPI_Map_IsBlueVIP=判断是否是蓝V[DzAPI]
+DzAPI_Map_IsBlueVIP="判断 ",~player," 是否是蓝V"
+DzAPI_Map_IsBlueVIPHint=""
+
+DzAPI_Map_IsRPGLobby=判断当前地图是否rpg大厅来的[DzAPI]
+DzAPI_Map_IsRPGLobby="判断当前地图是否rpg大厅来的"
+DzAPI_Map_IsRPGLobbyHint="是rpg大厅地图会返回true"
+
+DzAPI_Map_IsRPGLadder=判断是否在RPG天梯[DzAPI]
+DzAPI_Map_IsRPGLadder="判断地图是否在RPG天梯"
+DzAPI_Map_IsRPGLadderHint=""
+
+
+DzAPI_Map_GetMatchType=获取天梯匹配模式[DzAPI]
+DzAPI_Map_GetMatchType="获取天梯匹配模式"
+DzAPI_Map_GetMatchTypeHint="肉搏个人模式返回1002,团队模式1003"
+
+DzAPI_Map_GetLadderLevel=获取天梯等级[DzAPI]
+DzAPI_Map_GetLadderLevel="获取 ",~player," 天梯等级"
+DzAPI_Map_GetLadderLevelHint="取值1~25，青铜V是1级"
+
+DzAPI_Map_GetLadderRank=获取天梯排名[DzAPI]
+DzAPI_Map_GetLadderRank="获取 ",~player," 天梯排名"
+DzAPI_Map_GetLadderRankHint="排名>1000的获取值为0"
+
+DzAPI_Map_GetGameStartTime=获取当前游戏时间[DzAPI]
+DzAPI_Map_GetGameStartTime="获取创建地图的游戏时间"
+DzAPI_Map_GetGameStartTimeHint="时间换算为时间戳"
+
+DzAPI_Map_GetMapLevel=获取玩家地图等级[DzAPI]
+DzAPI_Map_GetMapLevel="获取 ",~player," 的地图等级"
+DzAPI_Map_GetMapLevelHint="获取玩家地图等级【RPG大厅限定】"
+
+DzAPI_Map_GetMapLevelRank=获取玩家地图等级排名[DzAPI]
+DzAPI_Map_GetMapLevelRank="获取 ",~player," 的地图等级排名"
+DzAPI_Map_GetMapLevelRankHint="排名>100的获取值为0"
+
+DzAPI_Map_GetMapConfig=获取全局服务器存档值[DzAPI]
+DzAPI_Map_GetMapConfig="获取全局存档名称:",~key," 里存储的字符串."
+DzAPI_Map_GetMapConfigHint=""
+
+DzAPI_Map_HasMallItem=玩家是否拥有该商城道具（平台地图商城）[DzAPI]
+DzAPI_Map_HasMallItem="获取 ",~whichPlayer," 是否拥有:",~key," 对应的商城道具."
+DzAPI_Map_HasMallItemHint="平台地图商城玩家拥有该道具返还true"
+
+GetPlayerServerValueSuccess=读取玩家服务器存档成功[DzAPI]
+GetPlayerServerValueSuccess="获取",~whichPlayer," 服务器存档成功."
+GetPlayerServerValueSuccessHint="如果返回false代表读取失败,反之成功,之后游戏里平台不会再发送“服务器保存失败”的信息，所以希望地图作者在游戏开始给玩家发下信息服务器存档是否正确读取。"
+
+DzAPI_Map_GetServerValue=获取服务器存储的数据[DzAPI]
+DzAPI_Map_GetServerValue="获取 ",~whichPlayer," ",~key," 里的数据"
+DzAPI_Map_GetServerValueHint=""
+
+DzAPI_Map_GetStoredBoolean=获取服务器存储的布尔值[DzAPI]
+DzAPI_Map_GetStoredBoolean="获取 ",~whichPlayer," 数据名称:",~key," 里存储的布尔值"
+DzAPI_Map_GetStoredBooleanHint="这是经过封装的接口，实际Key会在原Key前面加”B”"
+
+DzAPI_Map_GetStoredInteger=获取服务器存储的整数[DzAPI]
+DzAPI_Map_GetStoredInteger="获取",~whichPlayer," 数据名称:",~key," 里存储的整数."
+DzAPI_Map_GetStoredIntegerHint="这是经过封装的接口，实际Key会在原Key前面加”I”"
+
+DzAPI_Map_GetStoredUnitType=获取服务器存储的单位类型[DzAPI]
+DzAPI_Map_GetStoredUnitType="获取 ",~whichPlayer," 数据名称:",~key," 里存储的单位类型"
+DzAPI_Map_GetStoredUnitTypeHint="这是经过封装的接口，实际Key会在原Key前面加”I”"
+
+DzAPI_Map_GetStoredAbilityId=获取服务器存储的技能类型[DzAPI]
+DzAPI_Map_GetStoredAbilityId="获取 ",~whichPlayer," 数据名称:",~key," 里存储的技能类型"
+DzAPI_Map_GetStoredAbilityIdHint="这是经过封装的接口，实际Key会在原Key前面加”I”"
+
+
+
+DzAPI_Map_GetStoredReal=获取服务器存储的实数[DzAPI]
+DzAPI_Map_GetStoredReal="获取 ",~whichPlayer," 数据名称:",~key," 里存储的实数"
+DzAPI_Map_GetStoredRealHint="这是经过封装的接口，实际Key会在原Key前面加”R”"
+
+
+
+DzAPI_Map_GetStoredString=获取服务器存储的字符串[DzAPI]
+DzAPI_Map_GetStoredString="获取 ",~whichPlayer," 数据名称:",~key," 里存储的字符串"
+DzAPI_Map_GetStoredStringHint="这是经过封装的接口，实际Key会在原Key前面加”S”"
+
+
+DzAPI_Map_GetGuildName=获取公会名称[DzAPI]
+DzAPI_Map_GetGuildName="获取 ",~whichPlayer," 公会名称"
+DzAPI_Map_GetGuildNameHint=""
+
+DzAPI_Map_GetGuildRole=获取公会职责[DzAPI]
+DzAPI_Map_GetGuildRole="获取 ",~whichPlayer," 公会职责"
+DzAPI_Map_GetGuildRoleHint="获取公会职责 Member=10 Admin=20 Leader=30"
+
+
+DzAPI_Map_GetServerArchiveDrop=读取服务器Boss掉落装备类型
+DzAPI_Map_GetServerArchiveDrop="获取 ",~whichPlayer," 服务器里 ",~bosskey," 掉落的装备"
+DzAPI_Map_GetServerArchiveDropHint=""
+
+DzAPI_Map_GetPublicArchive=读取公共存档数据[DzAPI]
+DzAPI_Map_GetPublicArchive="在公共存档读取 ",~whichPlayer,",名称:",~key," 里的数据"
+DzAPI_Map_GetPublicArchiveHint=""
+
+[remove:TriggerActionStrings]

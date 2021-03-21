@@ -1,0 +1,108 @@
+﻿
+IncludeFile "UI\FrameDef\Glue\BattleNetTemplates.fdf",
+
+Frame "TEXT" "txt" INHERITS "BattleNetValueTextTemplate" {
+    FontColor 1.0 1.0 1.0 1.0,
+    Text "",
+}
+
+Frame "BACKDROP" "bg" {
+    Width 0.16,
+    Height 0.16,
+    BackdropTileBackground,
+    BackdropBackground  "UI\Widgets\ToolTips\Human\human-tooltip-background.blp",
+    BackdropCornerFlags "UL|UR|BL|BR|T|L|B|R",
+    BackdropCornerSize 0.012,
+    BackdropBackgroundSize 0.032,
+    BackdropBackgroundInsets 0.004f 0.004f 0.004f 0.004f,
+    BackdropEdgeFile  "UI\Widgets\ToolTips\Human\human-tooltip-border.blp",
+    BackdropBlendAll,
+}
+
+// 武器型 宽64 高64
+Frame "BUTTON" "btn_attr_weapon"
+{
+    Width 0.04,
+    Height 0.04,
+    //设置样式 悬停高亮
+	ControlStyle "AUTOTRACK|HIGHLIGHTONMOUSEOVER",
+    //设置正常状态背景
+    ControlBackdrop "btn_attr_weaponBG",
+    Frame "BACKDROP" "btn_attr_weaponBG" {
+        BackdropBackground "war3mapImported\icon_pas_Holy_WeaponMastery.blp",
+        BackdropBlendAll,
+    }
+    //悬停鼠标高亮
+	ControlMouseOverHighlight "Demo_ButtonHig",
+	Frame "HIGHLIGHT" "Demo_ButtonHig" {
+        HighlightType "FILETEXTURE",
+        HighlightAlphaFile "UI\Widgets\EscMenu\Human\quest-button-highlight.blp",
+        HighlightAlphaMode "ADD",
+    }
+}
+
+// 护甲型 宽64 高64
+Frame "BUTTON" "btn_attr_armor"
+{
+    Width 0.04,
+    Height 0.04,
+    //设置样式 悬停高亮
+	ControlStyle "AUTOTRACK|HIGHLIGHTONMOUSEOVER",
+    //设置正常状态背景
+    ControlBackdrop "btn_attr_armorBG",
+    Frame "BACKDROP" "btn_attr_armorBG" {
+        BackdropBackground "war3mapImported\icon_pas_Holy_AvengersShield.blp",
+        BackdropBlendAll,
+    }
+    //悬停鼠标高亮
+	ControlMouseOverHighlight "Demo_ButtonHig",
+	Frame "HIGHLIGHT" "Demo_ButtonHig" {
+        HighlightType "FILETEXTURE",
+        HighlightAlphaFile "UI\Widgets\EscMenu\Human\quest-button-highlight.blp",
+        HighlightAlphaMode "ADD",
+    }
+}
+
+// 特殊型 宽64 高64
+Frame "BUTTON" "btn_attr_special"
+{
+    Width 0.04,
+    Height 0.04,
+    //设置样式 悬停高亮
+	ControlStyle "AUTOTRACK|HIGHLIGHTONMOUSEOVER",
+    //设置正常状态背景
+    ControlBackdrop "btn_attr_specialBG",
+    Frame "BACKDROP" "btn_attr_specialBG" {
+        BackdropBackground "war3mapImported\icon_pas_Holy_HolyGuidance.blp",
+        BackdropBlendAll,
+    }
+    //悬停鼠标高亮
+	ControlMouseOverHighlight "Demo_ButtonHig",
+	Frame "HIGHLIGHT" "Demo_ButtonHig" {
+        HighlightType "FILETEXTURE",
+        HighlightAlphaFile "UI\Widgets\EscMenu\Human\quest-button-highlight.blp",
+        HighlightAlphaMode "ADD",
+    }
+}
+
+// 附魔型 宽64 高64
+Frame "BUTTON" "btn_attr_enchant"
+{
+    Width 0.04,
+    Height 0.04,
+    //设置样式 悬停高亮
+	ControlStyle "AUTOTRACK|HIGHLIGHTONMOUSEOVER",
+    //设置正常状态背景
+    ControlBackdrop "btn_attr_enchantBG",
+    Frame "BACKDROP" "btn_attr_enchantBG" {
+        BackdropBackground "war3mapImported\icon_pas_Ability_Paladin_BlessedMending.blp",
+        BackdropBlendAll,
+    }
+    //悬停鼠标高亮
+	ControlMouseOverHighlight "Demo_ButtonHig",
+	Frame "HIGHLIGHT" "Demo_ButtonHig" {
+        HighlightType "FILETEXTURE",
+        HighlightAlphaFile "UI\Widgets\EscMenu\Human\quest-button-highlight.blp",
+        HighlightAlphaMode "ADD",
+    }
+}

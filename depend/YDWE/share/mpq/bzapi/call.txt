@@ -1,0 +1,478 @@
+﻿[DzIsKeyDown]
+title = "判断按键是否按下"
+description = "判断 ${按键} 是否按下"
+comment = ""
+category = BZ_GUI
+returns = boolean
+[[.args]]
+type = gamekey
+default = "GameKey_TriggerGameKey"
+
+[DzFrameGetEnable]
+title = "控件是否启用"
+description = "${frame} 是否启用"
+comment = ""
+category = BZ_GUI
+returns = boolean
+[[.args]]
+type = frame
+
+[DzFrameGetValue]
+title = "获取当前值"
+description = "获取 ${frame} 当前值"
+comment = "（支持Slider、SimpleStatusBar、StatusBar）"
+category = BZ_GUI
+returns = real
+[[.args]]
+type = frame
+
+[DzIsMouseOverUI]
+title = "鼠标是否在游戏内"
+description = "鼠标是否在游戏内"
+comment = ""
+category = BZ_HW
+returns = boolean
+
+[DzIsWindowActive]
+title = "判断游戏窗口是否处于活动状态"
+description = "判断窗口是否处于活动状态"
+comment = ""
+category = BZ_HW
+returns = boolean
+
+[DzGetMouseTerrainX]
+title = "获取鼠标在游戏内的坐标X"
+description = "获取鼠标在游戏内的坐标X"
+comment = ""
+category = BZ_HW
+returns = real
+
+[DzGetMouseTerrainY]
+title = "获取鼠标在游戏内的坐标Y"
+description = "获取鼠标在游戏内的坐标Y"
+comment = ""
+category = BZ_HW
+returns = real
+
+[DzGetMouseTerrainZ]
+title = "获取鼠标在游戏内的坐标Z"
+description = "获取鼠标在游戏内的坐标Z"
+comment = ""
+category = BZ_HW
+returns = real
+
+[DzGetMouseX]
+title = "获取鼠标在屏幕的坐标X"
+description = "获取鼠标在屏幕的坐标X"
+comment = ""
+category = BZ_HW
+returns = integer
+
+[DzGetMouseY]
+title = "获取鼠标在屏幕的坐标Y"
+description = "获取鼠标在屏幕的坐标Y"
+comment = ""
+category = BZ_HW
+returns = integer
+
+[DzGetMouseXRelative]
+title = "获取鼠标游戏窗口坐标X"
+description = "获取鼠标游戏窗口坐标X"
+comment = ""
+category = BZ_HW
+returns = integer
+
+[DzGetMouseYRelative]
+title = "获取鼠标游戏窗口坐标Y"
+description = "获取鼠标游戏窗口坐标Y"
+comment = ""
+category = BZ_HW
+returns = integer
+
+[DzGetWindowWidth]
+title = "获取war3窗口宽度"
+description = "获取魔兽窗口宽度"
+comment = ""
+category = BZ_HW
+returns = integer
+
+[DzGetWindowHeight]
+title = "获取魔兽窗口高度"
+description = "获取魔兽窗口高度"
+comment = ""
+category = BZ_HW
+returns = integer
+
+[DzGetWindowX]
+title = "获取魔兽窗口X坐标"
+description = "获取魔兽窗口X坐标"
+comment = ""
+category = BZ_HW
+returns = integer
+
+[DzGetWindowY]
+title = "获取魔兽窗口Y坐标"
+description = "获取魔兽窗口Y坐标"
+comment = ""
+category = BZ_HW
+returns = integer
+
+[DzGetTriggerSyncData]
+title = "事件响应 - 获取同步的数据"
+description = "获取同步的数据"
+comment = "响应 [同步] - 同步消息事件"
+category = BZ_SYNC
+returns = string
+
+[DzGetTriggerSyncPlayer]
+title = "事件响应 - 获取同步数据的玩家"
+description = "获取同步数据的玩家"
+comment = "响应 [同步] - 同步消息事件"
+category = BZ_SYNC
+returns = player
+
+[DzGetTriggerKey]
+title = "事件响应 - 获取触发的按键"
+description = "获取触发的按键"
+comment = "响应 [硬件] - 按键事件"
+category = BZ_HW
+returns = gamekey
+
+[DzGetWheelDelta]
+title = "事件响应 - 获取滚轮变化值"
+description = "获取滚轮变化值"
+comment = "响应 [硬件] - 鼠标滚轮事件，正负区分上下"
+category = BZ_HW
+returns = integer
+
+[DzGetTriggerKeyPlayer]
+title = "事件响应 - 获取触发硬件事件的玩家"
+description = "获取触发硬件事件的玩家"
+comment = "响应 [硬件] - 按键事件 滚轮事件 窗口大小变化事件"
+category = BZ_HW
+returns = player
+
+[DzGetUnitUnderMouse]
+title = "获取鼠标指向的单位"
+description = "鼠标指向的单位"
+comment = ""
+category = BZ_HW
+returns = unit
+
+[DzCreateFrame]
+title = "新建Frame"
+description = "新建Frame 名字:${frame} 父节点:${parent} ID:${Id}"
+comment = "名字为fdf文件中的名字，ID默认填0。重复创建同名Frame会导致游戏退出时显示崩溃消息，如需避免可以使用Tag创建"
+category = BZ_GUI
+returns = frame
+[[.args]]
+type = string
+default = "name"
+[[.args]]
+type = frame
+default = DzGetGameUI
+[[.args]]
+type = integer
+default = 0
+
+[DzCreateFrameByTagName]
+title = "新建Frame [Tag]"
+description = "创建 类型:${type} 名字:${frame} 父节点:${parent} 模版:${template} ID:${Id}"
+comment = "此处名字可以自定义，类型和模版填写fdf文件中的内容。通过此函数创建的Frame无法获取到子Frame。"
+category = BZ_GUI
+returns = frame
+[[.args]]
+type = string
+default = FRAME
+[[.args]]
+type = string
+default = "name"
+[[.args]]
+type = frame
+default = DzGetGameUI
+[[.args]]
+type = string
+default = "template"
+[[.args]]
+type = integer
+default = 0
+
+[DzFrameFindByName]
+title = "获取子Frame"
+description = "获取名字为 ${name} 的子Frame  ID:${Id}"
+comment = "ID默认填0，同名时优先获取最后被创建的。非Simple类的Frame类型都用此函数来获取子Frame。"
+category = BZ_GUI
+returns = frame
+[[.args]]
+type = string
+[[.args]]
+type = integer
+default = 0
+
+[DzSimpleFrameFindByName]
+title = "获取子SimpleFrame"
+description = "获取名字为 ${name} 的子SimpleFrame  ID:${Id}"
+comment = "ID默认填0，同名时优先获取最后被创建的。SimpleFrame为fdf中的Frame类型。"
+category = BZ_GUI
+returns = frame
+[[.args]]
+type = string
+[[.args]]
+type = integer
+default = 0
+
+[DzSimpleFontStringFindByName]
+title = "获取子SimpleFontString"
+description = "获取名字为 ${name} 的子SimpleFontString  ID:${Id}"
+comment = "ID默认填0，同名时优先获取最后被创建的。SimpleFontString为fdf中的Frame类型。"
+category = BZ_GUI
+returns = frame
+[[.args]]
+type = string
+[[.args]]
+type = integer
+default = 0
+
+[DzSimpleTextureFindByName]
+title = "获取子SimpleTexture"
+description = "获取名字为 ${name} 的子SimpleTexture  ID:${Id}"
+comment = "ID默认填0，同名时优先获取最后被创建的。SimpleTexture为fdf中的Frame类型。"
+category = BZ_GUI
+returns = frame
+[[.args]]
+type = string
+[[.args]]
+type = integer
+
+[DzGetTriggerUIEventFrame]
+title = "事件响应 - 触发的Frame"
+description = "触发的Frame"
+comment = ""
+category = BZ_GUI
+returns = frame
+
+[DzGetTriggerUIEventPlayer]
+title = "事件响应 - 获取触发ui的玩家"
+description = "获取触发ui的玩家"
+comment = ""
+category = BZ_GUI
+returns = player
+
+[DzGetMouseFocus]
+title = "鼠标所在的Frame控件指针"
+description = "鼠标所在的Frame控件指针"
+comment = "不是所有类型的Frame都能响应鼠标，能响应的有BUTTON，TEXT等"
+category = BZ_GUI
+returns = frame
+
+[DzFrameGetPortrait]
+title = "原生 - 单位大头像"
+description = "单位大头像"
+comment = "小地图右侧的大头像"
+category = BZ_GUI
+returns = frame
+
+[DzFrameGetMinimap]
+title = "原生 - 小地图"
+description = "小地图"
+comment = ""
+category = BZ_GUI
+returns = frame
+
+[DzFrameGetCommandBarButton]
+title = "原生 - 技能按钮"
+description = "技能按钮:(${row}, ${calumn})"
+comment = "参考物编中的技能按钮(x,y)坐标"
+category = BZ_GUI
+returns = frame
+[[.args]]
+type = integer
+default = 0
+[[.args]]
+type = integer
+default = 0
+
+[DzFrameGetHeroBarButton]
+title = "原生 - 英雄按钮"
+description = "英雄按钮:${buttnoid}"
+comment = "左侧的英雄头像，参数表示第N+1个英雄，索引从0开始"
+category = BZ_GUI
+returns = frame
+[[.args]]
+type = integer
+default = 0
+
+[DzFrameGetHeroHPBar]
+title = "原生 - 英雄血条"
+description = "英雄血条:${buttnoid}"
+comment = "左侧的英雄头像下的血条，参数表示第N+1个英雄，索引从0开始"
+category = BZ_GUI
+returns = frame
+[[.args]]
+type = integer
+default = 0
+
+[DzFrameGetHeroManaBar]
+title = "原生 - 英雄蓝条"
+description = "英雄蓝条:${buttnoid}"
+comment = "左侧的英雄头像下的蓝条，参数表示第N+1个英雄，索引从0开始"
+category = BZ_GUI
+returns = frame
+[[.args]]
+type = integer
+default = 0
+
+[DzFrameGetItemBarButton]
+title = "原生 - 物品栏按钮"
+description = "物品栏按钮:${buttnoid}"
+comment = "索引从0开始"
+category = BZ_GUI
+returns = frame
+[[.args]]
+type = integer
+default = 0
+
+[DzFrameGetMinimapButton]
+title = "原生 - 小地图按钮"
+description = "小地图按钮:${buttnoid}"
+comment = "小地图右侧竖排按钮，索引从0开始"
+category = BZ_GUI
+returns = frame
+[[.args]]
+type = integer
+default = 0
+
+[DzFrameGetUpperButtonBarButton]
+title = "原生 - 界面按钮"
+description = "界面按钮:${buttnoid}"
+comment = "左上的菜单等按钮，索引从0开始"
+category = BZ_GUI
+returns = frame
+[[.args]]
+type = integer
+default = 0
+
+[DzFrameGetTooltip]
+title = "原生 - 鼠标提示"
+description = "鼠标提示"
+comment = "鼠标移动到物品或技能按钮上显示的提示窗，初始位于技能栏上方"
+category = BZ_GUI
+returns = frame
+
+[DzFrameGetChatMessage]
+title = "原生 - 玩家聊天信息框"
+description = "玩家聊天信息框"
+comment = ""
+category = BZ_GUI
+returns = frame
+
+[DzFrameGetUnitMessage]
+title = "原生 - 系统消息框"
+description = "系统消息框"
+comment = "包含显示消息给玩家 及 显示Debug消息 等，"
+category = BZ_GUI
+returns = frame
+
+[DzFrameGetTopMessage]
+title = "原生 - 上方消息框"
+description = "上方消息框"
+comment = "高维修费用 等消息"
+category = BZ_GUI
+returns = frame
+
+[DzGetGameUI]
+title = "原生 - 游戏UI"
+description = "游戏UI"
+comment = "一般用作创建自定义UI的父节点"
+category = BZ_GUI
+returns = frame
+
+[DzFrameGetText]
+title = "获取 Frame 内的文字"
+description = "获取 ${buttnoid} 的文字"
+comment = "（支持EditBox, TextFrame, TextArea, SimpleFontString）"
+category = BZ_GUI
+returns = string
+[[.args]]
+type = frame
+
+[DzFrameGetAlpha]
+title = "获取 Frame 的 透明度(0-255)"
+description = "获取 ${Frame} 的透明度"
+comment = ""
+category = BZ_GUI
+returns = integer
+[[.args]]
+type = frame
+
+[DzFrameGetTextSizeLimit]
+title = "获取 Frame 的 字数限制"
+description = "获取 ${frame} 的字数限制"
+comment = "（支持EditBox）"
+category = BZ_GUI
+returns = integer
+[[.args]]
+type = frame
+
+[DzGetColor]
+title = "取 RGBA 色值"
+description = "红色:${Red} 绿色:${Green} 蓝色:${Blue} 透明度:${Alpha}"
+comment = "返回一个整数，用于设置Frame颜色"
+category = BZ_GUI
+returns = integer
+[[.args]]
+type = integer
+default = "255"
+min = 0
+max = 255
+[[.args]]
+type = integer
+default = "255"
+min = 0
+max = 255
+[[.args]]
+type = integer
+default = "255"
+min = 0
+max = 255
+[[.args]]
+type = integer
+default = "255"
+min = 0
+max = 255
+
+[DzF2I]
+title = "转换 Frame 为 整数"
+description = "转换 ${Frame} 为 整数"
+comment = ""
+category = BZ_GUI
+returns = integer
+[[.args]]
+type = frame
+
+[DzI2F]
+title = "转换 整数 为 Frame"
+description = "转换 ${Integer} 为 Frame"
+comment = ""
+category = BZ_GUI
+returns = frame
+[[.args]]
+type = integer
+
+[DzK2I]
+title = "转换 按键 为 整数"
+description = "转换 ${Key} 为 整数"
+comment = ""
+category = BZ_HW
+returns = integer
+[[.args]]
+type = gamekey
+
+[DzI2K]
+title = "转换 整数 为 按键"
+description = "转换 ${Integer} 为 按键"
+comment = ""
+category = BZ_HW
+returns = gamekey
+[[.args]]
+type = integer
