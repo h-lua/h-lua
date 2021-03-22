@@ -91,13 +91,13 @@ hdzapi.loadServer = function(whichPlayer, key)
     return hdzapi._serverData[key][hplayer.index(whichPlayer)]
 end
 hdzapi.loadServerBool = function(whichPlayer, key)
-    return "1" == hdzapi.loadServer(whichPlayer, key)
+    return "1" == (hdzapi.loadServer(whichPlayer, key) or "0")
 end
 hdzapi.loadServerNumber = function(whichPlayer, key)
     return tonumber(hdzapi.loadServer(whichPlayer, key) or 0)
 end
 hdzapi.loadServerInteger = function(whichPlayer, key)
-    return math.floor(hdzapi.loadServerNumber(whichPlayer, key))
+    return math.floor(hdzapi.loadServerNumber(whichPlayer, key) or 0)
 end
 
 ---@private
