@@ -4,7 +4,8 @@
 [![image](https://img.shields.io/badge/繁体中文-ZH_TW-blue.svg)](https://github.com/hunzsig-warcraft3/h-lua-sdk/blob/main/README_ZH-TW.md)
 
 ![image](https://img.shields.io/badge/license-MIT-blue.svg)
-[![image](https://img.shields.io/badge/hLua-v.2.0.alpha-orange.svg)](https://github.com/hunzsig-warcraft3/h-lua)
+[![image](https://img.shields.io/badge/doc-技术文档-blue.svg)](http://wenku.hunzsig.org/?_=_6_34)
+[![image](https://img.shields.io/badge/hLua-v2.alpha-orange.svg)](https://github.com/hunzsig-warcraft3/h-lua)
 [![image](https://img.shields.io/badge/Author-hunzsig-red.svg)](https://www.hunzsig.com)
 [![image](https://img.shields.io/badge/QQ-325338043-green.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=NYlOpKUo9vEUQ3gN_UBvRUci9avq0tqB&jump_from=webapi)
 

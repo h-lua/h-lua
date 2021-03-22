@@ -2,7 +2,7 @@
 
 [![image](https://img.shields.io/badge/english-EN_US-blue.svg)](https://github.com/hunzsig-warcraft3/h-lua/blob/main/README_EN-US.md)
 ![image](https://img.shields.io/badge/license-MIT-blue.svg)
-[![image](https://img.shields.io/badge/doc-技术文档-blue.svg)](http://wenku.hunzsig.org/?_=_1_5)
+[![image](https://img.shields.io/badge/doc-技术文档-blue.svg)](http://wenku.hunzsig.org/?_=_6_34)
 ![image](https://img.shields.io/badge/version-2-blue.svg)
 [![image](https://img.shields.io/badge/author-hunzsig-red.svg)](https://www.hunzsig.com)
 [![image](https://img.shields.io/badge/QQ-325338043-green.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=NYlOpKUo9vEUQ3gN_UBvRUci9avq0tqB&jump_from=webapi)
