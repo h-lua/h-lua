@@ -180,7 +180,7 @@ hslk_item_synthesis = function(formula)
     hslk_cli_synthesis = F6V_I_SYNTHESIS(formula)
 end
 
----@param _v{abiList,Requires,Requiresamount,Name,Description,Tip,Ubertip,Hotkey,Art,scale,file,Buttonpos_1,Buttonpos_2,selSize,colorR,colorG,colorB,armor,Level,oldLevel,class,goldcost,lumbercost,HP,stockStart,stockRegen,stockMax,prio,cooldownID,ignoreCD,morph,drop,powerup,sellable,pawnable,droppable,pickRandom,uses,perishable,usable,_id_force,_class,_type,_parent,_overlie,_weight,_attr,_attr_txt,_ring,_remarks,_cooldown,_cooldownTarget,_shadow,_onItemUsed,_onRing}
+---@param _v{abiList,Requires,Requiresamount,Name,Description,Tip,Ubertip,Hotkey,Art,scale,file,Buttonpos_1,Buttonpos_2,selSize,colorR,colorG,colorB,armor,Level,oldLevel,class,goldcost,lumbercost,HP,stockStart,stockRegen,stockMax,prio,cooldownID,ignoreCD,morph,drop,powerup,sellable,pawnable,droppable,pickRandom,uses,perishable,usable,_id_force,_class,_type,_parent,_overlie,_weight,_attr,_ring,_remarks,_cooldown,_cooldownTarget,_shadow,_onItemUsed,_onRing}
 hslk_item = function(_v)
     _v = F6V_I(_v)
     local res

@@ -70,6 +70,36 @@ hskill.add = function(whichUnit, abilityId, level, during)
     end
 end
 
+--- 设置技能等级
+---@param whichUnit userdata
+---@param abilityId string|number
+---@param level number
+---@param during number
+hskill.set = function(whichUnit, abilityId, level, during)
+    local id = abilityId
+    if (type(abilityId) == "string") then
+        id = string.char2id(id)
+    end
+    local prevLv = cj.GetUnitAbilityLevel(whichUnit, id)
+    if (level == nil or level == prevLv) then
+        return
+    end
+    if (prevLv < 1) then
+        hskill.add(whichUnit, abilityId, level, during)
+    else
+        if (during == nil or during <= 0) then
+            hskill.subProperty(whichUnit, id, prevLv)
+            cj.SetUnitAbilityLevel(whichUnit, id, level)
+            hskill.addProperty(whichUnit, id, level)
+        else
+            htime.setTimeout(during, function(t)
+                htime.delTimer(t)
+                hskill.set(whichUnit, abilityId, prevLv, nil)
+            end)
+        end
+    end
+end
+
 --- 删除技能
 ---@param whichUnit userdata
 ---@param abilityId string|number

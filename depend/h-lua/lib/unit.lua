@@ -55,7 +55,7 @@ end
 ---@param val number
 hunit.addCurLife = function(u, val)
     local cure = 1 + 0.01 * (hattribute.get(u, "cure") or 0)
-    val = math.floor(val * cure)
+    val = math.round(val * cure, 2)
     if (val > 0) then
         hunit.setCurLife(u, hunit.getCurLife(u) + val)
     end
@@ -90,7 +90,7 @@ end
 ---@param val number
 hunit.addCurMana = function(u, val)
     local cure = 1 + 0.01 * (hattribute.get(u, "cure") or 0)
-    val = math.floor(val * cure)
+    val = math.round(val * cure, 2)
     if (val > 0) then
         hunit.setCurMana(u, hunit.getCurMana(u) + val)
     end

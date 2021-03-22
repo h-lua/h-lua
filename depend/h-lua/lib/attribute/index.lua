@@ -410,7 +410,7 @@ end
 --- 设置单位属性
 ---@param whichUnit userdata
 ---@param during number 0表示无限
----@param data any
+---@param data pilotAttr
 ---@return nil|table buffKeys，返回buff keys，如果一个buff都没有，返回nil
 hattribute.set = function(whichUnit, during, data)
     if (whichUnit == nil) then
@@ -523,6 +523,9 @@ hattribute.caleAttribute = function(damageSrc, isAdd, whichUnit, attr, times)
         isAdd = true
     end
     if (attr == nil) then
+        return
+    end
+    if (attr.disabled == true) then
         return
     end
     damageSrc = damageSrc or CONST_DAMAGE_SRC.unknown
