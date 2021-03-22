@@ -29,7 +29,7 @@
         │   ├── globals.jass
         │   └── function.jass
         ├── map - 地图文件
-        │   ├── implant - 用来强制更新替换【DZUI布局、命令位置、平衡性常数、原生界面】参数
+        │   ├── implant - 用来强制更新替换【DZUI布局、命令位置、平衡性常数、原生界面、字体】参数
         │   ├── resource - F12导入
         │   │   ├── hLua - h-lua需要的资源文件，请不要乱删除
         │   │   ├── interface - 冷却时间UI，不需要可删除，然后需要修改 implant/war3mapSkin.txt

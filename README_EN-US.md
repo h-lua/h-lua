@@ -29,7 +29,7 @@
         │   ├── globals.jass
         │   └── function.jass
         ├── map
-        │   ├── implant DZUI、CommandUI、BalanceUI、OriginUI
+        │   ├── implant DZUI、CommandUI、BalanceUI、OriginUI、ttf
         │   ├── resource - F12
         │   │   ├── hLua -  h-lua required! Don't remove!
         │   │   ├── interface -  cooldown UI.No need to delete and modify implant/war3mapSkin.txt
