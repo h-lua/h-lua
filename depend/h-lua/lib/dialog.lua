@@ -23,23 +23,23 @@ hdialog.del = function(whichDialog)
     cj.DialogDestroy(whichDialog)
 end
 
---- 创建一个新的对话框
+--[[
+    创建一个新的对话框
+    options = {
+        title = "h-lua对话框一个",
+        buttons = {
+            { value = "Q", label = "第1个" },
+            { value = "W", label = "第2个" },
+            { value = "D", label = "第3个" },
+        }
+    }
+]]
 ---@alias dialogCreateAction fun(action: string):void
 ---@param whichPlayer userdata
----@param options table
+---@param options pilotDialogCreate
 ---@param action dialogCreateAction | "function(btnValue) end"
 ---@return userdata
 hdialog.create = function(whichPlayer, options, action)
-    --[[
-        options = {
-            title = "h-lua对话框一个",
-            buttons = {
-                { value = "Q", label = "第1个" },
-                { value = "W", label = "第2个" },
-                { value = "D", label = "第3个" },
-            }
-        }
-    ]]
     if (#options.buttons <= 0) then
         print_err("Dialog buttons is empty")
         return

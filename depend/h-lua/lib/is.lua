@@ -18,8 +18,7 @@ end
 ---@param whichPlayer userdata
 ---@return boolean
 his.computer = function(whichPlayer)
-    return cj.GetPlayerController(whichPlayer) == MAP_CONTROL_COMPUTER
-        or cj.GetPlayerSlotState(whichPlayer) ~= PLAYER_SLOT_STATE_PLAYING
+    return cj.GetPlayerController(whichPlayer) == MAP_CONTROL_COMPUTER or cj.GetPlayerSlotState(whichPlayer) ~= PLAYER_SLOT_STATE_PLAYING
 end
 
 --- 是否玩家位置(如果位置为真实玩家或为空，则为true；而如果选择了电脑玩家补充，则为false)
@@ -60,13 +59,10 @@ end
 ---@param whichUnit userdata
 ---@return boolean
 his.detected = function(whichUnit, whichPlayer)
-    local flag = false
     if (whichUnit == nil or whichPlayer == nil) then
-        flag = false
-    elseif (cj.IsUnitDetected(whichUnit, whichPlayer) == true) then
-        flag = true
+        return false
     end
-    return flag
+    return cj.IsUnitDetected(whichUnit, whichPlayer) == true
 end
 
 --- 是否拥有物品栏

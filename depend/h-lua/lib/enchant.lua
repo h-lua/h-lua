@@ -56,17 +56,17 @@ henchant.setEnvReaction = function(onEnchant, toEnchant, reaction)
     henchant.ENV_REACTION[onEnchant][toEnchant] = reaction
 end
 
---- 给目标单位添加附魔属性
----@param options table
+--[[
+    给目标单位添加附魔属性
+    options = {
+        targetUnit = userdata,
+        sourceUnit = userdata,
+        enchants = {'fire','water'} | "fire,water", 建议用table
+        during = 5,
+    }
+]]
+---@param options pilotEnchantAppend
 henchant.append = function(options)
-    --[[
-        options = {
-            targetUnit = userdata,
-            sourceUnit = userdata,
-            enchants = {'fire','water'} | "fire,water", 建议用table
-            during = 5,
-        }
-    ]]
     local targetUnit = options.targetUnit
     local sourceUnit = options.sourceUnit
     local enchants = options.enchants

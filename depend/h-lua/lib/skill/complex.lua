@@ -12,6 +12,7 @@
         isFixed = false, --是否固伤（可选）
     }
 ]]
+---@param options pilotKnocking
 hskill.knocking = function(options)
     local odds = options.odds or 0
     local damage = options.damage or 0
@@ -77,6 +78,7 @@ end
         damageType = {} --伤害的类型,注意是table（可选）
     }
 ]]
+---@param options pilotSplit
 hskill.split = function(options)
     local odds = options.odds or 0
     local damage = options.damage or 0
@@ -164,10 +166,12 @@ end
         damage = 0, --伤害，可选
         sourceUnit = nil, --来源单位，可选
         effect = nil, --特效，可选
-        damageSrc = CONST_DAMAGE_SRC.skill --伤害的种类（可选）
-        damageType = {} --伤害的类型,注意是table（可选）
+        damageSrc = CONST_DAMAGE_SRC.skill, --伤害的种类（可选）
+        damageType = {}, --伤害的类型,注意是table（可选）
+        isFixed = false,
     }
 ]]
+---@param options pilotBroken
 hskill.broken = function(options)
     if (options.targetUnit == nil or his.deleted(options.targetUnit)) then
         return
@@ -253,6 +257,7 @@ end
         isFixed = false --是否固伤（可选）
     }
 ]]
+---@param options pilotSwim
 hskill.swim = function(options)
     if (options.during == nil or options.during <= 0) then
         return
@@ -352,18 +357,16 @@ hskill.swim = function(options)
         }
     )
     if (damage > 0) then
-        hskill.damage(
-            {
-                sourceUnit = sourceUnit,
-                targetUnit = u,
-                damage = damage,
-                damageSrc = options.damageSrc,
-                damageType = options.damageType,
-                isFixed = options.isFixed,
-                damageString = damageString,
-                damageStringColor = damageStringColor
-            }
-        )
+        hskill.damage({
+            sourceUnit = sourceUnit,
+            targetUnit = u,
+            damage = damage,
+            damageSrc = options.damageSrc,
+            damageType = options.damageType,
+            isFixed = options.isFixed,
+            damageString = damageString,
+            damageStringColor = damageStringColor
+        })
     end
 end
 
@@ -381,6 +384,7 @@ end
         isFixed = false --是否固伤（可选）
     }
 ]]
+---@param options pilotSilent
 hskill.silent = function(options)
     if (options.during == nil or options.during <= 0) then
         return
@@ -486,6 +490,7 @@ end
         isFixed = false --是否固伤（可选）
     }
 ]]
+---@param options pilotUnArm
 hskill.unarm = function(options)
     if (options.during == nil or options.during <= 0) then
         return
@@ -581,6 +586,7 @@ end
         isFixed = false --是否固伤（可选）
     }
 ]]
+---@param options pilotFetter
 hskill.fetter = function(options)
     if (options.during == nil or options.during <= 0) then
         return
@@ -665,6 +671,7 @@ end
         isFixed = false --是否固伤（可选）
     }
 ]]
+---@param options pilotBomb
 hskill.bomb = function(options)
     if (options.damage == nil or options.damage <= 0) then
         return
@@ -712,19 +719,17 @@ hskill.bomb = function(options)
             end
             damage = damage * (1 - oppose * 0.01)
         end
-        hskill.damage(
-            {
-                sourceUnit = options.sourceUnit,
-                targetUnit = eu,
-                damage = damage,
-                damageSrc = options.damageSrc,
-                damageType = options.damageType,
-                isFixed = options.isFixed,
-                damageString = "爆破",
-                damageStringColor = "FF6347",
-                effect = options.effectEnum,
-            }
-        )
+        hskill.damage({
+            sourceUnit = options.sourceUnit,
+            targetUnit = eu,
+            damage = damage,
+            damageSrc = options.damageSrc,
+            damageType = options.damageType,
+            isFixed = options.isFixed,
+            damageString = "爆破",
+            damageStringColor = "FF6347",
+            effect = options.effectEnum,
+        })
         -- @触发爆破事件
         hevent.triggerEvent(
             options.sourceUnit,
@@ -774,6 +779,7 @@ end
         repeatGroup = [group],--隐藏的参数，用于暗地里记录单位是否被电过
     }
 ]]
+---@param options pilotLightningChain
 hskill.lightningChain = function(options)
     if (options.damage == nil or options.damage <= 0) then
         print_err("lightningChain -damage")
@@ -819,18 +825,16 @@ hskill.lightningChain = function(options)
     if (options.effect ~= nil) then
         heffect.bindUnit(options.effect, targetUnit, "origin", 0.5)
     end
-    hskill.damage(
-        {
-            sourceUnit = options.sourceUnit,
-            targetUnit = targetUnit,
-            damage = damage,
-            damageSrc = options.damageSrc,
-            damageType = options.damageType,
-            isFixed = options.isFixed,
-            damageString = "电链",
-            damageStringColor = "87cefa"
-        }
-    )
+    hskill.damage({
+        sourceUnit = options.sourceUnit,
+        targetUnit = targetUnit,
+        damage = damage,
+        damageSrc = options.damageSrc,
+        damageType = options.damageType,
+        isFixed = options.isFixed,
+        damageString = "电链",
+        damageStringColor = "87cefa"
+    })
     -- @触发闪电链成功事件
     hevent.triggerEvent(
         options.sourceUnit,
@@ -924,6 +928,7 @@ end
         isFixed = false --是否固伤（可选）
     }
 ]]
+---@param options pilotCrackFly
 hskill.crackFly = function(options)
     if (options.damage == nil or options.damage < 0) then
         return
@@ -1011,19 +1016,17 @@ hskill.crackFly = function(options)
         local timerSetTime = htime.getSetTime(t)
         if (cost > during) then
             if (damage > 0) then
-                hskill.damage(
-                    {
-                        sourceUnit = options.sourceUnit,
-                        targetUnit = options.targetUnit,
-                        effect = options.effect,
-                        damage = damage,
-                        damageSrc = options.damageSrc,
-                        damageType = options.damageType,
-                        isFixed = options.isFixed,
-                        damageString = "击飞",
-                        damageStringColor = "808000"
-                    }
-                )
+                hskill.damage({
+                    sourceUnit = options.sourceUnit,
+                    targetUnit = options.targetUnit,
+                    effect = options.effect,
+                    damage = damage,
+                    damageSrc = options.damageSrc,
+                    damageType = options.damageType,
+                    isFixed = options.isFixed,
+                    damageString = "击飞",
+                    damageStringColor = "808000"
+                })
             end
             cj.SetUnitFlyHeight(options.targetUnit, originHigh, 10000)
             cj.SetUnitPathing(options.targetUnit, true)
@@ -1087,7 +1090,6 @@ end
         odds = 100, --对每个单位的独立几率（可选,默认100）
         effect = "", --特效（可选）
         targetUnit = [unit], --中心单位（可选）
-        whichLoc = [location], --目标点（可选）
         x = [point], --目标坐标X（可选）
         y = [point], --目标坐标Y（可选）
         filter = [function], --必须有
@@ -1098,6 +1100,7 @@ end
         isFixed = false --是否固伤（可选）
     }
 ]]
+---@param options pilotRangeSwim
 hskill.rangeSwim = function(options)
     local radius = options.radius or 0
     local during = options.during or 0
@@ -1118,9 +1121,6 @@ hskill.rangeSwim = function(options)
         end
         x = hunit.x(options.targetUnit)
         y = hunit.y(options.targetUnit)
-    elseif (options.whichLoc ~= nil) then
-        x = cj.GetLocatonX(options.whichLoc)
-        y = cj.GetLocatonY(options.whichLoc)
     end
     if (x == nil or y == nil) then
         print_err("hskill.rangeSwim:-x -y")
@@ -1141,18 +1141,16 @@ hskill.rangeSwim = function(options)
         return
     end
     hgroup.forEach(g, function(eu)
-        hskill.swim(
-            {
-                odds = odds,
-                targetUnit = eu,
-                during = during,
-                damage = damage,
-                sourceUnit = options.sourceUnit,
-                damageSrc = options.damageSrc,
-                damageType = options.damageType,
-                isFixed = options.isFixed,
-            }
-        )
+        hskill.swim({
+            odds = odds,
+            targetUnit = eu,
+            during = during,
+            damage = damage,
+            sourceUnit = options.sourceUnit,
+            damageSrc = options.damageSrc,
+            damageType = options.damageType,
+            isFixed = options.isFixed,
+        })
     end)
     g = nil
 end
@@ -1174,6 +1172,7 @@ end
         isFixed = false --是否固伤（可选）
     }
 ]]
+---@param options pilotWhirlwind
 hskill.whirlwind = function(options)
     local radius = options.radius or 0
     local frequency = options.frequency or 0
@@ -1233,17 +1232,15 @@ hskill.whirlwind = function(options)
             return
         end
         hgroup.forEach(g, function(eu)
-            hskill.damage(
-                {
-                    sourceUnit = options.sourceUnit,
-                    targetUnit = eu,
-                    effect = options.effectEnum,
-                    damage = damage,
-                    damageSrc = options.damageSrc,
-                    damageType = options.damageType,
-                    isFixed = options.isFixed,
-                }
-            )
+            hskill.damage({
+                sourceUnit = options.sourceUnit,
+                targetUnit = eu,
+                effect = options.effectEnum,
+                damage = damage,
+                damageSrc = options.damageSrc,
+                damageType = options.damageType,
+                isFixed = options.isFixed,
+            })
         end)
         g = nil
     end)
@@ -1285,6 +1282,7 @@ end
         extraInfluence = [function] --对选中的敌人的额外影响，会回调该敌人单位，可以对其做出自定义行为
     }
 ]]
+---@param options pilotLeap
 hskill.leap = function(options)
     if (options.sourceUnit == nil) then
         print_err("leap: -sourceUnit")
@@ -1569,6 +1567,7 @@ end
         hskill.leap.options
     }
 ]]
+---@param options pilotLeapPaw
 hskill.leapPaw = function(options)
     local qty = options.qty or 0
     local deg = options.deg or 15
@@ -1611,41 +1610,39 @@ hskill.leapPaw = function(options)
     for i = 1, qty, 1 do
         local angle = firstDeg - deg * (i - 1)
         local txy = math.polarProjection(sx, sy, distance, angle)
-        hskill.leap(
-            {
-                arrowUnit = options.arrowUnit,
-                sourceUnit = options.sourceUnit,
-                targetUnit = nil,
-                x = txy.x,
-                y = txy.y,
-                speed = options.speed,
-                acceleration = options.acceleration,
-                height = options.height,
-                shake = options.shake,
-                filter = options.filter,
-                tokenX = options.tokenX,
-                tokenY = options.tokenY,
-                tokenArrow = options.tokenArrow,
-                tokenArrowScale = options.tokenArrowScale,
-                tokenArrowOpacity = options.tokenArrowOpacity,
-                tokenArrowHeight = options.tokenArrowHeight,
-                effectMovement = options.effectMovement,
-                effectEnd = options.effectEnd,
-                damageMovement = options.damageMovement,
-                damageMovementRadius = options.damageMovementRadius,
-                damageMovementRepeat = options.damageMovementRepeat,
-                damageMovementDrag = options.damageMovementDrag,
-                damageEnd = options.damageEnd,
-                damageEndRadius = options.damageEndRadius,
-                damageSrc = options.damageSrc,
-                damageType = options.damageType,
-                isFixed = options.isFixed,
-                damageEffect = options.damageEffect,
-                oneHitOnly = options.oneHitOnly,
-                onEnding = options.onEnding,
-                extraInfluence = options.extraInfluence
-            }
-        )
+        hskill.leap({
+            arrowUnit = options.arrowUnit,
+            sourceUnit = options.sourceUnit,
+            targetUnit = nil,
+            x = txy.x,
+            y = txy.y,
+            speed = options.speed,
+            acceleration = options.acceleration,
+            height = options.height,
+            shake = options.shake,
+            filter = options.filter,
+            tokenX = options.tokenX,
+            tokenY = options.tokenY,
+            tokenArrow = options.tokenArrow,
+            tokenArrowScale = options.tokenArrowScale,
+            tokenArrowOpacity = options.tokenArrowOpacity,
+            tokenArrowHeight = options.tokenArrowHeight,
+            effectMovement = options.effectMovement,
+            effectEnd = options.effectEnd,
+            damageMovement = options.damageMovement,
+            damageMovementRadius = options.damageMovementRadius,
+            damageMovementRepeat = options.damageMovementRepeat,
+            damageMovementDrag = options.damageMovementDrag,
+            damageEnd = options.damageEnd,
+            damageEndRadius = options.damageEndRadius,
+            damageSrc = options.damageSrc,
+            damageType = options.damageType,
+            isFixed = options.isFixed,
+            damageEffect = options.damageEffect,
+            oneHitOnly = options.oneHitOnly,
+            onEnding = options.onEnding,
+            extraInfluence = options.extraInfluence
+        })
     end
 end
 
@@ -1653,14 +1650,15 @@ end
     剃[选区型]，参数与leap一致，额外有两个参数，设置范围
     * 需要注意一点的是，pow会自动将对单位跟踪的效果转为对坐标系(不建议使用unit)
     options = {
-        targetRadius = 0, --以目标点为中心的选区半径范围
+        radius = 0, --以目标点为中心的选区半径范围
         hskill.leap.options
     }
 ]]
+---@param options pilotLeapRange
 hskill.leapRange = function(options)
-    local targetRadius = options.targetRadius or 0
-    if (targetRadius <= 0) then
-        print_err("leapRange: -targetRadius")
+    local radius = options.radius or 0
+    if (radius <= 0) then
+        print_err("leapRange: -radius")
         return
     end
     if (options.sourceUnit == nil) then
@@ -1686,7 +1684,7 @@ hskill.leapRange = function(options)
         x = options.x
         y = options.y
     end
-    local g = hgroup.createByXY(x, y, targetRadius, filter)
+    local g = hgroup.createByXY(x, y, radius, filter)
     hgroup.forEach(g, function(eu)
         local tmp = {
             arrowUnit = options.arrowUnit,
@@ -1737,6 +1735,7 @@ end
         hskill.leap.options
     }
 ]]
+---@param options pilotLeapReflex
 hskill.leapReflex = function(options)
     local qty = options.qty or 1
     local radius = options.radius or 0
@@ -1799,6 +1798,7 @@ end
         extraInfluence = [function] --对击中的敌人的额外影响，会回调该敌人单位，可以对其做出自定义行为
     }
 ]]
+---@param options pilotRectangleStrike
 hskill.rectangleStrike = function(options)
     if (options.sourceUnit == nil) then
         print_err("rectangleStrike: -sourceUnit")

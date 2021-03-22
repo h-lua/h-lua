@@ -15,8 +15,8 @@ local _damageTtg = function(targetUnit, damage, fix, color)
     end)
 end
 
---- 造成伤害
 --[[
+    造成伤害
     options = {
         sourceUnit = nil, --伤害来源(可选)
         targetUnit = nil, --目标单位
@@ -30,6 +30,7 @@ end
         isFixed = false, --是否固定伤害，伤害在固定下(无视类型、魔抗、自然、增幅、减伤)不计算，而自然虽然不影响伤害，但会有自然效果
     }
 ]]
+---@param options pilotDamage
 hskill.damage = function(options)
     local sourceUnit = options.sourceUnit
     local targetUnit = options.targetUnit
@@ -599,9 +600,9 @@ hskill.damage = function(options)
     end
 end
 
---- 多频多段伤害
---- 特别适用于例如中毒，灼烧等效果
 --[[
+    多频多段伤害
+    特别适用于例如中毒，灼烧等效果
     options = {
         targetUnit = [unit], --受伤单位（必须有）
         frequency = 0, --伤害频率（必须有）
@@ -616,6 +617,7 @@ end
         isFixed = false, --是否固伤（可选）
     }
 ]]
+---@param options pilotDamageStep
 hskill.damageStep = function(options)
     local times = options.times or 0
     local frequency = options.frequency or 0
@@ -653,8 +655,8 @@ hskill.damageStep = function(options)
     end
 end
 
---- 范围持续伤害
 --[[
+    范围持续伤害
     options = {
         radius = 0, --半径范围（必须有）
         frequency = 0, --伤害频率（必须有）
@@ -663,7 +665,6 @@ end
         effectSingle = "", --单体特效（可选）
         filter = [function], --必须有
         whichUnit = [unit], --中心单位的位置（可选）
-        whichLoc = [location], --目标点（可选）
         x = [point], --目标坐标X（可选）
         y = [point], --目标坐标Y（可选）
         damage = 0, --伤害（可选，但是这里可以等于0）
@@ -674,6 +675,7 @@ end
         extraInfluence = [function],
     }
 ]]
+---@param options pilotDamageRange
 hskill.damageRange = function(options)
     local radius = options.radius or 0
     local times = options.times or 0
@@ -694,9 +696,6 @@ hskill.damageRange = function(options)
     elseif (options.whichUnit ~= nil) then
         x = hunit.x(options.whichUnit)
         y = hunit.y(options.whichUnit)
-    elseif (options.whichLoc ~= nil) then
-        x = cj.GetLocatonX(options.whichLoc)
-        y = cj.GetLocatonY(options.whichLoc)
     end
     if (x == nil or y == nil) then
         print_err("hskill.damageRange:-x -y")
@@ -719,17 +718,17 @@ hskill.damageRange = function(options)
             return
         end
         hgroup.forEach(g, function(eu)
-            hskill.damage(
-                {
-                    sourceUnit = options.sourceUnit,
-                    targetUnit = eu,
-                    effect = options.effectSingle,
-                    damage = damage,
-                    damageSrc = options.damageSrc,
-                    damageType = options.damageType,
-                    isFixed = options.isFixed,
-                }
-            )
+            hskill.damage({
+                sourceUnit = options.sourceUnit,
+                targetUnit = eu,
+                effect = options.effectSingle,
+                damage = damage,
+                damageSrc = options.damageSrc,
+                damageType = options.damageType,
+                damageStringColor = options.damageStringColor,
+                breakArmorType = options.breakArmorType,
+                isFixed = options.isFixed,
+            })
             if (type(options.extraInfluence) == "function") then
                 options.extraInfluence(eu)
             end
@@ -751,17 +750,17 @@ hskill.damageRange = function(options)
                 return
             end
             hgroup.forEach(g, function(eu)
-                hskill.damage(
-                    {
-                        sourceUnit = options.sourceUnit,
-                        targetUnit = eu,
-                        effect = options.effectSingle,
-                        damage = damage,
-                        damageSrc = options.damageSrc,
-                        damageType = options.damageType,
-                        isFixed = options.isFixed,
-                    }
-                )
+                hskill.damage({
+                    sourceUnit = options.sourceUnit,
+                    targetUnit = eu,
+                    effect = options.effectSingle,
+                    damage = damage,
+                    damageSrc = options.damageSrc,
+                    damageType = options.damageType,
+                    damageStringColor = options.damageStringColor,
+                    breakArmorType = options.breakArmorType,
+                    isFixed = options.isFixed,
+                })
                 if (type(options.extraInfluence) == "function") then
                     options.extraInfluence(eu)
                 end

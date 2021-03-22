@@ -15,15 +15,17 @@ hquest.del = function(q, delay)
     end
 end
 
---- 创建一个任务
---- options = {
----     side = "left", --位置，默认left
----     title = "", --标题
----     content = "", --内容，你可以设置一个string或一个table，table会自动便利附加|n（换行）
----     icon = "ReplaceableTextures\\CommandButtons\\BTNTomeOfRetraining.blp", --图标
----     during = nil, --持续时间，默认为nil，不计时
---- }
----@param options {side:"位置",title:"标题",content:"内容",icon:"图标",during:"持续时间"}
+--[[
+    创建一个任务
+    options = {
+        side = "left", --位置，默认left
+        title = "", --标题
+        content = "", --内容，你可以设置一个string或一个table，table会自动便利附加|n（换行）
+        icon = "ReplaceableTextures\\CommandButtons\\BTNTomeOfRetraining.blp", --图标
+        during = nil, --持续时间，默认为nil，不计时
+    }
+]]
+---@param options pilotQuestCreate
 ---@return userdata
 hquest.create = function(options)
     local side = options.side or "left"

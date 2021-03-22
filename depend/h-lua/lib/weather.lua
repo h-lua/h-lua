@@ -32,44 +32,45 @@ hweather.del = function(w, delay)
     end
 end
 
---- 创建天气
----@param bean table
-hweather.create = function(bean)
-    --[[
-        bean = {
-            x=0,y=0,w=0,h=0,
-            whichRect=nil,
-            type=hweather.sun 天气类型
-            during=0 默认持续时间小于等于0:无限
-        }
-    ]]
-    if (bean.whichRect == nil) then
-        if (bean.w == nil or bean.h == nil or bean.w <= 0 or bean.h <= 0) then
+--[[
+    创建天气
+    options = {
+        x=0,y=0,
+        w=0,h=0,
+        whichRect=nil,
+        type=hweather.sun, --天气类型
+        during=0, --默认持续时间小于等于0:无限
+    }
+]]
+---@param options pilotWeatherCreate
+hweather.create = function(options)
+    if (options.whichRect == nil) then
+        if (options.w == nil or options.h == nil or options.w <= 0 or options.h <= 0) then
             print_err("hweather.create -w-h")
             return nil
         end
-        if (bean.x == nil or bean.y == nil) then
+        if (options.x == nil or options.y == nil) then
             print_err("hweather.create -x-y")
             return nil
         end
     end
-    if (bean.type == nil) then
+    if (options.type == nil) then
         print_err("hweather.create -type")
         return nil
     end
-    bean.during = bean.during or 0
+    options.during = options.during or 0
     local w
-    if (bean.whichRect ~= nil) then
-        w = cj.AddWeatherEffect(bean.whichRect, bean.type)
+    if (options.whichRect ~= nil) then
+        w = cj.AddWeatherEffect(options.whichRect, options.type)
     else
-        local r = hrect.create(bean.x, bean.y, bean.w, bean.h)
-        w = cj.AddWeatherEffect(r, bean.type)
-        if (bean.during > 0) then
-            hrect.del(r, bean.during)
+        local r = hrect.create(options.x, options.y, options.w, options.h)
+        w = cj.AddWeatherEffect(r, options.type)
+        if (options.during > 0) then
+            hrect.del(r, options.during)
         end
     end
     cj.EnableWeatherEffect(w, true)
-    if (bean.during > 0) then
-        hweather.del(w, bean.during)
+    if (options.during > 0) then
+        hweather.del(w, options.during)
     end
 end

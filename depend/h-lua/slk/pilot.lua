@@ -34,7 +34,7 @@ _xtras = function(_v)
     return _v
 end
 
----@param _v{effect,effectTarget,attachTarget,radius,target,attr}
+---@param _v{disabled,effect,effectTarget,attachTarget,radius,target,attr}
 _ring = function(_v)
     return _v
 end
@@ -54,3 +54,33 @@ end
 _onRing = function(_v)
     return _v
 end
+
+---@alias pilotUnitCreate {register,registerOrderEvent,whichPlayer,id,x,y,height,timeScale,modelScale,red,green,blue,opacity,qty,life,during,facing,facingX,facingY,facingUnit,attackX,attackY,attackUnit,isOpenSlot,isOpenPunish,isShadow,isUnSelectable,isPause,isInvulnerable,isShareSight,attr}
+---@alias pilotEnemyCreate {teamNo,register,registerOrderEvent,id,x,y,height,timeScale,modelScale,red,green,blue,opacity,qty,life,during,facing,facingX,facingY,facingUnit,attackX,attackY,attackUnit,isOpenSlot,isOpenPunish,isShadow,isUnSelectable,isPause,isInvulnerable,isShareSight,attr}
+---@alias pilotWeatherCreate {x,y,w,h,whichRect,type,during}
+---@alias pilotRectLock {type,during,width,height,lockRect,lockUnit,lockX,lockY}
+---@alias pilotQuestCreate {side:"位置",title:"标题",content:"内容",icon:"图标",during:"持续时间"}
+---@alias pilotItemCreate {id,charges,whichUnit,x,y,during}
+---@alias pilotHeroBuildSelector {heroes,during,type,buildX,buildY,buildDistance,buildRowQty,tavernId,tavernUnitQty,onUnitSell,direct}
+---@alias pilotEnchantAppend {targetUnit,sourceUnit,enchants,during}
+---@alias pilotDialogCreate {title,buttons}
+---@alias pilotDamage {sourceUnit,targetUnit,damage,damageString,damageStringColor,effect,damageSrc,damageType,breakArmorType,isFixed}
+---@alias pilotDamageStep {sourceUnit,targetUnit,damage,damageString,damageStringColor,effect,damageSrc,damageType,breakArmorType,isFixed,frequency,times,extraInfluence}
+---@alias pilotDamageRange {sourceUnit,targetUnit,damage,damageString,damageStringColor,effect,effectSingle,damageSrc,damageType,breakArmorType,isFixed,radius,frequency,times,extraInfluence}
+---@alias pilotKnocking {sourceUnit,targetUnit,damage,odds,percent,effect,damageSrc,damageType,isFixed}
+---@alias pilotSplit {radius,sourceUnit,targetUnit,damage,odds,percent,effect,damageSrc,damageType,isFixed}
+---@alias pilotBroken {sourceUnit,targetUnit,damage,odds,percent,effect,damageSrc,damageType,isFixed}
+---@alias pilotSwim {sourceUnit,targetUnit,damage,odds,percent,effect,damageSrc,damageType,isFixed}
+---@alias pilotSilent {during,sourceUnit,targetUnit,damage,odds,percent,effect,damageSrc,damageType,isFixed}
+---@alias pilotUnArm {during,sourceUnit,targetUnit,damage,odds,percent,effect,damageSrc,damageType,isFixed}
+---@alias pilotFetter {during,sourceUnit,targetUnit,damage,odds,percent,effect,damageSrc,damageType,isFixed}
+---@alias pilotBomb {radius,sourceUnit,whichGroup,targetUnit,damage,odds,percent,effect,damageSrc,damageType,isFixed}
+---@alias pilotLightningChain {lightningType,prevUnit,sourceUnit,targetUnit,damage,odds,qty,rate,radius,isRepeat,effect,damageSrc,damageType,isFixed,index,repeatGroup}
+---@alias pilotCrackFly {distance,height,during,sourceUnit,targetUnit,damage,odds,effect,damageSrc,damageType,isFixed}
+---@alias pilotRangeSwim {radius,during,x,y,filter,sourceUnit,targetUnit,damage,odds,effect,damageSrc,damageType,isFixed}
+---@alias pilotWhirlwind {radius,frequency,during,filter,sourceUnit,targetUnit,damage,odds,effect,effectEnum,damageSrc,damageType,isFixed,animation}
+---@alias pilotLeap {arrowUnit,sourceUnit,targetUnit,x,y,speed,acceleration,height,shake,filter,tokenX,tokenY,tokenArrow,tokenArrowScale,tokenArrowOpacity,tokenArrowHeight,effectMovement,effectEnd,damageMovement,damageMovementRadius,damageMovementRepeat,damageMovementDrag,damageEnd,damageEndRadius,damageSrc,damageType,isFixed,damageEffect,oneHitOnly,onEnding,extraInfluence}
+---@alias pilotLeapPaw {qty,deg,arrowUnit,sourceUnit,targetUnit,x,y,speed,acceleration,height,shake,filter,tokenX,tokenY,tokenArrow,tokenArrowScale,tokenArrowOpacity,tokenArrowHeight,effectMovement,effectEnd,damageMovement,damageMovementRadius,damageMovementRepeat,damageMovementDrag,damageEnd,damageEndRadius,damageSrc,damageType,isFixed,damageEffect,oneHitOnly,onEnding,extraInfluence}
+---@alias pilotLeapRange {radius,arrowUnit,sourceUnit,targetUnit,x,y,speed,acceleration,height,shake,filter,tokenX,tokenY,tokenArrow,tokenArrowScale,tokenArrowOpacity,tokenArrowHeight,effectMovement,effectEnd,damageMovement,damageMovementRadius,damageMovementRepeat,damageMovementDrag,damageEnd,damageEndRadius,damageSrc,damageType,isFixed,damageEffect,oneHitOnly,onEnding,extraInfluence}
+---@alias pilotLeapReflex {qty,radius,arrowUnit,sourceUnit,targetUnit,x,y,speed,acceleration,height,shake,filter,tokenX,tokenY,tokenArrow,tokenArrowScale,tokenArrowOpacity,tokenArrowHeight,effectMovement,effectEnd,damageMovement,damageMovementRadius,damageMovementRepeat,damageMovementDrag,damageEnd,damageEndRadius,damageSrc,damageType,isFixed,damageEffect,oneHitOnly,onEnding,extraInfluence}
+---@alias pilotRectangleStrike {deg,radius,distance,frequency,filter,sourceUnit,targetUnit,x,y,effect,effectScale,effectOffset,damageSrc,damageType,isFixed,damageEffect,oneHitOnly,extraInfluence}

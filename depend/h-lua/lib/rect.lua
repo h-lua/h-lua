@@ -164,80 +164,73 @@ hrect.del = function(whichRect, delay)
     end
 end
 
---- 区域单位锁定
----@param bean table
-hrect.lock = function(bean)
-    --[[
-        bean = {
-            type 类型有：square|circle // 矩形(默)|圆形
-            during 持续时间 必须大于0
-            width 锁定活动范围长，大于0
-            height 锁定活动范围宽，大于0
-            whichRect 锁定区域时设置，可选
-            whichUnit 锁定某个单位时设置，可选
-            whichLoc 锁定某个点时设置，可选
-            whichX 锁定某个坐标X时设置，可选
-            whichY 锁定某个坐标Y时设置，可选
-        }
-    ]]
-    bean.during = bean.during or 0
-    if (bean.during <= 0 or (bean.whichRect == nil and (bean.width <= 0 or bean.height <= 0))) then
+--[[
+   区域单位锁定
+   options = {
+        type 类型有：square|circle // 矩形(默)|圆形
+        during 持续时间 必须大于0
+        width 锁定活动范围长，大于0
+        height 锁定活动范围宽，大于0
+        lockRect 锁定区域时设置，可选
+        lockUnit 锁定某个单位时设置，可选
+        lockX 锁定某个坐标X时设置，可选
+        lockY 锁定某个坐标Y时设置，可选
+    }
+]]
+---@param options pilotRectLock
+hrect.lock = function(options)
+    options.during = options.during or 0
+    if (options.during <= 0 or (options.lockRect == nil and (options.width <= 0 or options.height <= 0))) then
         return
     end
-    if (bean.whichRect == nil and bean.whichUnit == nil and bean.whichLoc == nil
-        and (bean.whichX == nil or bean.whichY == nil)) then
+    if (options.lockRect == nil and options.lockUnit == nil and (options.lockX == nil or options.lockY == nil)) then
         return
     end
-    if (bean.type == nil) then
-        bean.type = "square"
+    if (options.type == nil) then
+        options.type = "square"
     end
-    if (bean.type ~= "square" and bean.type ~= "circle") then
+    if (options.type ~= "square" and options.type ~= "circle") then
         return
     end
     local inc = 0
     local lockGroup = {}
     htime.setInterval(0.1, function(t)
         inc = inc + 1
-        if (inc > (bean.during / 0.10)) then
+        if (inc > (options.during / 0.10)) then
             htime.delTimer(t)
             hgroup.clear(lockGroup, true, false)
             return
         end
-        local x = bean.whichX
-        local y = bean.whichY
-        local w = bean.width
-        local h = bean.height
-        --点优先
-        if (bean.whichLoc) then
-            x = cj.GetLocationX(bean.whichLoc)
-            y = cj.GetLocationY(bean.whichLoc)
-        end
+        local x = options.lockX
+        local y = options.lockY
+        local w = options.width
+        local h = options.height
         --单位优先
-        if (bean.whichUnit) then
-            if (his.dead(bean.whichUnit)) then
+        if (options.lockUnit) then
+            if (his.dead(options.lockUnit)) then
                 htime.delTimer(t)
                 return
             end
-            x = hunit.x(bean.whichUnit)
-            y = hunit.y(bean.whichUnit)
+            x = hunit.x(options.lockUnit)
+            y = hunit.y(options.lockUnit)
         end
         --区域优先
-        if (bean.whichRect) then
-            x = cj.GetRectCenterX(bean.whichRect)
-            y = cj.GetRectCenterY(bean.whichRect)
+        if (options.lockRect) then
+            x = cj.GetRectCenterX(options.lockRect)
+            y = cj.GetRectCenterY(options.lockRect)
             if (w == nil) then
-                w = hrect.getWidth(bean.whichRect)
+                w = hrect.getWidth(options.lockRect)
             end
             if (h == nil) then
-                h = hrect.getHeight(bean.whichRect)
+                h = hrect.getHeight(options.lockRect)
             end
         end
         local lockRect
         local tempGroup
-        if (bean.type == "square") then
+        if (options.type == "square") then
             lockRect = cj.Rect(x - (w * 0.5), y - (h * 0.5), x + (w * 0.5), y + (h * 0.5))
             tempGroup = hgroup.createByRect(lockRect)
-        elseif (bean.type == "circle") then
+        elseif (options.type == "circle") then
             tempGroup = hgroup.createByXY(x, y, math.min(w / 2, h / 2))
         end
         hgroup.forEach(tempGroup, function(u)
@@ -249,12 +242,12 @@ hrect.lock = function(bean)
             local deg = 0
             local xx = hunit.x(u)
             local yy = hunit.y(u)
-            if (bean.type == "square") then
+            if (options.type == "square") then
                 if (his.borderRect(lockRect, xx, yy) == true) then
                     deg = math.getDegBetweenXY(x, y, xx, yy)
                     distance = math.getMaxDistanceInRect(w, h, deg)
                 end
-            elseif (bean.type == "circle") then
+            elseif (options.type == "circle") then
                 if (math.getDistanceBetweenXY(x, y, xx, yy) > math.min(w / 2, h / 2)) then
                     deg = math.getDegBetweenXY(x, y, xx, yy)
                     distance = math.min(w / 2, h / 2)

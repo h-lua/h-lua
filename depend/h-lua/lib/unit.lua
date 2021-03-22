@@ -445,41 +445,43 @@ hunit.embed = function(u, options)
     end
 end
 
---- 创建单位/单位组
--- options = {
---     register = true, --是否注册进系统
---     registerOrderEvent = false, --是否注册系统指令事件，可选
---     whichPlayer = nil, --归属玩家
---     id = nil, --类型id,如 H001
---     x = nil, --创建坐标X，可选
---     y = nil, --创建坐标Y，可选
---     height = 高度，0，可选
---     timeScale = 动作时间比例，0.0~N.N，可选
---     modelScale = 模型缩放比例，0.0~N.N，可选
---     red = 红色，0～255，可选
---     green = 绿色，0～255，可选
---     blue = 蓝色，0～255，可选
---     opacity = 不透明度，0.0～1.0，可选,0不可见
---     qty = 1, --数量，可选，可选
---     life = nil, --生命周期，到期死亡，可选
---     during = nil, --持续时间，到期删除，可选
---     facing = nil, --面向角度，可选
---     facingX = nil, --面向X，可选
---     facingY = nil, --面向Y，可选
---     facingUnit = nil, --面向单位，可选
---     attackX = nil, --攻击X，可选
---     attackY = nil, --攻击Y，可选
---     attackUnit = nil, --攻击单位，可选
---     isOpenSlot = false, --是否开启物品栏(自动注册)可选
---     isOpenPunish = false, --是否开启硬直系统，可选
---     isShadow = false, --是否影子，可选
---     isUnSelectable = false, --是否不可鼠标选中，可选
---     isPause = false, -- 是否暂停
---     isInvulnerable = false, --是否无敌，可选
---     isShareSight = false, --是否与所有玩家共享视野，可选
---     attr = nil, --自定义属性，可选
--- }
----@param options {register,registerOrderEvent,whichPlayer,id,x,y,height,timeScale,modelScale,red,green,blue,opacity,qty,life,during,facing,facingX,facingY,facingUnit,attackX,attackY,attackUnit,isOpenSlot,isOpenPunish,isShadow,isUnSelectable,isPause,isInvulnerable,isShareSight,attr}
+--[[
+    创建单位/单位组
+    options = {
+        register = true, --是否注册进系统
+        registerOrderEvent = false, --是否注册系统指令事件，可选
+        whichPlayer = nil, --归属玩家
+        id = nil, --类型id,如 H001
+        x = nil, --创建坐标X，可选
+        y = nil, --创建坐标Y，可选
+        height = 高度，0，可选
+        timeScale = 动作时间比例，0.0~N.N，可选
+        modelScale = 模型缩放比例，0.0~N.N，可选
+        red = 红色，0～255，可选
+        green = 绿色，0～255，可选
+        blue = 蓝色，0～255，可选
+        opacity = 不透明度，0.0～1.0，可选,0不可见
+        qty = 1, --数量，可选，可选
+        life = nil, --生命周期，到期死亡，可选
+        during = nil, --持续时间，到期删除，可选
+        facing = nil, --面向角度，可选
+        facingX = nil, --面向X，可选
+        facingY = nil, --面向Y，可选
+        facingUnit = nil, --面向单位，可选
+        attackX = nil, --攻击X，可选
+        attackY = nil, --攻击Y，可选
+        attackUnit = nil, --攻击单位，可选
+        isOpenSlot = false, --是否开启物品栏(自动注册)可选
+        isOpenPunish = false, --是否开启硬直系统，可选
+        isShadow = false, --是否影子，可选
+        isUnSelectable = false, --是否不可鼠标选中，可选
+        isPause = false, -- 是否暂停
+        isInvulnerable = false, --是否无敌，可选
+        isShareSight = false, --是否与所有玩家共享视野，可选
+        attr = nil, --自定义属性，可选
+    }
+]]
+---@param options pilotUnitCreate
 ---@return userdata|table 最后创建单位|单位组
 hunit.create = function(options)
     if (options.qty == nil) then

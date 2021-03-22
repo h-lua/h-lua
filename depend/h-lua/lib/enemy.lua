@@ -88,8 +88,7 @@ end
 
 --[[
     创建敌人单位/单位组
-    @return 最后创建单位/单位组
-    {
+    options = {
         teamNo = 1, -- 敌军队伍序号，默认1
         id = nil, --类型id,如 H001
         x = nil, --创建坐标X，可选
@@ -119,6 +118,8 @@ end
         attr = nil, --自定义属性，可选
     }
 ]]
+---@param options pilotEnemyCreate
+---@return userdata|table 最后创建单位|单位组
 henemy.create = function(options)
     if (#henemy.conf <= 0) then
         return

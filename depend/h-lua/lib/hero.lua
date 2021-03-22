@@ -156,24 +156,24 @@ hhero.reborn = function(whichHero, delay, invulnerable, x, y, showDialog)
     end
 end
 
---- 开始构建英雄选择
----@param options table
+--[[
+    开始构建英雄选择
+    options = {
+        heroes = {"H001","H002"}, -- (可选)供选的单位ID数组，默认是全局的 hslk.typeIds({ "hero", "hero_custom" })
+        during = -1, -- 选择持续时间，默认无限（特殊情况哦）;如果有持续时间但是小于30，会被设置为30秒，超过这段时间未选择的玩家会被剔除出游戏
+        type = string, "tavern" | "click"
+        buildX = 0, -- 构建点X
+        buildY = 0, -- 构建点Y
+        buildDistance = 256, -- 构建距离，例如两个酒馆间，两个单位间
+        buildRowQty = 4, -- 每行构建的最大数目，例如一行最多4个酒馆
+        tavernId = nil, -- 酒馆模式下，你可以自定义酒馆单位是哪一个(建议使用slkHelper创建酒馆，这样自动就有出售单位等必备技能)
+        tavernUnitQty = 10, -- 酒馆模式下，一个酒馆最多拥有几种单位
+        onUnitSell = function, -- 酒馆模式时，购买单位的动作，默认是系统pickHero事件，你可自定义
+        direct = {1,1}, -- 生成方向，默认左上角开始到右下角结束
+    }
+]]
+---@param options pilotHeroBuildSelector
 hhero.buildSelector = function(options)
-    --[[
-        options = {
-            heroes = {"H001","H002"}, -- (可选)供选的单位ID数组，默认是全局的 hslk.typeIds({ "hero", "hero_custom" })
-            during = -1, -- 选择持续时间，默认无限（特殊情况哦）;如果有持续时间但是小于30，会被设置为30秒，超过这段时间未选择的玩家会被剔除出游戏
-            type = string, "tavern" | "click"
-            buildX = 0, -- 构建点X
-            buildY = 0, -- 构建点Y
-            buildDistance = 256, -- 构建距离，例如两个酒馆间，两个单位间
-            buildRowQty = 4, -- 每行构建的最大数目，例如一行最多4个酒馆
-            tavernId = nil, -- 酒馆模式下，你可以自定义酒馆单位是哪一个(建议使用slkHelper创建酒馆，这样自动就有出售单位等必备技能)
-            tavernUnitQty = 10, -- 酒馆模式下，一个酒馆最多拥有几种单位
-            onUnitSell = function, -- 酒馆模式时，购买单位的动作，默认是系统pickHero事件，你可自定义
-            direct = {1,1}, -- 生成方向，默认左上角开始到右下角结束
-        }
-    ]]
     local heroIds = options.heroes
     if (heroIds == nil or #heroIds <= 0) then
         heroIds = hslk.typeIds({ "hero", "hero_custom" })

@@ -30,22 +30,26 @@ hring.insert = function(whichUnit, id, level)
     end
     level = level or 1
     if (his.deleted(whichUnit) == false) then
-        table.insert(hring.ACTIVE_RING, { status = 2, unit = whichUnit, id = id, group = {}, level = level })
-        local _ring = hslk.i2v(id, "_ring") or {}
-        if (#_ring > 0) then
-            _ring = _ring[level]
-        end
-        if (_ring.effect) then
-            if (hring.ACTIVE_EFFECT[id] == nil) then
-                hring.ACTIVE_EFFECT[id] = {}
+        local _ring = hslk.i2v(id, "_ring")
+        if (type(_ring) == "table") then
+            if (#_ring > 0) then
+                _ring = _ring[level]
             end
-            if (hring.ACTIVE_EFFECT[id][whichUnit] == nil) then
-                hring.ACTIVE_EFFECT[id][whichUnit] = {
-                    effect = heffect.bindUnit(_ring.effect, whichUnit, _ring.attach or 'origin', -1),
-                    count = 1,
-                }
-            else
-                hring.ACTIVE_EFFECT[id][whichUnit].count = hring.ACTIVE_EFFECT[id][whichUnit].count + 1
+            if (_ring.disabled ~= true) then
+                table.insert(hring.ACTIVE_RING, { status = 2, unit = whichUnit, id = id, group = {}, level = level })
+                if (_ring.effect) then
+                    if (hring.ACTIVE_EFFECT[id] == nil) then
+                        hring.ACTIVE_EFFECT[id] = {}
+                    end
+                    if (hring.ACTIVE_EFFECT[id][whichUnit] == nil) then
+                        hring.ACTIVE_EFFECT[id][whichUnit] = {
+                            effect = heffect.bindUnit(_ring.effect, whichUnit, _ring.attach or 'origin', -1),
+                            count = 1,
+                        }
+                    else
+                        hring.ACTIVE_EFFECT[id][whichUnit].count = hring.ACTIVE_EFFECT[id][whichUnit].count + 1
+                    end
+                end
             end
         end
     end

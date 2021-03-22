@@ -814,17 +814,19 @@ hitem.separate = function(whichItem, separateType, formulaIndex, whichUnit)
     hitem.del(whichItem, 0)
 end
 
---- 创建物品
--- options = {
---     id = "I001", --物品ID
---     charges = 1, --物品可使用次数（可选，默认为1）
---     whichUnit = nil, --哪个单位（可选）
---     x = nil, --哪个坐标X（可选）
---     y = nil, --哪个坐标Y（可选）
---     during = -1, --持续时间（可选，小于0无限制，如果有whichUnit，此项无效）
--- }
----@param options {id,charges,whichUnit,x,y,during}
----@return userdata
+--[[
+    创建物品
+    options = {
+        id = "I001", --物品ID
+        charges = 1, --物品可使用次数（可选，默认为1）
+        whichUnit = nil, --哪个单位（可选）
+        x = nil, --哪个坐标X（可选）
+        y = nil, --哪个坐标Y（可选）
+        during = -1, --持续时间（可选，小于0无限制，如果有whichUnit，此项无效）
+    }
+]]
+---@param options pilotItemCreate
+---@return userdata|nil
 hitem.create = function(options)
     if (options.id == nil) then
         print_err("hitem create -it-id")
