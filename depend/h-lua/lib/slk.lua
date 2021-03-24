@@ -3,7 +3,6 @@ hslk = {}
 
 --- 根据ID获取slk数据（包含原生的slk和hslk）
 --- 原生的slk数值键值是根据地图编辑器作为标准的，所以大小写也是与之一致
---- 原生的slk不会全部获取，只获取部分有用的key，具体可查看 CONST_SLK
 ---@param id string|number
 ---@vararg string 可选，直接获取该key的值
 ---@return table|nil
@@ -38,7 +37,6 @@ end
 
 --- 根据名称获取slk数据（包含原生的slk和hslk）
 --- 原生的slk数值键值是根据地图编辑器作为标准的，所以大小写也是与之一致
---- 原生的slk不会全部获取，只获取部分有用的key，具体可查看 CONST_SLK
 --- 如果名称冲突，则只能获取到最后设定的数据
 ---@param name string
 ---@return table|nil
