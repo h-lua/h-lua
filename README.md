@@ -57,6 +57,7 @@
 ./h-lua-sdk> sdk.exe help  //提示cmd工具命令
 ./h-lua-sdk> sdk.exe new [*PROJECT_NAME]  //新建一个地图项目
 ./h-lua-sdk> sdk.exe ydwe [*PROJECT_NAME]  //以YDWE打开地图项目
+./h-lua-sdk> sdk.exe model [*PROJECT_NAME] [~PAGE CUR:0]  //以YDWE浏览项目模型，一页最大289个，可翻页
 ./h-lua-sdk> sdk.exe clear [*PROJECT_NAME]  //清理构建的临时文件
 ./h-lua-sdk> sdk.exe test [*PROJECT_NAME]  //构建测试版本并开启游戏进行调试
 ./h-lua-sdk> sdk.exe build [*PROJECT_NAME]  //构建上线版本并开启游戏进行调试
@@ -68,6 +69,7 @@
 ./h-lua-sdk> sdk.exe -h  //提示cmd工具命令
 ./h-lua-sdk> sdk.exe -n [*PROJECT_NAME]  //新建一个地图项目
 ./h-lua-sdk> sdk.exe -we|-yd [*PROJECT_NAME]  //以YDWE打开地图项目
+./h-lua-sdk> sdk.exe -m [*PROJECT_NAME] [~PAGE CUR:0]  //以YDWE浏览项目模型，一页最大289个，可翻页
 ./h-lua-sdk> sdk.exe -c [*PROJECT_NAME]  //清理构建的临时文件
 ./h-lua-sdk> sdk.exe -t [*PROJECT_NAME]  //构建测试版本并开启游戏进行调试
 ./h-lua-sdk> sdk.exe -b [*PROJECT_NAME]  //构建上线版本并开启游戏进行调试
