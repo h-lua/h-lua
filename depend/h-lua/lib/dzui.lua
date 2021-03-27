@@ -1,4 +1,6 @@
 ---@class dzui DzUI
+---@deprecated
+
 hdzui = { _t = 0 }
 
 --- 启用宽屏

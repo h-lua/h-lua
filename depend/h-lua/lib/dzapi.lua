@@ -1,4 +1,6 @@
 ---@class hdzapi DzApi
+---@deprecated
+
 hdzapi = {
     _hasMallItem = {},
     _serverData = {},
