@@ -99,7 +99,7 @@ hskill.damage = function(options)
     local punishEffectRatio = 0
     -- 是否固伤
     local isFixed = false
-    if (type(options.isFixed) == 'boolean') then
+    if (type(options.isFixed) == "boolean") then
         isFixed = options.isFixed
     end
     -- 文本显示

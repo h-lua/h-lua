@@ -23,7 +23,7 @@ end
 --- 设置着身附魔
 ---@param status boolean 开关附魔
 henchant.enableAppend = function(status)
-    if (type(status) == 'boolean') then
+    if (type(status) == "boolean") then
         henchant.STATUS = status
     end
 end

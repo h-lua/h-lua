@@ -2,8 +2,7 @@
 cj = require "jass.common"
 cg = require "jass.globals"
 
-require "blizzard_c"
-require "blizzard_b"
+require "blizzard"
 require "echo"
 
 require "lib.id"

@@ -80,8 +80,7 @@ git clone https://github.com/hunzsig-warcraft3/h-lua-sdk.git
     │   ├── unit.lua
     │   └── weather.lua
     ├── slk - hslk builder
-    ├── blizzard_b.lua - Blizzard B global variables
-    ├── blizzard_c.lua - Blizzard C global variables
+    ├── blizzard.lua - Blizzard global variables
     ├── echo.lua - Game message global function
     └── h-lua.lua - Enter
 ```

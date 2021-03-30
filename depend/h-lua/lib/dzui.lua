@@ -5,25 +5,25 @@ hdzui = { _t = 0 }
 
 --- 启用宽屏
 hdzui.wideScreen = function()
-    cj.ExecuteFunc("hdzui_wideScreen")
+    hjapi.DzEnableWideScreen(true)
 end
 
 --- 隐藏所有原生界面
 hdzui.hideInterface = function()
-    cj.ExecuteFunc("hdzui_hideInterface")
+    hjapi.DzFrameHideInterface()
+    hjapi.DzFrameEditBlackBorders(0, 0)
 end
 
 --- 加载toc文件
 ---@param tocFilePath string
 hdzui.loadToc = function(tocFilePath)
-    cg.hdzui_loadTocFile = tocFilePath
-    cj.ExecuteFunc("hdzui_loadToc")
+    hjapi.DzLoadToc(tocFilePath)
 end
 
 --- 获取游戏UI(一个整数)
----@return number
+---@return number integer
 hdzui.gameUI = function()
-    return cg.hdzui_frame_gameUI
+    return hjapi.DzGetGameUI()
 end
 
 --- 新建一个frame
@@ -35,49 +35,43 @@ hdzui.frame = function(fdfName, parent, id)
     if (fdfName == nil) then
         return
     end
-    cg.hdzui_frame_creator_name = fdfName
-    cg.hdzui_frame_creator_parent = parent or hdzui.gameUI()
-    cg.hdzui_frame_creator_id = id or 0
-    cj.ExecuteFunc("hdzui_frameCreate")
-    return cg.hdzui_frame_creator
+    parent = parent or hdzui.gameUI()
+    id = id or 0
+    return hjapi.DzCreateFrame(fdfName, parent, id)
 end
 
 --- tag方式新建一个frame
 ---@param fdfType string frame类型 TEXT | BACKDROP等
 ---@param fdfName string frame名称
 ---@param parent number 父节点ID(def:GameUI)
----@param id number ID(def:0)
 ---@param tag string 自定义tag名称(def:_t)
+---@param id number integer(def:0)
 ---@return number|nil
-hdzui.frameTag = function(fdfType, fdfName, parent, id, tag)
+hdzui.frameTag = function(fdfType, fdfName, parent, tag, id)
     if (fdfType == nil or fdfName == nil) then
         return
     end
     hdzui._t = hdzui._t + 1
-    cg.hdzui_frame_creator_type = fdfType
-    cg.hdzui_frame_creator_tag = tag or tostring(hdzui._t)
-    cg.hdzui_frame_creator_parent = parent or hdzui.gameUI()
-    cg.hdzui_frame_creator_name = fdfName
-    cg.hdzui_frame_creator_id = id or 0
-    cj.ExecuteFunc("hdzui_frameCreateTag")
-    return cg.hdzui_frame_creator
+    tag = tag or "uit-" .. hdzui._t
+    parent = parent or hdzui.gameUI()
+    return hjapi.DzCreateFrameByTagName(fdfType, tag, parent, fdfName, id)
 end
 
 --- 设置frame相对锚点
 ---@param frameId number
 ---@param relation number 相对节点ID(def:GameUI)
----@param align number
+---@param align number integer 参考blizzard_c:FRAME_ALIGN
 ---@param alignRelation number 以 align-> alignParent 对齐
 ---@param x number 锚点X
 ---@param y number 锚点Y
 hdzui.framePoint = function(frameId, relation, align, alignRelation, x, y)
-    cg.hdzui_frame_id = frameId
-    cg.hdzui_frame_relation = relation or hdzui.gameUI()
-    cg.hdzui_frame_align = align or CONST_DZUI_ALIGN.CENTER
-    cg.hdzui_frame_alignRelation = alignRelation or CONST_DZUI_ALIGN.CENTER
-    cg.hdzui_frame_x = x or 0
-    cg.hdzui_frame_y = y or 0
-    cj.ExecuteFunc("hdzui_framePoint")
+    relation = relation or hdzui.gameUI()
+    align = align or FRAME_ALIGN_CENTER
+    alignRelation = alignRelation or FRAME_ALIGN_CENTER
+    x = x or 0
+    y = y or 0
+    hjapi.DzFrameClearAllPoints(frameId)
+    hjapi.DzFrameSetPoint(frameId, align, relation, alignRelation, x, y)
 end
 
 --- 设置frame绝对锚点
@@ -86,11 +80,11 @@ end
 ---@param x number 锚点X
 ---@param y number 锚点Y
 hdzui.frameAbsolutePoint = function(frameId, align, x, y)
-    cg.hdzui_frame_id = frameId
-    cg.hdzui_frame_align = align or CONST_DZUI_ALIGN.CENTER
-    cg.hdzui_frame_x = x or 0
-    cg.hdzui_frame_y = y or 0
-    cj.ExecuteFunc("hdzui_frameAbsolutePoint")
+    align = align or FRAME_ALIGN_CENTER
+    x = x or 0
+    y = y or 0
+    hjapi.DzFrameClearAllPoints(frameId)
+    hjapi.DzFrameSetAbsolutePoint(frameId, align, x, y)
 end
 
 --- 设置frame尺寸
@@ -98,92 +92,65 @@ end
 ---@param width number 宽
 ---@param height number 高
 hdzui.frameSize = function(frameId, width, height)
-    cg.hdzui_frame_id = frameId
-    cg.hdzui_frame_width = width or 0.1
-    cg.hdzui_frame_height = height or 0.1
-    cj.ExecuteFunc("hdzui_frameSize")
+    hjapi.DzFrameSetSize(frameId, width or 0.1, height or 0.1)
 end
 
 --- 设置frame贴图
 ---@param frameId number
 ---@param blp string 贴图路径
 hdzui.frameTexture = function(frameId, blp)
-    cg.hdzui_frame_id = frameId
-    cg.hdzui_frame_texture = blp or ""
-    cj.ExecuteFunc("hdzui_frameTexture")
+    hjapi.DzFrameSetTexture(frameId, blp or "", 0)
 end
 
 --- 锁定鼠标在frame内
 ---@param frameId number
 ---@param cage boolean
 hdzui.frameCageMouse = function(frameId, cage)
-    cg.hdzui_frame_id = frameId
-    cg.hdzui_frame_cage = cage or false
-    cj.ExecuteFunc("hdzui_frameCageMouse")
+    hjapi.DzFrameCageMouse(frameId, cage or false)
 end
 
---- 启用frame
+--- 启用|禁用 frame
 ---@param frameId number
-hdzui.frameEnable = function(frameId)
-    cg.hdzui_frame_id = frameId
-    cj.ExecuteFunc("hdzui_frameEnable")
-end
-
---- 禁用frame
----@param frameId number
-hdzui.frameDisable = function(frameId)
-    cg.hdzui_frame_id = frameId
-    cj.ExecuteFunc("hdzui_frameDisable")
+---@param enable boolean
+hdzui.frameEnable = function(frameId, enable)
+    hjapi.DzFrameSetEnable(frameId, enable)
 end
 
 --- frame是否启用
 ---@param frameId number
 hdzui.frameIsEnable = function(frameId)
-    cg.hdzui_frame_id = frameId
-    cj.ExecuteFunc("hdzui_frameIsEnable")
-    return cg.hdzui_frame_enable or false
+    return hjapi.DzFrameGetEnable(frameId) or false
 end
 
---- 显示frame
+--- 显示|隐藏 frame
 ---@param frameId number
----@param playerIndex userdata 只给某位玩家(索引)
-hdzui.frameShow = function(frameId, playerIndex)
-    cg.hdzui_frame_id = frameId
-    cg.hdzui_frame_player = playerIndex or 0
-    cj.ExecuteFunc("hdzui_frameShow")
-end
-
---- 隐藏frame
----@param frameId number
----@param playerIndex userdata 只给某位玩家(索引)
-hdzui.frameHide = function(frameId, playerIndex)
-    cg.hdzui_frame_id = frameId
-    cg.hdzui_frame_player = playerIndex or 0
-    cj.ExecuteFunc("hdzui_frameHide")
+---@param enable boolean
+---@param whichPlayer userdata 只作用于某位玩家
+hdzui.frameToggle = function(frameId, enable, whichPlayer)
+    if (whichPlayer == nil) then
+        hjapi.DzFrameShow(frameId, enable)
+    elseif (cj.GetLocalPlayer() == whichPlayer) then
+        hjapi.DzFrameShow(frameId, enable)
+    end
 end
 
 --- 设置frame文本内容
 ---@param frameId number
 ---@param txt string 内容
 hdzui.frameSetText = function(frameId, txt)
-    cg.hdzui_frame_id = frameId
-    cg.hdzui_frame_txt = tostring(txt)
-    cj.ExecuteFunc("hdzui_frameSetText")
+    hjapi.DzFrameSetText(frameId, txt)
 end
 
 --- 注册鼠标事件
 ---@param frameId number
----@param event string | "'click'" | "'double_click'" | "'release'" | "'enter'" | "'leave'" | "'scroll'"
----@param playerIndex number 玩家索引
----@param vjFunctionName string VJ函数名，可读取项目下的 vj/function.jass的函数
-hdzui.onMouse = function(frameId, event, playerIndex, vjFunctionName)
-    local order = CONST_DZUI_MOUSE_ORDER[string.upper(event)]
-    if (order == nil) then
+---@param mouseOrder number integer 参考blizzard_c:MOUSE_ORDER
+---@param whichPlayer userdata 玩家
+---@param vjFunc string vjFunction
+hdzui.onMouse = function(frameId, mouseOrder, whichPlayer, vjFunc)
+    if (mouseOrder == nil) then
         return
     end
-    cg.hdzui_frame_id = frameId
-    cg.hdzui_frame_player = playerIndex
-    cg.hdzui_frame_order = order
-    cg.hdzui_frame_vj = vjFunctionName
-    cj.ExecuteFunc("hdzui_onMouse")
+    if (cj.GetLocalPlayer() == whichPlayer) then
+        hjapi.DzFrameSetScript(frameId, mouseOrder, vjFunc, false)
+    end
 end

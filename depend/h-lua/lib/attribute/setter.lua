@@ -28,7 +28,7 @@ end
 ---@private
 hattributeSetter.relyRegister = function(whichUnit)
     for _, v in ipairs(HL_ID.ablis_gradient) do
-        if (false == hjapi.check()) then
+        if (false == hjapi.lib()) then
             -- 生命
             cj.UnitAddAbility(whichUnit, HL_ID.life.add[v])
             cj.UnitRemoveAbility(whichUnit, HL_ID.life.add[v])
@@ -150,32 +150,50 @@ end
 --- hSlk形式的设置最大生命值
 ---@private
 hattributeSetter.setUnitMaxLife = function(whichUnit, currentVal, futureVal, diff)
-    local level = 0
-    if (futureVal >= 999999999) then
-        if (currentVal >= 999999999) then
-            diff = 0
-        else
-            diff = 999999999 - currentVal
-        end
-    elseif (futureVal <= 1) then
-        if (currentVal <= 1) then
-            diff = 0
-        else
-            diff = 1 - currentVal
-        end
-    end
-    local tempVal = math.floor(math.abs(diff))
-    local max = 100000000
-    if (tempVal ~= 0) then
-        while (max >= 1) do
-            level = math.floor(tempVal / max)
-            tempVal = math.floor(tempVal - level * max)
-            if (diff > 0) then
-                hattributeSetter.relyLifeMana(whichUnit, HL_ID.life.add[max], level)
+    if (false == hjapi.lib()) then
+        local level = 0
+        if (futureVal >= 999999999) then
+            if (currentVal >= 999999999) then
+                diff = 0
             else
-                hattributeSetter.relyLifeMana(whichUnit, HL_ID.life.sub[max], level)
+                diff = 999999999 - currentVal
             end
-            max = math.floor(max / 10)
+        elseif (futureVal <= 1) then
+            if (currentVal <= 1) then
+                diff = 0
+            else
+                diff = 1 - currentVal
+            end
+        end
+        local tempVal = math.floor(math.abs(diff))
+        local max = 100000000
+        if (tempVal ~= 0) then
+            while (max >= 1) do
+                level = math.floor(tempVal / max)
+                tempVal = math.floor(tempVal - level * max)
+                if (diff > 0) then
+                    hattributeSetter.relyLifeMana(whichUnit, HL_ID.life.add[max], level)
+                else
+                    hattributeSetter.relyLifeMana(whichUnit, HL_ID.life.sub[max], level)
+                end
+                max = math.floor(max / 10)
+            end
+        end
+    else
+        if (futureVal >= 999999999) then
+            futureVal = 999999999
+        elseif (futureVal < 1) then
+            futureVal = 1
+        end
+        local cur = math.max(0, hunit.getCurLife(whichUnit))
+        local max = hunit.getMaxLife(whichUnit)
+        if (max <= 0) then
+            hjapi.SetUnitState(whichUnit, UNIT_STATE_MAX_LIFE, futureVal)
+            hjapi.SetUnitState(whichUnit, UNIT_STATE_LIFE, futureVal)
+        else
+            local percent = math.min(1, math.round(cur / max))
+            hjapi.SetUnitState(whichUnit, UNIT_STATE_MAX_LIFE, futureVal)
+            hjapi.SetUnitState(whichUnit, UNIT_STATE_LIFE, futureVal * percent)
         end
     end
 end
@@ -183,32 +201,50 @@ end
 --- hSlk形式的设置最大魔法值
 ---@private
 hattributeSetter.setUnitMaxMana = function(whichUnit, currentVal, futureVal, diff)
-    local level = 0
-    if (futureVal >= 999999999) then
-        if (currentVal >= 999999999) then
-            diff = 0
-        else
-            diff = 999999999 - currentVal
-        end
-    elseif (futureVal <= 1) then
-        if (currentVal <= 1) then
-            diff = 0
-        else
-            diff = 1 - currentVal
-        end
-    end
-    local tempVal = math.floor(math.abs(diff))
-    local max = 100000000
-    if (tempVal ~= 0) then
-        while (max >= 1) do
-            level = math.floor(tempVal / max)
-            tempVal = math.floor(tempVal - level * max)
-            if (diff > 0) then
-                hattributeSetter.relyLifeMana(whichUnit, HL_ID.mana.add[max], level)
+    if (false == hjapi.lib()) then
+        local level = 0
+        if (futureVal >= 999999999) then
+            if (currentVal >= 999999999) then
+                diff = 0
             else
-                hattributeSetter.relyLifeMana(whichUnit, HL_ID.mana.sub[max], level)
+                diff = 999999999 - currentVal
             end
-            max = math.floor(max / 10)
+        elseif (futureVal <= 1) then
+            if (currentVal <= 1) then
+                diff = 0
+            else
+                diff = 1 - currentVal
+            end
+        end
+        local tempVal = math.floor(math.abs(diff))
+        local max = 100000000
+        if (tempVal ~= 0) then
+            while (max >= 1) do
+                level = math.floor(tempVal / max)
+                tempVal = math.floor(tempVal - level * max)
+                if (diff > 0) then
+                    hattributeSetter.relyLifeMana(whichUnit, HL_ID.mana.add[max], level)
+                else
+                    hattributeSetter.relyLifeMana(whichUnit, HL_ID.mana.sub[max], level)
+                end
+                max = math.floor(max / 10)
+            end
+        end
+    else
+        if (futureVal >= 999999999) then
+            futureVal = 999999999
+        elseif (futureVal < 1) then
+            futureVal = 1
+        end
+        local cur = math.max(0, hunit.getCurMana(whichUnit))
+        local max = hunit.getMaxMana(whichUnit)
+        if (max <= 0) then
+            hjapi.SetUnitState(whichUnit, UNIT_STATE_MAX_MANA, futureVal)
+            hjapi.SetUnitState(whichUnit, UNIT_STATE_MANA, futureVal)
+        else
+            local percent = math.min(1, math.round(cur / max))
+            hjapi.SetUnitState(whichUnit, UNIT_STATE_MAX_MANA, futureVal)
+            hjapi.SetUnitState(whichUnit, UNIT_STATE_MANA, futureVal * percent)
         end
     end
 end
@@ -217,20 +253,26 @@ end
 ---@private
 hattributeSetter.setUnitAttackWhite = function(whichUnit, futureVal, diff)
     local max = 100000000
-    if (futureVal > max or futureVal < -max) then
+    if (futureVal > max) then
+        futureVal = max
+        diff = 0
+    elseif (futureVal < -max) then
+        futureVal = -max
         diff = 0
     end
-    local tempVal = math.floor(math.abs(diff))
-    if (tempVal ~= 0) then
-        while (max >= 1) do
-            local level = math.floor(tempVal / max)
-            tempVal = math.floor(tempVal - level * max)
-            if (diff > 0) then
-                hattributeSetter.relyAttackWhite(whichUnit, HL_ID.item_attack_white.add[max], level)
-            else
-                hattributeSetter.relyAttackWhite(whichUnit, HL_ID.item_attack_white.sub[max], level)
+    if (false == hjapi.SetUnitState(whichUnit, UNIT_STATE_ATTACK_WHITE, futureVal)) then
+        local tempVal = math.floor(math.abs(diff))
+        if (tempVal ~= 0) then
+            while (max >= 1) do
+                local level = math.floor(tempVal / max)
+                tempVal = math.floor(tempVal - level * max)
+                if (diff > 0) then
+                    hattributeSetter.relyAttackWhite(whichUnit, HL_ID.item_attack_white.add[max], level)
+                else
+                    hattributeSetter.relyAttackWhite(whichUnit, HL_ID.item_attack_white.sub[max], level)
+                end
+                max = math.floor(max / 10)
             end
-            max = math.floor(max / 10)
         end
     end
 end
@@ -244,13 +286,11 @@ hattributeSetter.setUnitAttackGreen = function(whichUnit, futureVal)
         futureVal = 99999999
     end
     for _, grad in ipairs(HL_ID.ablis_gradient) do
-        local ab = HL_ID.attack_green.add[grad]
-        if (cj.GetUnitAbilityLevel(whichUnit, ab) > 1) then
-            cj.SetUnitAbilityLevel(whichUnit, ab, 1)
+        if (cj.GetUnitAbilityLevel(whichUnit, HL_ID.attack_green.add[grad]) > 1) then
+            cj.SetUnitAbilityLevel(whichUnit, HL_ID.attack_green.add[grad], 1)
         end
-        ab = HL_ID.attack_green.sub[grad]
-        if (cj.GetUnitAbilityLevel(whichUnit, ab) > 1) then
-            cj.SetUnitAbilityLevel(whichUnit, ab, 1)
+        if (cj.GetUnitAbilityLevel(whichUnit, HL_ID.attack_green.sub[grad]) > 1) then
+            cj.SetUnitAbilityLevel(whichUnit, HL_ID.attack_green.sub[grad], 1)
         end
     end
     local tempVal = math.floor(math.abs(futureVal))
@@ -275,44 +315,78 @@ hattributeSetter.setUnitAttackGreen = function(whichUnit, futureVal)
     end
 end
 
---- hSlk形式的设置攻击速度
+--- JAPI形式的设置攻击范围
+---@private
+hattributeSetter.setUnitAttackRange = function(whichUnit, futureVal)
+    if (futureVal < 0) then
+        futureVal = 0
+    elseif (futureVal > 9999) then
+        futureVal = 9999
+    end
+    return hjapi.SetUnitState(whichUnit, UNIT_STATE_ATTACK_RANGE, futureVal)
+end
+
+--- JAPI形式的设置攻击间隔
+---@private
+hattributeSetter.setUnitAttackSpace = function(whichUnit, futureVal)
+    if (futureVal > 30) then
+        futureVal = 30.00
+    elseif (futureVal < 0.1) then
+        futureVal = 0.1
+    end
+    hjapi.SetUnitState(whichUnit, UNIT_STATE_ATTACK_SPACE, futureVal)
+end
+
+--- JAPI+hSlk设置单位的攻击速度
 ---@private
 hattributeSetter.setUnitAttackSpeed = function(whichUnit, futureVal)
+    if (futureVal > 400) then
+        futureVal = 400
+    elseif (futureVal < -80) then
+        futureVal = -80
+    end
+    if (false == hjapi.SetUnitState(whichUnit, UNIT_STATE_ATTACK_SPEED, 1 + futureVal * 0.01)) then
+        for _, grad in ipairs(HL_ID.ablis_gradient) do
+            if (cj.GetUnitAbilityLevel(whichUnit, HL_ID.attack_speed.add[grad]) > 1) then
+                cj.SetUnitAbilityLevel(whichUnit, HL_ID.attack_speed.add[grad], 1)
+            end
+            if (cj.GetUnitAbilityLevel(whichUnit, HL_ID.attack_speed.sub[grad]) > 1) then
+                cj.SetUnitAbilityLevel(whichUnit, HL_ID.attack_speed.sub[grad], 1)
+            end
+        end
+        local tempVal = math.floor(math.abs(futureVal))
+        local max = 1000
+        if (tempVal ~= 0) then
+            while (max >= 1) do
+                local level = math.floor(tempVal / max)
+                tempVal = math.floor(tempVal - level * max)
+                if (futureVal > 0) then
+                    if (cj.GetUnitAbilityLevel(whichUnit, HL_ID.attack_speed.add[max]) < 1) then
+                        cj.UnitAddAbility(whichUnit, HL_ID.attack_speed.add[max])
+                    end
+                    cj.SetUnitAbilityLevel(whichUnit, HL_ID.attack_speed.add[max], level + 1)
+                else
+                    if (cj.GetUnitAbilityLevel(whichUnit, HL_ID.attack_speed.sub[max]) < 1) then
+                        cj.UnitAddAbility(whichUnit, HL_ID.attack_speed.sub[max])
+                    end
+                    cj.SetUnitAbilityLevel(whichUnit, HL_ID.attack_speed.sub[max], level + 1)
+                end
+                max = math.floor(max / 10)
+            end
+        end
+    end
+end
+
+--- JAPI形式的设置白字护甲
+---@private
+hattributeSetter.setUnitDefendWhite = function(whichUnit, futureVal)
     if (futureVal < -99999999) then
         futureVal = -99999999
     elseif (futureVal > 99999999) then
         futureVal = 99999999
     end
-    for _, grad in ipairs(HL_ID.ablis_gradient) do
-        local ab = HL_ID.attack_speed.add[grad]
-        if (cj.GetUnitAbilityLevel(whichUnit, ab) > 1) then
-            cj.SetUnitAbilityLevel(whichUnit, ab, 1)
-        end
-        ab = HL_ID.attack_speed.sub[grad]
-        if (cj.GetUnitAbilityLevel(whichUnit, ab) > 1) then
-            cj.SetUnitAbilityLevel(whichUnit, ab, 1)
-        end
-    end
-    local tempVal = math.floor(math.abs(futureVal))
-    local max = 100000000
-    if (tempVal ~= 0) then
-        while (max >= 1) do
-            local level = math.floor(tempVal / max)
-            tempVal = math.floor(tempVal - level * max)
-            if (futureVal > 0) then
-                if (cj.GetUnitAbilityLevel(whichUnit, HL_ID.attack_speed.add[max]) < 1) then
-                    cj.UnitAddAbility(whichUnit, HL_ID.attack_speed.add[max])
-                end
-                cj.SetUnitAbilityLevel(whichUnit, HL_ID.attack_speed.add[max], level + 1)
-            else
-                if (cj.GetUnitAbilityLevel(whichUnit, HL_ID.attack_speed.sub[max]) < 1) then
-                    cj.UnitAddAbility(whichUnit, HL_ID.attack_speed.sub[max])
-                end
-                cj.SetUnitAbilityLevel(whichUnit, HL_ID.attack_speed.sub[max], level + 1)
-            end
-            max = math.floor(max / 10)
-        end
-    end
+    local defend_green = hattribute.get(whichUnit, 'defend_green') or 0
+    hjapi.SetUnitState(whichUnit, UNIT_STATE_DEFEND_WHITE, futureVal + defend_green)
 end
 
 --- hSlk形式的设置绿字护甲

@@ -69,7 +69,7 @@ hattribute.init = function(whichUnit)
         life = cj.GetUnitState(whichUnit, UNIT_STATE_MAX_LIFE),
         mana = cj.GetUnitState(whichUnit, UNIT_STATE_MAX_MANA),
         move = cj.GetUnitDefaultMoveSpeed(whichUnit),
-        defend_white = hjapi.getUnitDefendWhite(whichUnit),
+        defend_white = hjapi.GetUnitState(whichUnit, UNIT_STATE_DEFEND_WHITE),
         defend_green = 0,
         attack_speed = 0.0,
         attack_white = 0.0,
@@ -235,44 +235,41 @@ hattribute.setHandle = function(whichUnit, attr, opr, val, during)
             end
             if (attr == "life") then
                 -- 最大生命值[JAPI+]
-                if (false == hjapi.setUnitMaxLife(whichUnit, futureVal)) then
-                    hattributeSetter.setUnitMaxLife(whichUnit, currentVal, futureVal, diff)
-                end
+                hattributeSetter.setUnitMaxLife(whichUnit, currentVal, futureVal, diff)
             elseif (attr == "mana") then
                 -- 最大魔法值[JAPI+]
-                if (false == hjapi.setUnitMaxMana(whichUnit, futureVal)) then
-                    hattributeSetter.setUnitMaxMana(whichUnit, currentVal, futureVal, diff)
-                end
+                hattributeSetter.setUnitMaxMana(whichUnit, currentVal, futureVal, diff)
             elseif (attr == "move") then
                 -- 移动
                 futureVal = math.min(522, math.max(0, math.floor(futureVal)))
                 cj.SetUnitMoveSpeed(whichUnit, futureVal)
             elseif (attr == "attack_space_origin") then
                 -- 攻击间隔[JAPI*]
-                hjapi.setUnitAttackSpace(whichUnit, futureVal)
+                hattributeSetter.setUnitAttackSpace(whichUnit, futureVal)
             elseif (attr == "attack_white") then
                 -- 白字攻击[JAPI+]
-                if (false == hjapi.setUnitAttackWhite(whichUnit, futureVal)) then
-                    hattributeSetter.setUnitAttackWhite(whichUnit, futureVal, diff)
-                end
+                hattributeSetter.setUnitAttackWhite(whichUnit, futureVal, diff)
             elseif (attr == "attack_green") then
                 -- 绿字攻击
                 hattributeSetter.setUnitAttackGreen(whichUnit, futureVal)
             elseif (attr == "attack_range") then
                 -- 攻击范围[JAPI]
-                hjapi.setUnitAttackRange(whichUnit, futureVal)
+                if (true == hattributeSetter.setUnitAttackRange(whichUnit, futureVal)) then
+                    local ar = cj.GetUnitAcquireRange(whichUnit)
+                    if (ar < futureVal) then
+                        hattribute.setHandle(whichUnit, "attack_range_acquire", "+", futureVal - ar, during)
+                    end
+                end
             elseif (attr == "attack_range_acquire") then
                 -- 主动攻击范围
                 futureVal = math.min(9999, math.max(0, math.floor(futureVal)))
                 cj.SetUnitAcquireRange(whichUnit, futureVal)
             elseif (attr == "attack_speed") then
                 -- 攻击速度[JAPI+]
-                if (false == hjapi.setUnitAttackSpeed(whichUnit, futureVal)) then
-                    hattributeSetter.setUnitAttackSpeed(whichUnit, futureVal)
-                end
+                hattributeSetter.setUnitAttackSpeed(whichUnit, futureVal)
             elseif (attr == "defend_white") then
                 -- 白字护甲[JAPI*]
-                hjapi.setUnitDefendWhite(whichUnit, futureVal)
+                hattributeSetter.setUnitDefendWhite(whichUnit, futureVal)
             elseif (attr == "defend_green") then
                 -- 绿字护甲
                 hattributeSetter.setUnitDefendGreen(whichUnit, futureVal)

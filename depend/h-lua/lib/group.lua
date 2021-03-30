@@ -14,7 +14,7 @@ hgroup.forEach = function(whichGroup, action)
             for idx, eu in ipairs(whichGroup) do
                 if (his.deleted(eu) == false) then
                     local res = action(eu, idx)
-                    if (type(res) == 'boolean' and res == false) then
+                    if (type(res) == "boolean" and res == false) then
                         break
                     end
                 else

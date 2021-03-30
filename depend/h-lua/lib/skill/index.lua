@@ -153,3 +153,16 @@ hskill.has = function(whichUnit, abilityId)
     end
     return false
 end
+
+--- [JAPI]设置单位某个技能的冷却时间
+---@param whichUnit userdata
+---@param abilityID string|number
+---@param coolDown number
+hskill.setCoolDown = function(whichUnit, abilityID, coolDown)
+    if (coolDown >= 9999) then
+        coolDown = 9999
+    elseif (coolDown < 0) then
+        coolDown = 0
+    end
+    hjapi.EXSetAbilityState(whichUnit, hjapi.EXGetUnitAbility(whichUnit, abilityID), 1, coolDown)
+end

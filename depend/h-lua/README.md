@@ -79,8 +79,7 @@ git clone https://github.com/hunzsig-warcraft3/h-lua-sdk.git
     │   ├── unit.lua - 单位
     │   └── weather.lua - 天气
     ├── slk - hslk 构建法
-    ├── blizzard_b.lua - 暴雪B全局变量
-    ├── blizzard_c.lua - 暴雪C全局变量
+    ├── blizzard.lua - 暴雪全局变量
     ├── echo.lua - 游戏消息全局函数
     └── h-lua.lua - 入口文件
 ```

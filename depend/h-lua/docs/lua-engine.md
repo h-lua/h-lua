@@ -59,7 +59,7 @@ jass.globals库可以让你访问到jass内的全局变量。
 ```
 
 ## jass.japi
-jass.japi库当前已经注册的所有japi函数。（不包含dz函数）  
+jass.japi库当前已经注册的所有japi函数。（包含dz函数）  
 
 ```lua
 	local jass = require 'jass.common'
