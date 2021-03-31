@@ -60,7 +60,7 @@ end
 --- 设置frame相对锚点
 ---@param frameId number
 ---@param relation number 相对节点ID(def:GameUI)
----@param align number integer 参考blizzard:FRAME_ALIGN
+---@param align number integer 参考blizzard:^FRAME_ALIGN
 ---@param alignRelation number 以 align-> alignParent 对齐
 ---@param x number 锚点X
 ---@param y number 锚点Y
@@ -143,7 +143,7 @@ end
 
 --- 注册鼠标事件
 ---@param frameId number
----@param mouseOrder number integer 参考blizzard:MOUSE_ORDER
+---@param mouseOrder number integer 参考blizzard:^MOUSE_ORDER
 ---@param whichPlayer userdata 玩家
 ---@param vjFunc string vjFunction
 hdzui.onMouse = function(frameId, mouseOrder, whichPlayer, vjFunc)

@@ -36,7 +36,13 @@ H_LUA_ABILITY_SELECT_HERO = hslk_ability({
     _type = "system",
 })._id
 
---- #警示圈 直径64px
+--- #叹号警示圈 直径128px
+hslk_unit({
+    _parent = "ogru",
+    _type = "system",
+})
+
+--- #叉号警示圈 直径128px
 hslk_unit({
     _parent = "ogru",
     _type = "system",

@@ -467,6 +467,9 @@ local formatter = {
     EXGetUnitAbilityByIndex = function(params)
         params[2] = math.tointeger(params[2]) or 0
     end,
+    EXPauseUnit = function(params)
+        params[2] = tobool(params[2])
+    end,
     EXSetAbilityState = function(params)
         params[2] = math.tointeger(params[2]) or 0
         params[3] = math.round(params[3], 3)

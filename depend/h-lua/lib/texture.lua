@@ -111,7 +111,7 @@ end
 ---@param y number 坐标Y
 ---@param during number 持续时间，警示圈不允许永久存在，during默认为3秒
 ---@param token number 马甲单位ID,默认叹号！马甲单位原始直径应为128px（刚好一小格）
----@param color  userdata 警示圈马甲单位的颜色,仅支持玩家队伍色，参考 blizzard:PLAYER_COLOR_?
+---@param color  userdata 警示圈马甲单位的颜色,仅支持玩家队伍色，参考 blizzard:^PLAYER_COLOR_?
 htexture.alertCircle = function(diameter, x, y, during, token, color)
     if (diameter == nil or diameter < 64) then
         return

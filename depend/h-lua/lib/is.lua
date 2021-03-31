@@ -208,6 +208,28 @@ his.sapper = function(whichUnit)
     return cj.IsUnitType(whichUnit, UNIT_TYPE_SAPPER)
 end
 
+--- 是否虚无状态
+---@param whichUnit userdata
+---@return boolean
+his.ethereal = function(whichUnit)
+    return cj.IsUnitType(whichUnit, UNIT_TYPE_ETHEREAL)
+end
+
+--- 是否魔法免疫
+---@param whichUnit userdata
+---@return boolean
+his.immune = function(whichUnit)
+    return cj.IsUnitType(whichUnit, UNIT_TYPE_MAGIC_IMMUNE)
+end
+
+--- 是否某个种族
+---@param whichUnit userdata
+---@param whichRace userdata 参考 blizzard:^RACE
+---@return boolean
+his.race = function(whichUnit, whichRace)
+    return cj.IsUnitRace(whichUnit, whichRace)
+end
+
 --- 是否蝗虫
 ---@param whichUnit userdata
 ---@return boolean

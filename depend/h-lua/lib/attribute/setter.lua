@@ -28,7 +28,7 @@ end
 ---@private
 hattributeSetter.relyRegister = function(whichUnit)
     for _, v in ipairs(HL_ID.ablis_gradient) do
-        if (false == hjapi.lib()) then
+        if (false == hjapi.has("SetUnitState")) then
             -- 生命
             cj.UnitAddAbility(whichUnit, HL_ID.life.add[v])
             cj.UnitRemoveAbility(whichUnit, HL_ID.life.add[v])
@@ -150,7 +150,7 @@ end
 --- hSlk形式的设置最大生命值
 ---@private
 hattributeSetter.setUnitMaxLife = function(whichUnit, currentVal, futureVal, diff)
-    if (false == hjapi.lib()) then
+    if (false == hjapi.has("SetUnitState")) then
         local level = 0
         if (futureVal >= 999999999) then
             if (currentVal >= 999999999) then
@@ -201,7 +201,7 @@ end
 --- hSlk形式的设置最大魔法值
 ---@private
 hattributeSetter.setUnitMaxMana = function(whichUnit, currentVal, futureVal, diff)
-    if (false == hjapi.lib()) then
+    if (false == hjapi.has("SetUnitState")) then
         local level = 0
         if (futureVal >= 999999999) then
             if (currentVal >= 999999999) then

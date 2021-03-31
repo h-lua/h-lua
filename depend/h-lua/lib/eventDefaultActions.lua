@@ -301,6 +301,9 @@ hevent_default_actions = {
                 else
                     hattribute.set(targetUnit, 0, { life = "+" .. changeLife })
                 end
+                local isAttack = hjapi.isEventAttackDamage() or true
+                -- local isPhysical = hjapi.isEventPhysicalDamage() or true
+                local DType = cj.ConvertAttackType(hjapi.EXGetEventDamageData(EVENT_DAMAGE_DATA_DAMAGE_TYPE))
                 htime.setTimeout(0, function(t)
                     htime.delTimer(t)
                     if (isLethal == true) then
@@ -309,14 +312,61 @@ hevent_default_actions = {
                         hattribute.set(targetUnit, 0, { life = "-" .. changeLife })
                         hunit.setCurLife(targetUnit, curLife)
                     end
-                    hskill.damage(
-                        {
-                            sourceUnit = sourceUnit,
-                            targetUnit = targetUnit,
-                            damage = damage,
-                            damageSrc = "attack"
-                        }
-                    )
+                    local damageSrc = CONST_DAMAGE_SRC.attack
+                    local damageType = {}
+                    local breakArmorType = {}
+                    local isFixed = false
+                    if (false == isAttack) then
+                        --- [非攻击]->[技能伤害]
+                        damageSrc = CONST_DAMAGE_SRC.skill
+                    end
+                    --if (isPhysical) then
+                    --    --- [物理]->[物理]
+                    --    table.insert(damageType, CONST_DAMAGE_TYPE.physical)
+                    --end
+                    if (DType == DAMAGE_TYPE_ENHANCED) then
+                        --- [强化]->[固伤]
+                        isFixed = true
+                    elseif (DType == DAMAGE_TYPE_DEMOLITION) then
+                        --- [破坏]->[破防:无视回避]
+                        breakArmorType = { CONST_BREAK_ARMOR_TYPE.avoid }
+                    elseif (DType == DAMAGE_TYPE_MAGIC) then
+                        --- [魔法]->[魔法]
+                        table.insert(damageType, CONST_DAMAGE_TYPE.magic)
+                    elseif (DType == DAMAGE_TYPE_POISON or DType == DAMAGE_TYPE_SLOW_POISON or DType == DAMAGE_TYPE_SHADOW_STRIKE or DType == DAMAGE_TYPE_ACID) then
+                        --- [毒药|慢性毒药|暗影突袭|酸性]->[毒]
+                        table.insert(damageType, CONST_DAMAGE_TYPE.poison)
+                    elseif (DType == DAMAGE_TYPE_FIRE) then
+                        --- [火焰]->[火]
+                        table.insert(damageType, CONST_DAMAGE_TYPE.fire)
+                    elseif (DType == DAMAGE_TYPE_COLD) then
+                        --- [冰冻]->[冰]
+                        table.insert(damageType, CONST_DAMAGE_TYPE.ice)
+                    elseif (DType == DAMAGE_TYPE_LIGHTNING) then
+                        --- [闪电]->[雷]
+                        table.insert(damageType, CONST_DAMAGE_TYPE.thunder)
+                    elseif (DType == DAMAGE_TYPE_PLANT) then
+                        --- [植物]->[木]
+                        table.insert(damageType, CONST_DAMAGE_TYPE.wood)
+                    elseif (DType == DAMAGE_TYPE_DISEASE) then
+                        --- [疾病]->[邪]
+                        table.insert(damageType, CONST_DAMAGE_TYPE.evil)
+                    elseif (DType == DAMAGE_TYPE_DEATH) then
+                        --- [死亡]->[鬼]
+                        table.insert(damageType, CONST_DAMAGE_TYPE.ghost)
+                    elseif (DType == DAMAGE_TYPE_DIVINE) then
+                        --- [神圣]->[圣]
+                        table.insert(damageType, CONST_DAMAGE_TYPE.holy)
+                    end
+                    hskill.damage({
+                        sourceUnit = sourceUnit,
+                        targetUnit = targetUnit,
+                        damage = damage,
+                        damageSrc = damageSrc,
+                        damageType = damageType,
+                        breakArmorType = breakArmorType,
+                        isFixed = isFixed,
+                    })
                 end)
             end
         end),

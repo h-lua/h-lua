@@ -37,6 +37,23 @@ end
 
 ---@private
 ---@param method string
+---@return boolean
+hjapi.has = function(method)
+    local api = hjapi.lib()
+    if (false == api) then
+        return false
+    end
+    if (type(method) ~= 'string') then
+        return false
+    end
+    if (type(api[method]) == "function") then
+        return true
+    end
+    return false
+end
+
+---@private
+---@param method string
 ---@param params table|nil
 hjapi.formatter = function(method, params)
     if (type(params) == "table" and type(hjapi._formatter[method]) == 'function') then
@@ -1271,7 +1288,7 @@ end
 --- 设置frame对齐方式
 --- 支持TextFrame、SimpleFontString、SimpleMessageFrame
 ---@param frame number integer
----@param align number integer ，参考blizzard:FRAME_ALIGN
+---@param align number integer ，参考blizzard:^FRAME_ALIGN
 hjapi.DzFrameSetTextAlignment = function(frame, align)
     return hjapi.exec("DzFrameSetTextAlignment", { frame, align })
 end
@@ -1532,7 +1549,7 @@ hjapi.DzGetWindowY = function()
 end
 
 --- 判断按键是否按下
----@param iKey number integer 参考blizzard:GAME_KEY
+---@param iKey number integer 参考blizzard:^GAME_KEY
 ---@return boolean
 hjapi.DzIsKeyDown = function(iKey)
     return hjapi.exec("DzIsKeyDown", { iKey })
@@ -1926,6 +1943,51 @@ hjapi.EXGetEventDamageData = function(eddType)
     return hjapi.exec("EXGetEventDamageData", { eddType })
 end
 
+--- 是物理伤害
+--- 响应'受到伤害'单位事件,不能用在等待之后
+---@return boolean
+hjapi.isEventPhysicalDamage = function()
+    return 0 ~= hjapi.EXGetEventDamageData(EVENT_DAMAGE_DATA_IS_PHYSICAL)
+end
+
+--- 是攻击伤害
+--- 响应'受到伤害'单位事件,不能用在等待之后
+---@return boolean
+hjapi.isEventAttackDamage = function()
+    return 0 ~= hjapi.EXGetEventDamageData(EVENT_DAMAGE_DATA_IS_ATTACK)
+end
+
+--- 是远程伤害
+--- 响应'受到伤害'单位事件,不能用在等待之后
+---@return boolean
+hjapi.isEventRangedDamage = function()
+    return 0 ~= hjapi.EXGetEventDamageData(EVENT_DAMAGE_DATA_IS_RANGED)
+end
+
+--- 单位所受伤害的伤害类型是 damageType
+--- 响应'受到伤害'单位事件,不能用在等待之后
+---@param damageType userdata 参考 blizzard:^DAMAGE_TYPE
+---@return boolean
+hjapi.isEventDamageType = function(damageType)
+    return damageType == cj.ConvertDamageType(hjapi.EXGetEventDamageData(EVENT_DAMAGE_DATA_DAMAGE_TYPE))
+end
+
+--- 单位所受伤害的武器类型是 是 weaponType
+--- 响应'受到伤害'单位事件,不能用在等待之后
+---@param weaponType userdata 参考 blizzard:^WEAPON_TYPE
+---@return boolean
+hjapi.isEventWeaponType = function(weaponType)
+    return weaponType == cj.ConvertWeaponType(hjapi.EXGetEventDamageData(EVENT_DAMAGE_DATA_WEAPON_TYPE))
+end
+
+--- 单位所受伤害的攻击类型是 是 attackType
+--- 响应'受到伤害'单位事件,不能用在等待之后
+---@param attackType userdata 参考 blizzard:^ATTACK_TYPE
+---@return boolean
+hjapi.isEventAttackType = function(attackType)
+    return attackType == cj.ConvertAttackType(hjapi.EXGetEventDamageData(EVENT_DAMAGE_DATA_ATTACK_TYPE))
+end
+
 ---@param itemCode number integer
 ---@param dataType number integer
 ---@return string
@@ -1961,8 +2023,23 @@ hjapi.EXGetUnitString = function(...)
     return hjapi.exec("EXGetUnitString", { ... })
 end
 
-hjapi.EXPauseUnit = function(...)
-    return hjapi.exec("EXPauseUnit", { ... })
+---@param whichUnit userdata
+---@param enable boolean
+hjapi.EXPauseUnit = function(whichUnit, enable)
+    return hjapi.exec("EXPauseUnit", { whichUnit, enable })
+end
+
+--- 单位添加晕眩
+---@param whichUnit userdata
+hjapi.UnitAddSwim = function(whichUnit)
+    return hjapi.EXPauseUnit(whichUnit, true)
+end
+
+--- 单位移除晕眩
+--- 别用来移风暴之锤之类的晕眩。因为它只会移除晕眩并不会移除晕眩的buff
+---@param whichUnit userdata
+hjapi.UnitRemoveSwim = function(whichUnit)
+    return hjapi.EXPauseUnit(whichUnit, false)
 end
 
 hjapi.EXSetAbilityAEmeDataA = function(...)
@@ -2050,7 +2127,7 @@ end
 --- 启用/禁用 单位u 对 t 的碰撞
 ---@param enable boolean
 ---@param u userdata
----@param t number integer 碰撞类型，参考blizzard:COLLISION_TYPE
+---@param t number integer 碰撞类型，参考blizzard:^COLLISION_TYPE
 hjapi.EXSetUnitCollisionType = function(enable, u, t)
     return hjapi.exec("EXSetUnitCollisionType", { enable, u, t })
 end
@@ -2069,7 +2146,7 @@ end
 
 --- 设置单位的移动类型
 ---@param u userdata
----@param t number integer 移动类型，参考blizzard:MOVE_TYPE
+---@param t number integer 移动类型，参考blizzard:^MOVE_TYPE
 hjapi.EXSetUnitMoveType = function(u, t)
     return hjapi.exec("EXSetUnitMoveType", { u, t })
 end
