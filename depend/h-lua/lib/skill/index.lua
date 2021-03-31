@@ -164,5 +164,5 @@ hskill.setCoolDown = function(whichUnit, abilityID, coolDown)
     elseif (coolDown < 0) then
         coolDown = 0
     end
-    hjapi.EXSetAbilityState(whichUnit, hjapi.EXGetUnitAbility(whichUnit, abilityID), 1, coolDown)
+    hjapi.EXSetAbilityState(hjapi.EXGetUnitAbility(whichUnit, abilityID), 1, coolDown)
 end

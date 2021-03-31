@@ -468,13 +468,8 @@ local formatter = {
         params[2] = math.tointeger(params[2]) or 0
     end,
     EXSetAbilityState = function(params)
-        if (type(params[2]) == 'string') then
-            params[2] = string.char2id(params[2])
-        else
-            params[2] = math.tointeger(params[2]) or 0
-        end
-        params[3] = math.tointeger(params[3]) or 0
-        params[4] = math.round(params[4], 3)
+        params[2] = math.tointeger(params[2]) or 0
+        params[3] = math.round(params[3], 3)
     end,
     EXSetBuffDataString = function(params)
         params[1] = math.tointeger(params[1]) or 0

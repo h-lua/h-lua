@@ -1981,12 +1981,11 @@ hjapi.EXSetAbilityDataString = function(...)
     return hjapi.exec("EXSetAbilityDataString", { ... })
 end
 
----@param whichUnit userdata
----@param abilityID string|number integer
+---@param ability userdata
 ---@param stateType number integer
 ---@param value number floor(3)
-hjapi.EXSetAbilityState = function(whichUnit, abilityID, stateType, value)
-    return hjapi.exec('EXSetAbilityState', { whichUnit, abilityID, stateType, value })
+hjapi.EXSetAbilityState = function(ability, stateType, value)
+    return hjapi.exec('EXSetAbilityState', { ability, stateType, value })
 end
 
 hjapi.EXSetAbilityString = function(...)
