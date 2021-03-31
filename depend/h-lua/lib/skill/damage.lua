@@ -192,7 +192,7 @@ hskill.damage = function(options)
             if (targetUnitAttr.avoid > 0) then
                 targetUnitAttr.avoid = targetUnitAttr.avoid * 0.5
             end
-            heffect.toUnit("war3mapImported\\eff_crit.mdl", targetUnit, 0.5)
+            heffect.toUnit("hLua\\crit.mdl", targetUnit, 0.5)
         end
     end
     -- 计算回避 X 命中

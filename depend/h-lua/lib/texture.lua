@@ -110,7 +110,9 @@ end
 ---@param x number 坐标X
 ---@param y number 坐标Y
 ---@param during number 持续时间，警示圈不允许永久存在，during默认为3秒
-htexture.alertCircle = function(diameter, x, y, during)
+---@param token number 马甲单位ID,默认叹号！马甲单位原始直径应为128px（刚好一小格）
+---@param color  userdata 警示圈马甲单位的颜色,仅支持玩家队伍色，参考 blizzard:PLAYER_COLOR_?
+htexture.alertCircle = function(diameter, x, y, during, token, color)
     if (diameter == nil or diameter < 64) then
         return
     end
@@ -118,9 +120,18 @@ htexture.alertCircle = function(diameter, x, y, during)
     if (during <= 0) then
         during = 3
     end
-    local modelScale = math.round(diameter / 64)
-    local u = cj.CreateUnit(hplayer.player_passive, HL_ID.texture_alert_circle_token, x, y, bj_UNIT_FACING)
+    token = token or HL_ID.texture_alert_circle_exclamation
+    local modelScale = hslk.i2v(token, "slk", "modelScale")
+    if (modelScale == nil) then
+        return
+    end
+    if (type(token) == "string") then
+        token = string.char2id(token)
+    end
+    color = color or PLAYER_COLOR_RED
+    modelScale = math.round(math.round(modelScale, 3) * (diameter / 128), 2)
+    local u = cj.CreateUnit(hplayer.player_passive, token, x, y, 270)
+    cj.SetUnitColor(u, color)
     cj.SetUnitScale(u, modelScale, modelScale, modelScale)
-    cj.SetUnitTimeScale(u, 1 / during)
     hunit.del(u, during)
 end

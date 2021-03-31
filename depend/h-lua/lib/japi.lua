@@ -1271,7 +1271,7 @@ end
 --- 设置frame对齐方式
 --- 支持TextFrame、SimpleFontString、SimpleMessageFrame
 ---@param frame number integer
----@param align number integer ，参考blizzard_c:FRAME_ALIGN
+---@param align number integer ，参考blizzard:FRAME_ALIGN
 hjapi.DzFrameSetTextAlignment = function(frame, align)
     return hjapi.exec("DzFrameSetTextAlignment", { frame, align })
 end
@@ -1532,7 +1532,7 @@ hjapi.DzGetWindowY = function()
 end
 
 --- 判断按键是否按下
----@param iKey number integer 参考blizzard_c:GAME_KEY
+---@param iKey number integer 参考blizzard:GAME_KEY
 ---@return boolean
 hjapi.DzIsKeyDown = function(iKey)
     return hjapi.exec("DzIsKeyDown", { iKey })
@@ -2051,7 +2051,7 @@ end
 --- 启用/禁用 单位u 对 t 的碰撞
 ---@param enable boolean
 ---@param u userdata
----@param t number integer 碰撞类型，参考blizzard_c:COLLISION_TYPE
+---@param t number integer 碰撞类型，参考blizzard:COLLISION_TYPE
 hjapi.EXSetUnitCollisionType = function(enable, u, t)
     return hjapi.exec("EXSetUnitCollisionType", { enable, u, t })
 end
@@ -2070,7 +2070,7 @@ end
 
 --- 设置单位的移动类型
 ---@param u userdata
----@param t number integer 移动类型，参考blizzard_c:MOVE_TYPE
+---@param t number integer 移动类型，参考blizzard:MOVE_TYPE
 hjapi.EXSetUnitMoveType = function(u, t)
     return hjapi.exec("EXSetUnitMoveType", { u, t })
 end

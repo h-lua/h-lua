@@ -11,9 +11,10 @@ HL_ID_INIT = function()
         ability_swim_un_limit = string.char2id(hslk.n2i("H_LUA_ABILITY_SWIM_UN_LIMIT")),
         ability_invisible = string.char2id(hslk.n2i("H_LUA_ABILITY_INVISIBLE")),
         ability_select_hero = string.char2id(hslk.n2i("H_LUA_ABILITY_SELECT_HERO")),
-        texture_alert_circle_token = string.char2id(hslk.n2i("H_LUA_TEXTURE_ALERT_CIRCLE_TOKEN")), --- 警示圈模型
+        texture_alert_circle_exclamation = string.char2id(hslk.n2i("H_LUA_TEXTURE_ALERT_CIRCLE_EXCLAMATION")), --- 警示圈模型!
+        texture_alert_circle_x = string.char2id(hslk.n2i("H_LUA_TEXTURE_ALERT_CIRCLE_X")), --- 警示圈模型X
         hero_view_token = string.char2id(hslk.n2i("H_LUA_HERO_VIEW_TOKEN")),
-        hero_tavern_token = string.char2id(hslk.n2i("H_LUA_HERO_TAVERN_TOKEN")),
+        hero_tavern_token = string.char2id(hslk.n2i("　英雄酒馆　")),
         hero_death_token = string.char2id(hslk.n2i("H_LUA_HERO_DEATH_TOKEN")),
         japi_delay = string.char2id(hslk.n2i("H_LUA_JAPI_DELAY")),
         item_fleeting = {
@@ -30,16 +31,9 @@ HL_ID_INIT = function()
             fragment = string.char2id(hslk.n2i("H_LUA_ITEM_FLEETING_FRAGMENT")), -- 碎片（蓝色石头）
             question = string.char2id(hslk.n2i("H_LUA_ITEM_FLEETING_QUESTION")), -- 问号
             grass = string.char2id(hslk.n2i("H_LUA_ITEM_FLEETING_GRASS")), -- 荧光草
-            dota2_gold = string.char2id(hslk.n2i("H_LUA_ITEM_FLEETING_DOTA2_GOLD")), -- Dota2赏金符
-            dota2_damage = string.char2id(hslk.n2i("H_LUA_ITEM_FLEETING_DOTA2_DAMAGE")), -- Dota2伤害符
-            dota2_cure = string.char2id(hslk.n2i("H_LUA_ITEM_FLEETING_DOTA2_CURE")), -- Dota2恢复符
-            dota2_speed = string.char2id(hslk.n2i("H_LUA_ITEM_FLEETING_DOTA2_SPEED")), -- Dota2极速符
-            dota2_vision = string.char2id(hslk.n2i("H_LUA_ITEM_FLEETING_DOTA2_VISION")), -- Dota2幻象符
-            dota2_invisible = string.char2id(hslk.n2i("H_LUA_ITEM_FLEETING_DOTA2_INVISIBLE")), -- Dota2隐身符
         },
         --- 环境装饰
         env = {
-            tree = string.char2id(hslk.n2i("H_LUA_ENV_TREE")), --h-lua特色摇摆树
             --- 地表纹理
             ground = {
                 summer = string.char2id("Lgrs"), -- 洛丹伦 - 夏 - 草地

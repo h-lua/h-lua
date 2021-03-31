@@ -81,12 +81,6 @@ local fleeting = {
     { Name = "FRAGMENT", _n = "碎片", file = "Objects\\InventoryItems\\CrystalShard\\CrystalShard.mdl", modelScale = 1.00, moveHeight = -20 },
     { Name = "QUESTION", _n = "问号", file = "Objects\\InventoryItems\\QuestionMark\\QuestionMark.mdl", modelScale = 0.60, moveHeight = 0 },
     { Name = "GRASS", _n = "荧光草", file = "Objects\\InventoryItems\\Shimmerweed\\Shimmerweed.mdl", modelScale = 0.80, moveHeight = 0 },
-    { Name = "DOTA2_GOLD", _n = "Dota2赏金符", file = "war3mapImported\\item_Dota2.Runes.Bounty.mdl", modelScale = 0.80, moveHeight = -10 },
-    { Name = "DOTA2_DAMAGE", _n = "Dota2伤害符", file = "war3mapImported\\item_Dota2.Runes.DoubleDamage.mdl", modelScale = 0.80, moveHeight = -10 },
-    { Name = "DOTA2_CURE", _n = "Dota2恢复符", file = "war3mapImported\\item_Dota2.Runes.Regeneration.mdl", modelScale = 0.80, moveHeight = -10 },
-    { Name = "DOTA2_SPEED", _n = "Dota2极速符", file = "war3mapImported\\item_Dota2.Runes.Haste.mdl", modelScale = 0.80, moveHeight = -10 },
-    { Name = "DOTA2_VISION", _n = "Dota2幻象符", file = "war3mapImported\\item_Dota2.Runes.Illusion.mdl", modelScale = 0.80, moveHeight = -10 },
-    { Name = "DOTA2_INVISIBLE", _n = "Dota2隐身符", file = "war3mapImported\\item_Dota2.Runes.Invisibility.mdl", modelScale = 0.80, moveHeight = -10 }
 }
 for _ = 1, #fleeting do
     hslk_unit({
@@ -94,12 +88,6 @@ for _ = 1, #fleeting do
         _type = "system",
     })
 end
-
---- #摇摆树 token
-hslk_unit({
-    _parent = "ogru",
-    _type = "system",
-})
 
 --- #随机环境装饰物
 local unitModel = {

@@ -1,13 +1,13 @@
 [CustomSkin]
-SimpleHpBarConsoleSmall=hLua\blood.blp
-PlacementCursor=hLua\SpellAreaOfEffect512.blp
+SimpleHpBarConsoleSmall=hLua\hp.blp
+PlacementCursor=hLua\spell_area_of_effect_512.blp
 ChatFont=fonts.ttf
 EscMenuTextFont=fonts.ttf
 TextTagFont=fonts.ttf
 InfoPanelTextFont=fonts.ttf
 MasterFont=fonts.ttf
 MessageFont=fonts.ttf
-CommandButtonCooldown=interface\cooldown ui.mdx
+CommandButtonCooldown=hLua\cd.mdx
 
 [FrameDef]
 BONUS_DEFENSE= - 每%d点增加%d的护甲
