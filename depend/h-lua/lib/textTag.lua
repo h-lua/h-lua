@@ -238,9 +238,9 @@ end
     只支持部分字，参考 CONST_MODEL_TTG
     options = {
         msg = "", --漂浮字信息
-        width = 9, --字间
-        scale = 0.22, --缩放
-        speed = 1.0, --速度[0.5~2.0]
+        width = 10, --字间
+        scale = 0.25, --缩放
+        speed = 1.0, --速度[0.5~3.0]
         x = nil, --创建坐标X，可选
         y = nil, --创建坐标Y，可选
         whichUnit = nil, --创建单位坐标（可选，优先级高）
@@ -252,9 +252,9 @@ end
 ---@param options pilotEffectTTG
 htextTag.model = function(options)
     local msg = tostring(options.msg) or ""
-    local width = options.width or 9
-    local scale = options.scale or 0.22
-    local speed = options.speed or 1.0
+    local width = options.width or 10
+    local scale = options.scale or 0.25
+    local speed = options.speed or CONST_MODEL_TTG_SPEED
     local x = options.x or 0
     local y = options.y or 0
     local red = options.red or 255
@@ -269,8 +269,8 @@ htextTag.model = function(options)
     end
     if (speed < 0.5) then
         speed = 0.5
-    elseif (speed > 2) then
-        speed = 2
+    elseif (speed > 3) then
+        speed = 3
     end
     local words = string.mb_split(msg, 1)
     if (#words > 0) then
@@ -286,8 +286,8 @@ htextTag.model = function(options)
             if (red == 255 and green == 255 and blue == 255) then
                 tz = tz + 170
             end
-            local e = 0.5 / speed
-            local d = 16 / speed
+            local e = 1.0 / speed
+            local d = 20 / speed
             for _, w in ipairs(words) do
                 if (CONST_MODEL_TTG[w] ~= nil) then
                     local mdl = CONST_MODEL_TTG[w].mdl

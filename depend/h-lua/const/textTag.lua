@@ -1,3 +1,8 @@
+--- 全局漂浮字默认速率
+CONST_MODEL_TTG_SPEED = 1.0
+--- 全局伤害系统漂浮字默认速率
+CONST_MODEL_TTG_DMG_SPEED = 1.0
+
 --- 模型贴图型特效
 CONST_MODEL_TTG = {
     ["0"] = { mdl = "hLua\\ttg\\n_0.mdl", bit = 2 },
