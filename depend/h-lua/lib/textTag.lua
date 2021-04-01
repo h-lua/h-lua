@@ -250,7 +250,7 @@ end
 ]]
 ---@param options pilotEffectTTG
 htextTag.model = function(options)
-    local msg = options.msg or ""
+    local msg = tostring(options.msg) or ""
     local width = options.width or 9
     local scale = options.scale or 0.22
     local x = options.x or 0

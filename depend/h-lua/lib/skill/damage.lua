@@ -123,6 +123,7 @@ hskill.damage = function(options)
     -- 计算单位是否无敌（无敌属性为百分比计算，被动触发抵挡一次）
     if (his.invincible(targetUnit) == true or math.random(1, 100) < targetUnitAttr.invincible) then
         if (table.includes(breakArmorType, CONST_BREAK_ARMOR_TYPE.invincible.value) == false) then
+            htextTag.model({ msg = "无敌", whichUnit = targetUnit, red = 255, green = 215, blue = 0 })
             return
         end
     end
@@ -552,7 +553,7 @@ hskill.damage = function(options)
                 if (ldr > 0.01) then
                     hevent.setLastDamageUnit(sourceUnit, targetUnit)
                     hunit.subCurLife(sourceUnit, ldr)
-                    htextTag.model({ msg = "反伤 -" .. ldr, whichUnit = targetUnit, red = 248, green = 170, blue = 235 })
+                    htextTag.model({ msg = "反伤 -" .. ldr, whichUnit = sourceUnit, red = 248, green = 170, blue = 235 })
                     -- @触发反伤事件
                     hevent.triggerEvent(
                         targetUnit,
