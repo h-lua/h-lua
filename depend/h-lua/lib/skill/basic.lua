@@ -185,7 +185,7 @@ hskill.modelEffect = function(whichUnit, whichAbility, abilityLevel, during)
     end
 end
 
---- 自定义技能 - 对单位/对XY/对点
+--- 自定义发布技能 - 对单位/对XY/对点
 ---@param options table
 hskill.diy = function(options)
     --[[

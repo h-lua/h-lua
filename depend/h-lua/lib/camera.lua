@@ -30,14 +30,6 @@ hcamera.toXY = function(whichPlayer, during, x, y)
     end
 end
 
---- 移动到点
----@param whichPlayer userdata
----@param during number
----@param loc userdata
-hcamera.toLoc = function(whichPlayer, during, loc)
-    hcamera.toXY(whichPlayer, during, cj.GetLocationX(loc), cj.GetLocationY(loc))
-end
-
 --- 移动到单位位置
 ---@param whichPlayer userdata
 ---@param during number

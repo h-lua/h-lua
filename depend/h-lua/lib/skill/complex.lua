@@ -40,7 +40,7 @@ hskill.knocking = function(options)
             targetUnit = targetUnit,
             damage = val,
             damageString = "暴击",
-            damageStringColor = "ff0000",
+            damageRGB = { 255, 0, 0 },
             damageSrc = options.damageSrc,
             damageType = options.damageType,
             isFixed = options.isFixed,
@@ -121,7 +121,7 @@ hskill.split = function(options)
                 targetUnit = eu,
                 damage = splitDamage,
                 damageString = "分裂",
-                damageStringColor = "ffdead",
+                damageRGB = { 255, 222, 173 },
                 damageSrc = options.damageSrc,
                 damageType = options.damageType,
                 isFixed = options.isFixed,
@@ -212,7 +212,7 @@ hskill.broken = function(options)
                 targetUnit = u,
                 damage = damage,
                 damageString = "打断",
-                damageStringColor = "F0F8FF",
+                damageRGB = { 240, 248, 255 },
                 damageSrc = options.damageSrc,
                 damageType = options.damageType,
                 isFixed = options.isFixed,
@@ -283,7 +283,7 @@ hskill.swim = function(options)
         damage = damage * (1 - oppose * 0.01)
     end
     local damageString = "眩晕"
-    local damageStringColor = "4169E1"
+    local damageRGB = { 65, 105, 225 }
     local swimTimer = hcache.get(u, CONST_CACHE.SKILL_SWIM_TIMER)
     if (swimTimer ~= nil and htime.getRemainTime(swimTimer) > 0) then
         if (during <= htime.getRemainTime(swimTimer)) then
@@ -292,8 +292,7 @@ hskill.swim = function(options)
             htime.delTimer(swimTimer)
             hcache.set(u, CONST_CACHE.SKILL_SWIM_TIMER, nil)
             cj.UnitRemoveAbility(u, HL_ID.buff_swim)
-            damageString = "劲眩"
-            damageStringColor = "64e3f2"
+            damageRGB = { 100, 227, 242 }
         end
     end
     local cu = hunit.create({
@@ -365,7 +364,7 @@ hskill.swim = function(options)
             damageType = options.damageType,
             isFixed = options.isFixed,
             damageString = damageString,
-            damageStringColor = damageStringColor
+            damageRGB = damageRGB
         })
     end
 end
@@ -411,14 +410,9 @@ hskill.silent = function(options)
     end
     local level = hcache.get(u, CONST_CACHE.SKILL_SILENT_LEVEL, 0) + 1
     if (level <= 1) then
-        htextTag.style(htextTag.create2Unit(u, "沉默", 6.00, "ee82ee", 10, 1.00, 10.00), "scale", 0, 0.2)
+        htextTag.model({ msg = "沉默", whichUnit = u, red = 238, green = 130, blue = 238 })
     else
-        htextTag.style(
-            htextTag.create2Unit(u, math.floor(level) .. "重沉默", 6.00, "ee82ee", 10, 1.00, 10.00),
-            "scale",
-            0,
-            0.2
-        )
+        htextTag.model({ msg = math.floor(level) .. "重沉默", whichUnit = u, red = 238, green = 130, blue = 238 })
     end
     if (type(options.effect) == "string" and string.len(options.effect) > 0) then
         heffect.bindUnit(options.effect, u, "origin", during)
@@ -517,14 +511,9 @@ hskill.unarm = function(options)
     end
     local level = hcache.get(u, CONST_CACHE.SKILL_UN_ARM_LEVEL, 0) + 1
     if (level <= 1) then
-        htextTag.style(htextTag.create2Unit(u, "缴械", 6.00, "ffe4e1", 10, 1.00, 10.00), "scale", 0, 0.2)
+        htextTag.model({ msg = "缴械", whichUnit = u, red = 255, green = 228, blue = 225 })
     else
-        htextTag.style(
-            htextTag.create2Unit(u, math.floor(level) .. "重缴械", 6.00, "ffe4e1", 10, 1.00, 10.00),
-            "scale",
-            0,
-            0.2
-        )
+        htextTag.model({ msg = math.floor(level) .. "重缴械", whichUnit = u, red = 255, green = 228, blue = 225 })
     end
     if (type(options.effect) == "string" and string.len(options.effect) > 0) then
         heffect.bindUnit(options.effect, u, "origin", during)
@@ -611,7 +600,7 @@ hskill.fetter = function(options)
         during = during * (1 - oppose * 0.01)
         damage = damage * (1 - oppose * 0.01)
     end
-    htextTag.style(htextTag.create2Unit(u, "定身", 6.00, "ffa500", 10, 1.00, 10.00), "scale", 0, 0.2)
+    htextTag.model({ msg = "定身", whichUnit = u, red = 255, green = 165, blue = 0 })
     if (type(options.effect) == "string" and string.len(options.effect) > 0) then
         heffect.bindUnit(options.effect, u, "origin", during)
     end
@@ -727,7 +716,7 @@ hskill.bomb = function(options)
             damageType = options.damageType,
             isFixed = options.isFixed,
             damageString = "爆破",
-            damageStringColor = "FF6347",
+            damageRGB = { 255, 99, 71 },
             effect = options.effectEnum,
         })
         -- @触发爆破事件
@@ -832,8 +821,8 @@ hskill.lightningChain = function(options)
         damageSrc = options.damageSrc,
         damageType = options.damageType,
         isFixed = options.isFixed,
-        damageString = "电链",
-        damageStringColor = "87cefa"
+        damageString = "闪电链",
+        damageRGB = { 135, 206, 250 },
     })
     -- @触发闪电链成功事件
     hevent.triggerEvent(
@@ -1025,7 +1014,7 @@ hskill.crackFly = function(options)
                     damageType = options.damageType,
                     isFixed = options.isFixed,
                     damageString = "击飞",
-                    damageStringColor = "808000"
+                    damageRGB = { 128, 128, 0 },
                 })
             end
             cj.SetUnitFlyHeight(options.targetUnit, originHigh, 10000)

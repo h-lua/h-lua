@@ -239,10 +239,48 @@ string.split = function(str, size)
         return sp
     end
     size = size or 1
-    local cur = 1
-    while (cur <= len) do
-        table.insert(sp, string.sub(str, cur, cur + size - 1))
-        cur = cur + size
+    local i = 1
+    while (i <= len) do
+        table.insert(sp, string.sub(str, i, i + size - 1))
+        i = i + size
+    end
+    return sp
+end
+
+--- 分隔字符串(支持中文)
+---@param str string
+---@param size number 每隔[size]个字切一次
+---@return string
+string.mb_split = function(str, size)
+    local sp = {}
+    local lenInByte = #str
+    if (lenInByte <= 0) then
+        return sp
+    end
+    local count = 0
+    local i0 = 1
+    local i = 1
+    while (i <= lenInByte) do
+        local curByte = string.byte(str, i)
+        local byteCount = 1
+        if curByte > 0 and curByte <= 127 then
+            byteCount = 1 -- 1字节字符
+        elseif curByte >= 192 and curByte < 223 then
+            byteCount = 2 -- 双字节字符
+        elseif curByte >= 224 and curByte < 239 then
+            byteCount = 3 -- 汉字
+        elseif curByte >= 240 and curByte <= 247 then
+            byteCount = 4 -- 4字节字符
+        end
+        count = count + 1 -- 字符的个数（长度）
+        i = i + byteCount -- 重置下一字节的索引
+        if (count >= size) then
+            table.insert(sp, string.sub(str, i0, i - 1))
+            i0 = i
+            count = 0
+        elseif (i > lenInByte) then
+            table.insert(sp, string.sub(str, i0, lenInByte))
+        end
     end
     return sp
 end

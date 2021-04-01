@@ -10,6 +10,12 @@ hslk_unit({
     _type = "system",
 })
 
+--- #模型漂浮字单位 token
+hslk_unit({
+    _parent = "ogru",
+    _type = "system",
+})
+
 -- #眩晕[0.05-0.5]
 for _ = 1, 10, 1 do
     hslk_ability({

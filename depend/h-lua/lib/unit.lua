@@ -212,6 +212,13 @@ hunit.y = function(u)
     return cj.GetUnitY(u)
 end
 
+--- 获取单位Z坐标
+---@param u userdata
+---@return number
+hunit.z = function(u)
+    return cj.GetUnitFlyHeight(u)
+end
+
 --- 单位是否启用硬直（系统默认不启用）
 ---@param u userdata
 ---@return boolean
@@ -545,7 +552,7 @@ hunit.create = function(options)
             cj.SetUnitVertexColor(u, red, green, blue, math.floor(255 * options.opacity))
         end
         -- 动作时间比例
-        if (options.timeScale ~= nil and options.timeScale > 0) then
+        if (options.timeScale ~= nil and options.timeScale >= 0) then
             options.timeScale = math.round(options.timeScale)
             cj.SetUnitTimeScale(u, options.timeScale)
         end

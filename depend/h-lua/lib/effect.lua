@@ -1,6 +1,8 @@
--- 特效
+---@class heffect 特效
 heffect = {
-    enable = true
+    enable = true,
+    ---@private
+    _ttg = {},
 }
 
 --- 删除特效
@@ -34,33 +36,6 @@ heffect.toXY = function(effectModel, x, y, during)
         end)
     else
         eff = cj.AddSpecialEffect(effectModel, x, y)
-        cj.DestroyEffect(eff)
-    end
-    return eff
-end
-
---- 在点创建特效
----@param effectModel string
----@param loc userdata
----@param during number 0为删除型创建（但是有的模型用此方法不会播放，此时需要during>0）
----@return userdata
-heffect.toLoc = function(effectModel, loc, during)
-    if (heffect.enable ~= true) then
-        return
-    end
-    during = during or 0
-    if (effectModel == nil or loc == nil or during < 0) then
-        return
-    end
-    local eff
-    if (during > 0) then
-        eff = cj.AddSpecialEffectLoc(effectModel, loc)
-        htime.setTimeout(during, function(t)
-            htime.delTimer(t)
-            cj.DestroyEffect(eff)
-        end)
-    else
-        eff = cj.AddSpecialEffectLoc(effectModel, x, y)
         cj.DestroyEffect(eff)
     end
     return eff

@@ -64,9 +64,9 @@ end
 ---@alias pilotHeroBuildSelector {heroes,during,type,buildX,buildY,buildDistance,buildRowQty,tavernId,tavernUnitQty,onUnitSell,direct}
 ---@alias pilotEnchantAppend {targetUnit,sourceUnit,enchants,during}
 ---@alias pilotDialogCreate {title,buttons}
----@alias pilotDamage {sourceUnit,targetUnit,damage,damageString,damageStringColor,effect,damageSrc,damageType,breakArmorType,isFixed}
----@alias pilotDamageStep {sourceUnit,targetUnit,damage,damageString,damageStringColor,effect,damageSrc,damageType,breakArmorType,isFixed,frequency,times,extraInfluence}
----@alias pilotDamageRange {sourceUnit,targetUnit,damage,damageString,damageStringColor,effect,effectSingle,damageSrc,damageType,breakArmorType,isFixed,radius,frequency,times,extraInfluence}
+---@alias pilotDamage {sourceUnit,targetUnit,damage,damageString,damageRGB,effect,damageSrc,damageType,breakArmorType,isFixed}
+---@alias pilotDamageStep {sourceUnit,targetUnit,damage,damageString,damageRGB,effect,damageSrc,damageType,breakArmorType,isFixed,frequency,times,extraInfluence}
+---@alias pilotDamageRange {sourceUnit,targetUnit,damage,damageString,damageRGB,effect,effectSingle,damageSrc,damageType,breakArmorType,isFixed,radius,frequency,times,extraInfluence}
 ---@alias pilotKnocking {sourceUnit,targetUnit,damage,odds,percent,effect,damageSrc,damageType,isFixed}
 ---@alias pilotSplit {radius,sourceUnit,targetUnit,damage,odds,percent,effect,damageSrc,damageType,isFixed}
 ---@alias pilotBroken {sourceUnit,targetUnit,damage,odds,percent,effect,damageSrc,damageType,isFixed}
@@ -84,3 +84,4 @@ end
 ---@alias pilotLeapRange {radius,arrowUnit,sourceUnit,targetUnit,x,y,speed,acceleration,height,shake,filter,tokenX,tokenY,tokenArrow,tokenArrowScale,tokenArrowOpacity,tokenArrowHeight,effectMovement,effectEnd,damageMovement,damageMovementRadius,damageMovementRepeat,damageMovementDrag,damageEnd,damageEndRadius,damageSrc,damageType,isFixed,damageEffect,oneHitOnly,onEnding,extraInfluence}
 ---@alias pilotLeapReflex {qty,radius,arrowUnit,sourceUnit,targetUnit,x,y,speed,acceleration,height,shake,filter,tokenX,tokenY,tokenArrow,tokenArrowScale,tokenArrowOpacity,tokenArrowHeight,effectMovement,effectEnd,damageMovement,damageMovementRadius,damageMovementRepeat,damageMovementDrag,damageEnd,damageEndRadius,damageSrc,damageType,isFixed,damageEffect,oneHitOnly,onEnding,extraInfluence}
 ---@alias pilotRectangleStrike {deg,radius,distance,frequency,filter,sourceUnit,targetUnit,x,y,effect,effectScale,effectOffset,damageSrc,damageType,isFixed,damageEffect,oneHitOnly,extraInfluence}
+---@alias pilotEffectTTG {msg,width,scale,whichUnit,x,y,red,green,blue}

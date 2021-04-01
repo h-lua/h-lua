@@ -92,18 +92,7 @@ end
 htextTag.create2Unit = function(u, msg, size, color, opacity, during, zOffset)
     return htextTag.create2XY(hunit.x(u), hunit.y(u), msg, size, color, opacity, during, zOffset)
 end
---- 漂浮文字 - 默认 (在某点上)
----@param loc userdata
----@param msg string
----@param size number
----@param color string hex 6位颜色代码 http://www.atool.org/colorpicker.php
----@param opacity number 不透明度，为0则不可见(0.0~1.0)
----@param during number 设置during为0则永久显示
----@param zOffset number z轴高度偏移量
----@return userdata
-htextTag.create2Loc = function(loc, msg, size, color, opacity, during, zOffset)
-    return htextTag.create2XY(cj.GetLocationX(loc), cj.GetLocationY(loc), msg, size, color, opacity, during, zOffset)
-end
+
 --- 漂浮文字 - 默认 (绑定在某单位头上，跟随移动)
 ---@param u userdata
 ---@param msg string
@@ -240,5 +229,114 @@ htextTag.style = function(ttg, showType, xSpeed, ySpeed)
                 cj.SetTextTagText(ttg, msg, (size * 2 - (5 * (tnow - tend1 - tend3) / tend2)) * scale)
             end
         end)
+    end
+end
+
+
+--[[
+    特效漂浮字
+    只支持部分字，参考 CONST_MODEL_TTG
+    options = {
+        msg = "", --漂浮字信息
+        width = 9, --字间
+        scale = 0.22, --缩放
+        x = nil, --创建坐标X，可选
+        y = nil, --创建坐标Y，可选
+        whichUnit = nil, --创建单位坐标（可选，优先级高）
+        red = 255,--红
+        green = 255,--绿
+        blue = 255,--蓝
+    }
+]]
+---@param options pilotEffectTTG
+htextTag.model = function(options)
+    local msg = options.msg or ""
+    local width = options.width or 9
+    local scale = options.scale or 0.22
+    local x = options.x or 0
+    local y = options.y or 0
+    local red = options.red or 255
+    local green = options.green or 255
+    local blue = options.blue or 255
+    local z = 150
+    local tz = 600
+    if (options.whichUnit ~= nil) then
+        x = hunit.x(options.whichUnit) + width * 2
+        y = hunit.y(options.whichUnit)
+        z = math.max(z, hunit.z(options.whichUnit))
+    end
+    local words = string.mb_split(msg, 1)
+    if (#words > 0) then
+        x = math.floor(x)
+        y = math.floor(y)
+        local site = x .. y .. red .. green .. blue
+        if (heffect._ttg[site] == nil) then
+            heffect._ttg[site] = true
+            htime.setTimeout(0.12, function(curTimer)
+                htime.delTimer(curTimer)
+                heffect._ttg[site] = nil
+            end)
+            if (red == 255 and green == 255 and blue == 255) then
+                tz = tz + 170
+            end
+            for _, w in ipairs(words) do
+                if (CONST_MODEL_TTG[w] ~= nil) then
+                    local mdl = CONST_MODEL_TTG[w].mdl
+                    local bit = CONST_MODEL_TTG[w].bit
+                    if (red == 255 and green == 255 and blue == 255) then
+                        local eff = cj.AddSpecialEffect(mdl, x, y)
+                        hjapi.EXSetEffectZ(eff, z)
+                        hjapi.EXEffectMatScale(eff, scale, scale, scale)
+                        local dur = 0
+                        local h = z
+                        htime.setInterval(0.03, function(curTimer)
+                            dur = dur + 0.03
+                            if (dur >= 0.5) then
+                                htime.delTimer(curTimer)
+                                cj.DestroyEffect(eff)
+                                return
+                            end
+                            if (h < tz) then
+                                h = h + (tz - h) / 8.33
+                                hjapi.EXSetEffectZ(eff, h)
+                            end
+                        end)
+                    else
+                        local u = hunit.create({
+                            register = false,
+                            whichPlayer = hplayer.player_passive,
+                            id = HL_ID.unit_token_ttg,
+                            x = x,
+                            y = y,
+                            red = red,
+                            green = green,
+                            blue = blue,
+                            opacity = 1,
+                            facing = 270,
+                            modelScale = scale,
+                            qty = 1,
+                        })
+                        local eff = heffect.bindUnit(mdl, u, "origin", -1)
+                        local dur = 0
+                        local h = z
+                        htime.setInterval(0.03, function(curTimer)
+                            dur = dur + 0.03
+                            if (dur >= 0.5) then
+                                htime.delTimer(curTimer)
+                                cj.DestroyEffect(eff)
+                                cj.RemoveUnit(u)
+                                return
+                            end
+                            if (h < tz) then
+                                h = h + (tz - h) / 8.33
+                                hunit.setFlyHeight(u, h, 9999)
+                                cj.SetUnitPosition(u, hunit.x(u), hunit.y(u))
+                            end
+                        end)
+                    end
+                    x = x + width * bit
+                end
+            end
+        end
     end
 end

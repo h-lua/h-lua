@@ -114,15 +114,6 @@ hgroup.createByUnit = function(u, radius, filterFunc)
     return hgroup.createByXY(hunit.x(u), hunit.y(u), radius, filterFunc)
 end
 
---- 创建单位组,以loc点为中心radius距离
----@param loc userdata
----@param radius number
----@param filterFunc GroupFilter | "function(filterUnit) end"
----@return userdata
-hgroup.createByLoc = function(loc, radius, filterFunc)
-    return hgroup.createByXY(cj.GetLocationX(loc), cj.GetLocationY(loc), radius, filterFunc)
-end
-
 --- 创建单位组,以区域为范围选择
 ---@param r userdata
 ---@param filterFunc GroupFilter | "function(filterUnit) end"

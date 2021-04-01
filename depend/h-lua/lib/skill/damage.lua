@@ -1,14 +1,11 @@
 -- 伤害漂浮字
 local _damageTtgQty = 0
-local _damageTtg = function(targetUnit, damage, fix, color)
+local _damageTtg = function(targetUnit, damage, fix, rgb)
     _damageTtgQty = _damageTtgQty + 1
     local during = 1.0
-    local offx = -0.05 - _damageTtgQty * 0.013
-    local offy = 0.05 + _damageTtgQty * 0.013
-    htextTag.style(
-        htextTag.create2Unit(targetUnit, fix .. math.floor(damage), 6.00, color, 1, during, 12.00),
-        "toggle", offx, offy
-    )
+    local x = hunit.x(targetUnit) - 0.05 - _damageTtgQty * 0.013
+    local y = hunit.y(targetUnit)
+    htextTag.model({ msg = fix .. math.floor(damage), x = x, y = y, red = rgb[1], green = rgb[2], blue = rgb[3] })
     htime.setTimeout(during, function(t)
         htime.delTimer(t)
         _damageTtgQty = _damageTtgQty - 1
@@ -22,7 +19,7 @@ end
         targetUnit = nil, --目标单位
         damage = 0, --实际伤害
         damageString = "", --伤害漂浮字颜色
-        damageStringColor = "", --伤害漂浮字颜色
+        damageRGB = {255,255,255}, --伤害漂浮字颜色RGB
         effect = nil, --伤害特效
         damageSrc = "unknown", --伤害来源请查看 CONST_DAMAGE_SRC
         damageType = { "common" }, --伤害类型请查看 CONST_DAMAGE_TYPE
@@ -105,7 +102,7 @@ hskill.damage = function(options)
     -- 文本显示
     local breakArmorType = options.breakArmorType or {}
     local damageString = options.damageString or ""
-    local damageStringColor = options.damageStringColor or "d9d9d9"
+    local damageRGB = options.damageRGB or { 255, 255, 255 }
     local effect = options.effect
     -- 判断伤害方式
     if (damageSrc == CONST_DAMAGE_SRC.attack) then
@@ -146,14 +143,14 @@ hskill.damage = function(options)
                     targetUnitAttr.avoid = 0
                 end
                 damageString = damageString .. CONST_BREAK_ARMOR_TYPE.avoid.label
-                damageStringColor = "76a5af"
+                damageRGB = { 118, 165, 175 }
             end
             if (table.includes(breakArmorType, CONST_BREAK_ARMOR_TYPE.invincible.value)) then
                 if (targetUnitAttr.avoid > 0) then
                     targetUnitAttr.avoid = 0
                 end
                 damageString = damageString .. CONST_BREAK_ARMOR_TYPE.invincible.label
-                damageStringColor = "ff4500"
+                damageRGB = { 255, 69, 0 }
             end
             -- @触发无视防御事件
             hevent.triggerEvent(
@@ -187,7 +184,7 @@ hskill.damage = function(options)
         if (math.random(1, 100) <= sourceUnitAttr.knocking_odds) then
             isKnocking = true
             damageString = "暴击!" .. damageString
-            damageStringColor = "ff0000"
+            damageRGB = { 255, 0, 0 }
             lastDamagePercent = lastDamagePercent + sourceUnitAttr.knocking_extent * 0.01
             if (targetUnitAttr.avoid > 0) then
                 targetUnitAttr.avoid = targetUnitAttr.avoid * 0.5
@@ -198,25 +195,17 @@ hskill.damage = function(options)
     -- 计算回避 X 命中
     if (damageSrc == CONST_DAMAGE_SRC.attack and targetUnitAttr.avoid - (sourceUnitAttr.aim or 0) > 0 and math.random(1, 100) <= targetUnitAttr.avoid - (sourceUnitAttr.aim or 0)) then
         lastDamage = 0
-        htextTag.style(htextTag.create2Unit(targetUnit, "回避", 6.00, "5ef78e", 10, 1.00, 10.00), "scale", 0, 0.2)
+        htextTag.model({ msg = "回避", whichUnit = targetUnit, red = 94, green = 247, blue = 142 })
         -- @触发回避事件
-        hevent.triggerEvent(
-            targetUnit,
-            CONST_EVENT.avoid,
-            {
-                triggerUnit = targetUnit,
-                attackUnit = sourceUnit
-            }
-        )
+        hevent.triggerEvent(targetUnit, CONST_EVENT.avoid, {
+            triggerUnit = targetUnit,
+            attackUnit = sourceUnit
+        })
         -- @触发被回避事件
-        hevent.triggerEvent(
-            sourceUnit,
-            CONST_EVENT.beAvoid,
-            {
-                triggerUnit = sourceUnit,
-                avoidUnit = targetUnit
-            }
-        )
+        hevent.triggerEvent(sourceUnit, CONST_EVENT.beAvoid, {
+            triggerUnit = sourceUnit,
+            avoidUnit = targetUnit
+        })
     end
     if (lastDamage > 0) then
         -- 计算附魔属性
@@ -233,7 +222,7 @@ hskill.damage = function(options)
                         lastDamagePercent = lastDamagePercent + damageTypeRatio[ev] * tempNatural[ev] * 0.01
                     end
                     damageString = damageString .. enchant.label
-                    damageStringColor = enchant.color
+                    damageRGB = enchant.rgb
                 end
             end
         end
@@ -320,7 +309,7 @@ hskill.damage = function(options)
             hplayer.addDamage(hunit.getOwner(sourceUnit), lastDamage)
         end
         -- 造成伤害及漂浮字
-        _damageTtg(targetUnit, lastDamage, damageString, damageStringColor)
+        _damageTtg(targetUnit, lastDamage, damageString, damageRGB)
         --
         hplayer.addBeDamage(hunit.getOwner(targetUnit), lastDamage)
         hunit.subCurLife(targetUnit, lastDamage)
@@ -545,12 +534,7 @@ hskill.damage = function(options)
                     attack_speed = "-" .. punishEffectAttackSpeed,
                     move = "-" .. punishEffectMove
                 })
-                htextTag.style(
-                    htextTag.create2Unit(targetUnit, "僵硬", 6.00, "c0c0c0", 0, punishDuring, 50.00),
-                    "scale",
-                    0,
-                    0
-                )
+                htextTag.model({ msg = "僵直", whichUnit = targetUnit, red = 192, green = 192, blue = 192 })
                 -- @触发硬直事件
                 hevent.triggerEvent(targetUnit, CONST_EVENT.punish, {
                     triggerUnit = targetUnit,
@@ -568,12 +552,7 @@ hskill.damage = function(options)
                 if (ldr > 0.01) then
                     hevent.setLastDamageUnit(sourceUnit, targetUnit)
                     hunit.subCurLife(sourceUnit, ldr)
-                    htextTag.style(
-                        htextTag.create2Unit(sourceUnit, "反伤" .. ldr, 12.00, "f8aaeb", 10, 1.00, 10.00),
-                        "shrink",
-                        0.05,
-                        0
-                    )
+                    htextTag.model({ msg = "反伤 -" .. ldr, whichUnit = targetUnit, red = 248, green = 170, blue = 235 })
                     -- @触发反伤事件
                     hevent.triggerEvent(
                         targetUnit,
@@ -725,7 +704,7 @@ hskill.damageRange = function(options)
                 damage = damage,
                 damageSrc = options.damageSrc,
                 damageType = options.damageType,
-                damageStringColor = options.damageStringColor,
+                damageRGB = options.damageRGB,
                 breakArmorType = options.breakArmorType,
                 isFixed = options.isFixed,
             })
@@ -757,7 +736,7 @@ hskill.damageRange = function(options)
                     damage = damage,
                     damageSrc = options.damageSrc,
                     damageType = options.damageType,
-                    damageStringColor = options.damageStringColor,
+                    damageRGB = options.damageRGB,
                     breakArmorType = options.breakArmorType,
                     isFixed = options.isFixed,
                 })
