@@ -65,7 +65,7 @@ hskill.damage = function(options)
     local damageSrc = options.damageSrc
     local damageType = options.damageType
     -- 攻击者的攻击里各种类型的占比
-    if (damageType == nil) then
+    if (damageType == nil or #damageType <= 0) then
         if (damageSrc == CONST_DAMAGE_SRC.attack and sourceUnit ~= nil) then
             damageType = {}
             for _, con in ipairs(CONST_ENCHANT) do

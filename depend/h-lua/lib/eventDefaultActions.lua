@@ -313,7 +313,7 @@ hevent_default_actions = {
                         hunit.setCurLife(targetUnit, curLife)
                     end
                     local damageSrc = CONST_DAMAGE_SRC.attack
-                    local damageType = {}
+                    local damageType
                     local breakArmorType = {}
                     local isFixed = false
                     if (false == isAttack) then

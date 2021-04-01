@@ -240,6 +240,7 @@ end
         msg = "", --漂浮字信息
         width = 9, --字间
         scale = 0.22, --缩放
+        speed = 1.0, --速度[0.5~2.0]
         x = nil, --创建坐标X，可选
         y = nil, --创建坐标Y，可选
         whichUnit = nil, --创建单位坐标（可选，优先级高）
@@ -253,6 +254,7 @@ htextTag.model = function(options)
     local msg = tostring(options.msg) or ""
     local width = options.width or 9
     local scale = options.scale or 0.22
+    local speed = options.speed or 1.0
     local x = options.x or 0
     local y = options.y or 0
     local red = options.red or 255
@@ -264,6 +266,11 @@ htextTag.model = function(options)
         x = hunit.x(options.whichUnit) + width * 2
         y = hunit.y(options.whichUnit)
         z = math.max(z, hunit.z(options.whichUnit))
+    end
+    if (speed < 0.5) then
+        speed = 0.5
+    elseif (speed > 2) then
+        speed = 2
     end
     local words = string.mb_split(msg, 1)
     if (#words > 0) then
@@ -279,6 +286,8 @@ htextTag.model = function(options)
             if (red == 255 and green == 255 and blue == 255) then
                 tz = tz + 170
             end
+            local e = 0.5 / speed
+            local d = 16 / speed
             for _, w in ipairs(words) do
                 if (CONST_MODEL_TTG[w] ~= nil) then
                     local mdl = CONST_MODEL_TTG[w].mdl
@@ -291,13 +300,13 @@ htextTag.model = function(options)
                         local h = z
                         htime.setInterval(0.03, function(curTimer)
                             dur = dur + 0.03
-                            if (dur >= 0.5) then
+                            if (dur >= e) then
                                 htime.delTimer(curTimer)
                                 cj.DestroyEffect(eff)
                                 return
                             end
                             if (h < tz) then
-                                h = h + (tz - h) / 8.33
+                                h = h + (tz - h) / d
                                 hjapi.EXSetEffectZ(eff, h)
                             end
                         end)
@@ -321,14 +330,14 @@ htextTag.model = function(options)
                         local h = z
                         htime.setInterval(0.03, function(curTimer)
                             dur = dur + 0.03
-                            if (dur >= 0.5) then
+                            if (dur >= e) then
                                 htime.delTimer(curTimer)
                                 cj.DestroyEffect(eff)
                                 cj.RemoveUnit(u)
                                 return
                             end
                             if (h < tz) then
-                                h = h + (tz - h) / 8.33
+                                h = h + (tz - h) / d
                                 hunit.setFlyHeight(u, h, 9999)
                                 cj.SetUnitPosition(u, hunit.x(u), hunit.y(u))
                             end
