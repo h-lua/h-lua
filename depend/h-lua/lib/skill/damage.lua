@@ -5,7 +5,7 @@ local _damageTtg = function(targetUnit, damage, fix, rgb)
     local during = 1.0
     local x = hunit.x(targetUnit) - 0.05 - _damageTtgQty * 0.013
     local y = hunit.y(targetUnit)
-    htextTag.model({ msg = fix .. math.floor(damage), x = x, y = y, red = rgb[1], green = rgb[2], blue = rgb[3], speed = CONST_MODEL_TTG_DMG_SPEED })
+    htextTag.model({ msg = fix .. math.floor(damage), x = x, y = y, red = rgb[1], green = rgb[2], blue = rgb[3], speed = CONST_MODEL_TTG_SPD_DMG })
     htime.setTimeout(during, function(t)
         htime.delTimer(t)
         _damageTtgQty = _damageTtgQty - 1
