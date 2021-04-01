@@ -1,7 +1,7 @@
 --- 全局漂浮字默认速率
-CONST_MODEL_TTG_SPEED = 1.0
+CONST_MODEL_TTG_SPD = 1.0
 --- 全局伤害系统漂浮字默认速率
-CONST_MODEL_TTG_DMG_SPEED = 1.0
+CONST_MODEL_TTG_SPD_DMG = 1.0
 
 --- 模型贴图型特效
 CONST_MODEL_TTG = {
