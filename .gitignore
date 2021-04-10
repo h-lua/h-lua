@@ -5,3 +5,4 @@ depend/YDWE/logs
 depend/YDWE/plugin/warcraft3/dzclient_api.ini
 temp/*
 projects/*
+sdk.conf
