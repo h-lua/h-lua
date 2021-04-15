@@ -133,7 +133,7 @@ end
 --        { on = CONST_EVENT.skill, action = "castUnit.attr.attack_green", odds = 20.0, val = 2, during = 3.0, effect = nil },
 --        { on = CONST_EVENT.item, action = "useUnit.attr.int_white", odds = 20.0, val = 2, during = 3.0, effect = nil },
 --        { on = CONST_EVENT.attack, action = "targetUnit.spec.knocking", odds = 100, percent = 100, effect = nil },
---        { on = CONST_EVENT.skill, action = "targetUnit.spec.violence", odds = 100, percent = 100, effect = nil },
+--        { on = CONST_EVENT.skill, action = "targetUnit.spec.knocking", odds = 100, val="damage", percent = 90, effect = nil },
 --        { on = CONST_EVENT.attack, action = "targetUnit.spec.split", odds = 100, percent = {30,50}, radius = 250 },
 --        { on = CONST_EVENT.attack, action = "targetUnit.spec.swim",odds = 0.0, val = 0.0, during = 0.0, effect = nil},
 --        { on = CONST_EVENT.attack, action = "targetUnit.spec.broken",odds = 0.0, val = 0.0, effect = nil},

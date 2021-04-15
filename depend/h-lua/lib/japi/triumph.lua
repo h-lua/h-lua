@@ -1,6 +1,6 @@
 local triumph = {
     DzCreateFrameByTagName = function(_, result)
-        return math.tointeger(result or 0)
+        return math.floor(result or 0)
     end,
     SetUnitState = function(params, result)
         local whichUnit = params[1]

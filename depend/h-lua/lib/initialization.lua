@@ -72,16 +72,16 @@ for i = 1, bj_MAX_PLAYERS, 1 do
         hevent.pool(hplayer.players[i], hevent_default_actions.player.leave, function(tgr)
             cj.TriggerRegisterPlayerEvent(tgr, hplayer.players[i], EVENT_PLAYER_LEAVE)
         end)
-        -- 玩家取消选择单位
-        hevent.onDeSelection(hplayer.players[i], function(evtData)
-            hcache.set(evtData.triggerPlayer, CONST_CACHE.PLAYER_SELECTION, nil)
-        end)
         -- 玩家选中单位
         hevent.pool(hplayer.players[i], hevent_default_actions.player.selection, function(tgr)
             cj.TriggerRegisterPlayerUnitEvent(tgr, hplayer.players[i], EVENT_PLAYER_UNIT_SELECTED, nil)
         end)
         hevent.onSelection(hplayer.players[i], 1, function(evtData)
             hcache.set(evtData.triggerPlayer, CONST_CACHE.PLAYER_SELECTION, evtData.triggerUnit)
+        end)
+        -- 玩家取消选择单位
+        hevent.onDeSelection(hplayer.players[i], function(evtData)
+            hcache.set(evtData.triggerPlayer, CONST_CACHE.PLAYER_SELECTION, nil)
         end)
         -- 玩家聊天接管
         hevent.pool(hplayer.players[i], hevent_default_actions.player.chat, function(tgr)
@@ -128,12 +128,12 @@ hmonitor.create(CONST_MONITOR.MANA_BACK, 0.7,
     end
 )
 
--- 硬直监听器（没收到伤害时,每3秒恢复5%硬直）
-hmonitor.create(CONST_MONITOR.PUNISH, 3,
+-- 硬直监听器（没收到伤害时,每1秒恢复3%硬直）
+hmonitor.create(CONST_MONITOR.PUNISH, 1,
     function(object)
         local punish_current = hattribute.get(object, "punish_current")
         local punish = hattribute.get(object, "punish")
-        local val = math.floor(0.05 * punish)
+        local val = math.floor(0.03 * punish)
         if (punish_current + val > punish) then
             hattribute.set(object, 0, { punish_current = "=" .. punish })
         else

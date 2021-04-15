@@ -12,6 +12,28 @@ hbuff.uniqueKey = function()
     return hbuff.UNIQUE_KEY
 end
 
+--- 统计group buff的个数
+---@private
+hbuff.count = function(handleUnit, groupKey)
+    if (handleUnit == nil) then
+        return 0
+    end
+    if (handleUnit == nil or groupKey == nil) then
+        return 0
+    end
+    if (his.deleted(handleUnit)) then
+        return 0
+    end
+    if (false == hcache.exist(handleUnit)) then
+        return 0
+    end
+    local buffHandle = hcache.get(handleUnit, CONST_CACHE.BUFF, {})
+    if (buffHandle[groupKey] == nil) then
+        return 0
+    end
+    return #buffHandle[groupKey]._idx
+end
+
 --- 创建一个buff概念物
 --- 成功创建时会返回一个key，用于删除buff
 --- 失败会返回nil

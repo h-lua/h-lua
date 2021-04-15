@@ -24,6 +24,24 @@ table.random = function(arr)
     return val
 end
 
+--- 洗牌
+---@param arr table
+---@return table
+table.shuffle = function(arr)
+    local shuffle = table.clone(arr)
+    local length = #shuffle
+    local temp
+    local random
+    while (length > 1) do
+        random = math.random(1, length)
+        temp = shuffle[length]
+        shuffle[length] = shuffle[random]
+        shuffle[random] = temp
+        length = length - 1
+    end
+    return shuffle
+end
+
 --- 克隆table
 ---@param org table
 ---@return table
@@ -117,6 +135,22 @@ table.delete = function(arr, val, qty)
             end
         end
     end
+end
+
+--- 根据key从数组table返回一个对应值的数组
+---@param arr table
+---@param key string
+---@return table
+table.value = function(arr, key)
+    local values = {}
+    if (arr ~= nil and key ~= nil and #arr > 0) then
+        for _, v in ipairs(arr) do
+            if (v[key] ~= nil) then
+                table.insert(values, v[key])
+            end
+        end
+    end
+    return values
 end
 
 --- 将obj形式的attr数据转为有序数组{key=[key],value=[value]}

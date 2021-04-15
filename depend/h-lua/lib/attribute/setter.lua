@@ -7,6 +7,8 @@ hattributeSetter = {
         str = "str_green",
         agi = "agi_green",
         int = "int_green",
+        sight_day = "sight",
+        sight_night = "sight",
     },
 }
 

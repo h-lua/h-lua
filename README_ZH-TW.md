@@ -29,20 +29,24 @@
         │   ├── globals.jass
         │   └── function.jass
         ├── map - 地圖文件
-        │   ├── implant - 用來強製更新替換【DZUI佈局、命令位置、平衡性常數、原生UI、字体】參數
         │   ├── resource - F12導入
         │   │   ├── hLua - h-lua需要的資源文件，請不要亂刪除
-        │   │   ├── interface - 冷卻時間UI，不需要可刪除，然後需要修改 implant/war3mapSkin.txt
         │   │   ├── ReplaceableTextures
-        │   │   ├── TerrainArt - 地形貼圖，不需要可直接刪除
-        │   │   │   ├── Cliff - 懸崖貼圖，不需要可直接刪除
-        │   │   │   ├── CommandButtonsDisabled - 暗圖示目錄
+        │   │   │   ├── Cliff - 懸崖貼圖，結合TerrainArt使用，不需要可直接刪除
+        │   │   │   ├── CommandButtonsDisabled - 暗圖示安置處
         │   │   │   └── selection - 選擇圈，不需要可直接刪除
-        │   │   ├── UI - 命令等係統圖形的修改（不包括dzui）不需要可刪除，然後需要修改 implant/war3mapSkin.txt
+        │   │   ├── TerrainArt - 地形貼圖，不需要可直接刪除
+        │   │   ├── UI - 命令等係統圖形的修改（不包括dzui）不需要可刪除，然後需要修改 map/w3x/war3mapSkin.txt
         │   │   ├── war3mapImported - 通用目錄
         │   │   └── war3mapMap.blp - 小地圖文件，一般不會手動處理，交給 -yd
-        │   ├── slk - ini式的物編
+        │   ├── slk - ini物編
         │   └── w3x - 地圖lni
+        │       ├── UI - fdf格式UI文件存放位置，dzui相關的放在此處（可修改）
+        │       ├── units
+        │       │   └── CommandFunc.txt - 單位指令按鈕設定，攻擊、停止等（可修改）
+        │       ├── fonts.ttf - 遊戲字體文件（可替換，結合war3mapSkin.txt）
+        │       ├── war3mapSkin.txt - 遊戲界麵配置（可修改）
+        │       └── 其他文件，備份用，冇事別亂改，易崩
         ├── scripts - lua腳本（*此乃建議，實際上你的lua隻要在項目目錄內，都能按路徑訪問）
         └── main.lua - 項目代碼入口
 ```
@@ -57,7 +61,7 @@
 ./h-lua-sdk> sdk.exe help  //提示cmd工具命令
 ./h-lua-sdk> sdk.exe new [*PROJECT_NAME]  //新建一個地圖項目
 ./h-lua-sdk> sdk.exe ydwe [*PROJECT_NAME]  //以YDWE打開地圖項目
-./h-lua-sdk> sdk.exe model [*PROJECT_NAME] [~PAGE CUR:0]  //以YDWE瀏覽項目模型，一頁最大289個，可翻頁
+./h-lua-sdk> sdk.exe model [*PROJECT_NAME] [~CURRENT_PAGE:0]  //以YDWE瀏覽項目模型，一頁最大289個，可翻頁
 ./h-lua-sdk> sdk.exe clear [*PROJECT_NAME]  //清理構建的臨時文件
 ./h-lua-sdk> sdk.exe test [*PROJECT_NAME]  //構建測試版本並開啓遊戲進行調試
 ./h-lua-sdk> sdk.exe build [*PROJECT_NAME]  //構建上線版本並開啓遊戲進行調試
@@ -69,7 +73,7 @@
 ./h-lua-sdk> sdk.exe -h  //提示cmd工具命令
 ./h-lua-sdk> sdk.exe -n [*PROJECT_NAME]  //新建一個地圖項目
 ./h-lua-sdk> sdk.exe -we|-yd [*PROJECT_NAME]  //以YDWE打開地圖項目
-./h-lua-sdk> sdk.exe model [*PROJECT_NAME] [~PAGE CUR:0]  //以YDWE瀏覽項目模型，一頁最大289個，可翻頁
+./h-lua-sdk> sdk.exe model [*PROJECT_NAME] [~CURRENT_PAGE:0]  //以YDWE瀏覽項目模型，一頁最大289個，可翻頁
 ./h-lua-sdk> sdk.exe -c [*PROJECT_NAME]  //清理構建的臨時文件
 ./h-lua-sdk> sdk.exe -t [*PROJECT_NAME]  //構建測試版本並開啓遊戲進行調試
 ./h-lua-sdk> sdk.exe -b [*PROJECT_NAME]  //構建上線版本並開啓遊戲進行調試

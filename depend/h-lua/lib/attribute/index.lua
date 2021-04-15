@@ -5,7 +5,7 @@ hattribute = {
         INTEGER = {
             "life", "mana", "move", "attack_white", "attack_green",
             "attack_range", "attack_range_acquire",
-            "sight", "defend_white", "defend_green",
+            "sight", "sight_day", "sight_night", "defend_white", "defend_green",
             "str_white", "agi_white", "int_white", "str_green", "agi_green", "int_green", "punish"
         },
     },
@@ -25,6 +25,7 @@ hattribute = {
             mana_back = 0.05 -- 每点力量提升0.05生命恢复（默认例子）
         }
     },
+    CURE_FLOOR = 0.05, --生命魔法恢复绝对值小于此值时无效
 }
 
 -- 处理部分设置
@@ -77,7 +78,7 @@ hattribute.init = function(whichUnit)
         attack_range = 100,
         attack_range_acquire = 100,
         attack_space_origin = 0,
-        sight = 1800,
+        sight = 0,
         str_green = 0.0,
         agi_green = 0.0,
         int_green = 0.0,
@@ -104,7 +105,6 @@ hattribute.init = function(whichUnit)
         knocking_odds = 0.0,
         knocking_extent = 0.0,
         knocking_oppose = 0.0,
-        violence_oppose = 0.0,
         hemophagia_oppose = 0.0,
         hemophagia_skill_oppose = 0.0,
         buff_oppose = 0.0,
@@ -140,11 +140,8 @@ hattribute.init = function(whichUnit)
     if (uSlk.acquire) then
         attribute.attack_range_acquire = math.floor(uSlk.acquire)
     end
-    if (uSlk.cool1) then
+    if (uSlk.weapsOn == "1" and uSlk.cool1) then
         attribute.attack_space_origin = math.round(uSlk.cool1)
-    end
-    if (uSlk.sight) then
-        attribute.sight = math.floor(uSlk.sight)
     end
     -- 初始化数据
     hcache.set(whichUnit, CONST_CACHE.ATTR, attribute)
@@ -241,7 +238,9 @@ hattribute.setHandle = function(whichUnit, attr, opr, val, during)
                 hattributeSetter.setUnitMaxMana(whichUnit, currentVal, futureVal, diff)
             elseif (attr == "move") then
                 -- 移动
-                futureVal = math.min(522, math.max(0, math.floor(futureVal)))
+                local min = math.floor(hslk.misc("Misc", "MinUnitSpeed")) or 0
+                local max = math.floor(hslk.misc("Misc", "MaxUnitSpeed")) or 522
+                futureVal = math.min(max, math.max(min, math.floor(futureVal)))
                 cj.SetUnitMoveSpeed(whichUnit, futureVal)
             elseif (attr == "attack_space_origin") then
                 -- 攻击间隔[JAPI*]
@@ -281,7 +280,7 @@ hattribute.setHandle = function(whichUnit, attr, opr, val, during)
                 hattributeSetter.setUnitThree(whichUnit, futureVal, attr, diff)
             elseif (attr == "life_back" or attr == "mana_back") then
                 -- 生命,魔法恢复
-                if (math.abs(futureVal) > 0.05) then
+                if (math.abs(futureVal) > hattribute.CURE_FLOOR) then
                     hmonitor.listen(CONST_MONITOR[string.upper(attr)], whichUnit)
                 else
                     hmonitor.ignore(CONST_MONITOR[string.upper(attr)], whichUnit)
@@ -298,10 +297,9 @@ hattribute.setHandle = function(whichUnit, attr, opr, val, during)
                 end
             elseif (attr == "punish_current" and hunit.isPunishing(whichUnit)) then
                 -- 硬直(current)
-                local punish = params.punish or 0
-                if (punish > 0 and (futureVal > punish or futureVal <= 0)) then
-                    params.punish_current = punish
-                elseif (futureVal < punish) then
+                if (futureVal <= 0) then
+                    params.punish_current = 0
+                elseif (futureVal < (params.punish or 0)) then
                     hmonitor.listen(CONST_MONITOR.PUNISH, whichUnit)
                 end
             end
@@ -507,6 +505,8 @@ hattribute.get = function(whichUnit, attr)
     attribute.str = (attribute.str_white or 0) + (attribute.str_green or 0)
     attribute.agi = (attribute.agi_white or 0) + (attribute.agi_green or 0)
     attribute.int = (attribute.int_white or 0) + (attribute.int_green or 0)
+    attribute.sight_day = hunit.getSight(whichUnit) + (attribute.sight or 0)
+    attribute.sight_night = hunit.getNSight(whichUnit) + (attribute.sight or 0)
     if (attr == nil) then
         return attribute
     end
@@ -592,4 +592,18 @@ hattribute.caleAttribute = function(damageSrc, isAdd, whichUnit, attr, times)
             end
         end
     end
+end
+
+--- 根据一个护甲值，获得护甲的减伤程度（不考虑克制）
+---@param defend number
+---@return number
+hattribute.getArmorReducePercent = function(defend)
+    if (defend <= 0) then
+        return 0
+    end
+    local defenseArmor = math.round(hslk.misc("Misc", "DefenseArmor"), 2) or 0
+    if (defenseArmor <= 0) then
+        return 0
+    end
+    return (defend * defenseArmor) / (1 + defend * defenseArmor)
 end

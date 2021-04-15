@@ -286,6 +286,20 @@ his.damaging = function(whichUnit)
     return hcache.get(whichUnit, CONST_CACHE.ATTR_DAMAGING, false)
 end
 
+--- 玩家是否正在受伤
+---@param whichPlayer userdata
+---@return boolean
+his.playerBeDamaging = function(whichPlayer)
+    return hcache.get(whichPlayer, CONST_CACHE.ATTR_BE_DAMAGING, false)
+end
+
+--- 玩家是否正在造成伤害
+---@param whichPlayer userdata
+---@return boolean
+his.playerDamaging = function(whichPlayer)
+    return hcache.get(whichPlayer, CONST_CACHE.ATTR_DAMAGING, false)
+end
+
 --- 是否处在水面
 ---@param whichUnit userdata
 ---@return boolean

@@ -29,20 +29,24 @@
         │   ├── globals.jass
         │   └── function.jass
         ├── map - 地图文件
-        │   ├── implant - 用来强制更新替换【DZUI布局、命令位置、平衡性常数、原生界面、字体】参数
         │   ├── resource - F12导入
         │   │   ├── hLua - h-lua需要的资源文件，请不要乱删除
-        │   │   ├── interface - 冷却时间UI，不需要可删除，然后需要修改 implant/war3mapSkin.txt
         │   │   ├── ReplaceableTextures
-        │   │   ├── TerrainArt - 地形贴图，不需要可直接删除
-        │   │   │   ├── Cliff - 悬崖贴图，不需要可直接删除
-        │   │   │   ├── CommandButtonsDisabled - 暗图标目录
+        │   │   │   ├── Cliff - 悬崖贴图，结合TerrainArt使用，不需要可直接删除
+        │   │   │   ├── CommandButtonsDisabled - 暗图标安置处
         │   │   │   └── selection - 选择圈，不需要可直接删除
-        │   │   ├── UI - 命令等系统图形的修改（不包括dzui）不需要可删除，然后需要修改 implant/war3mapSkin.txt
+        │   │   ├── TerrainArt - 地形贴图，不需要可直接删除
+        │   │   ├── UI - 命令等系统图形的修改（不包括dzui）不需要可删除，然后需要修改 map/w3x/war3mapSkin.txt
         │   │   ├── war3mapImported - 通用目录
         │   │   └── war3mapMap.blp - 小地图文件，一般不会手动处理，交给 -yd
-        │   ├── slk - ini式的物编
+        │   ├── slk - ini物编
         │   └── w3x - 地图lni
+        │       ├── UI - fdf格式UI文件存放位置，dzui相关的放在此处（可修改）
+        │       ├── units
+        │       │   └── CommandFunc.txt - 单位指令按钮设置，攻击、停止等（可修改）
+        │       ├── fonts.ttf - 游戏字体文件（可替换，结合war3mapSkin.txt）
+        │       ├── war3mapSkin.txt - 游戏界面配置（可修改）
+        │       └── 其他文件，备份用，没事别乱改，易崩
         ├── scripts - lua脚本（*此乃建议，实际上你的lua只要在项目目录内，都能按路径访问）
         └── main.lua - 项目代码入口
 ```
@@ -57,7 +61,7 @@
 ./h-lua-sdk> sdk.exe help  //提示cmd工具命令
 ./h-lua-sdk> sdk.exe new [*PROJECT_NAME]  //新建一个地图项目
 ./h-lua-sdk> sdk.exe ydwe [*PROJECT_NAME]  //以YDWE打开地图项目
-./h-lua-sdk> sdk.exe model [*PROJECT_NAME] [~PAGE CUR:0]  //以YDWE浏览项目模型，一页最大289个，可翻页
+./h-lua-sdk> sdk.exe model [*PROJECT_NAME] [~CURRENT_PAGE:0]  //以YDWE浏览项目模型，一页最大289个，可翻页
 ./h-lua-sdk> sdk.exe clear [*PROJECT_NAME]  //清理构建的临时文件
 ./h-lua-sdk> sdk.exe test [*PROJECT_NAME]  //构建测试版本并开启游戏进行调试
 ./h-lua-sdk> sdk.exe build [*PROJECT_NAME]  //构建上线版本并开启游戏进行调试
@@ -69,7 +73,7 @@
 ./h-lua-sdk> sdk.exe -h  //提示cmd工具命令
 ./h-lua-sdk> sdk.exe -n [*PROJECT_NAME]  //新建一个地图项目
 ./h-lua-sdk> sdk.exe -we|-yd [*PROJECT_NAME]  //以YDWE打开地图项目
-./h-lua-sdk> sdk.exe -m [*PROJECT_NAME] [~PAGE CUR:0]  //以YDWE浏览项目模型，一页最大289个，可翻页
+./h-lua-sdk> sdk.exe -m [*PROJECT_NAME] [~CURRENT_PAGE:0]  //以YDWE浏览项目模型，一页最大289个，可翻页
 ./h-lua-sdk> sdk.exe -c [*PROJECT_NAME]  //清理构建的临时文件
 ./h-lua-sdk> sdk.exe -t [*PROJECT_NAME]  //构建测试版本并开启游戏进行调试
 ./h-lua-sdk> sdk.exe -b [*PROJECT_NAME]  //构建上线版本并开启游戏进行调试

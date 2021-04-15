@@ -350,6 +350,7 @@ end
 ---@private
 hplayer.diffGoldRatio = function(whichPlayer, diff, during)
     if (diff ~= 0) then
+        during = during or 0
         hcache.set(whichPlayer, CONST_CACHE.PLAYER_GOLD_RATIO, hcache.get(whichPlayer, CONST_CACHE.PLAYER_GOLD_RATIO) + diff)
         if (during > 0) then
             htime.setTimeout(during, function(t)
@@ -387,6 +388,7 @@ end
 ---@private
 hplayer.diffLumberRatio = function(whichPlayer, diff, during)
     if (diff ~= 0) then
+        during = during or 0
         hcache.set(whichPlayer, CONST_CACHE.PLAYER_LUMBER_RATIO, hcache.get(whichPlayer, CONST_CACHE.PLAYER_LUMBER_RATIO) + diff)
         if (during > 0) then
             htime.setTimeout(during, function(t)
@@ -424,6 +426,7 @@ end
 ---@private
 hplayer.diffExpRatio = function(whichPlayer, diff, during)
     if (diff ~= 0) then
+        during = during or 0
         hcache.set(whichPlayer, CONST_CACHE.PLAYER_EXP_RATIO, hcache.get(whichPlayer, CONST_CACHE.PLAYER_EXP_RATIO) + diff)
         if (during > 0) then
             htime.setTimeout(during, function(t)
@@ -545,10 +548,12 @@ end
 hplayer.adjustGold = function(whichPlayer)
     local prvSys = hcache.get(whichPlayer, CONST_CACHE.PLAYER_GOLD_PREV)
     local relSys = cj.GetPlayerState(whichPlayer, PLAYER_STATE_RESOURCE_GOLD)
-    if (prvSys > relSys) then
-        hplayer.addTotalGoldCost(whichPlayer, prvSys - relSys)
-    elseif (prvSys < relSys) then
-        hplayer.addTotalGold(whichPlayer, relSys - prvSys)
+    if (prvSys ~= nil) then
+        if (prvSys > relSys) then
+            hplayer.addTotalGoldCost(whichPlayer, prvSys - relSys)
+        elseif (prvSys < relSys) then
+            hplayer.addTotalGold(whichPlayer, relSys - prvSys)
+        end
     end
     hcache.set(whichPlayer, CONST_CACHE.PLAYER_GOLD_PREV, relSys)
 end
@@ -557,10 +562,12 @@ end
 hplayer.adjustLumber = function(whichPlayer)
     local prvSys = hcache.get(whichPlayer, CONST_CACHE.PLAYER_LUMBER_PREV)
     local relSys = cj.GetPlayerState(whichPlayer, PLAYER_STATE_RESOURCE_LUMBER)
-    if (prvSys > relSys) then
-        hplayer.addTotalLumberCost(whichPlayer, prvSys - relSys)
-    elseif (prvSys < relSys) then
-        hplayer.addTotalLumber(whichPlayer, relSys - prvSys)
+    if (prvSys ~= nil) then
+        if (prvSys > relSys) then
+            hplayer.addTotalLumberCost(whichPlayer, prvSys - relSys)
+        elseif (prvSys < relSys) then
+            hplayer.addTotalLumber(whichPlayer, relSys - prvSys)
+        end
     end
     hcache.set(whichPlayer, CONST_CACHE.PLAYER_LUMBER_PREV, relSys)
 end
@@ -677,4 +684,46 @@ hplayer.subLumber = function(whichPlayer, lumber, u)
         return
     end
     hplayer.setLumber(whichPlayer, hplayer.getLumber(whichPlayer) - lumber, u)
+end
+
+--- 获取玩家已使用人口数
+---@param whichPlayer userdata
+---@return number
+hplayer.getFoodUsed = function(whichPlayer)
+    return cj.GetPlayerState(whichPlayer, PLAYER_STATE_RESOURCE_FOOD_USED)
+end
+
+--- 设置玩家已使用人口数
+---@param whichPlayer userdata
+---@param value number integer
+hplayer.setFoodUsed = function(whichPlayer, value)
+    hplayer.setPlayerState(whichPlayer, PLAYER_STATE_RESOURCE_FOOD_USED, math.floor(value))
+end
+
+--- 获取玩家可用人口数
+---@param whichPlayer userdata
+---@return number
+hplayer.getFoodCap = function(whichPlayer)
+    return cj.GetPlayerState(whichPlayer, PLAYER_STATE_RESOURCE_FOOD_CAP)
+end
+
+--- 设置玩家可用人口数
+---@param whichPlayer userdata
+---@param value number integer
+hplayer.setFoodCap = function(whichPlayer, value)
+    hplayer.setPlayerState(whichPlayer, PLAYER_STATE_RESOURCE_FOOD_CAP, math.floor(value))
+end
+
+--- 获取玩家最大人口上限
+---@param whichPlayer userdata
+---@return number
+hplayer.getFoodCapCeiling = function(whichPlayer)
+    return cj.GetPlayerState(whichPlayer, PLAYER_STATE_FOOD_CAP_CEILING)
+end
+
+--- 设置玩家最大人口上限
+---@param whichPlayer userdata
+---@param value number integer
+hplayer.setFoodCapCeiling = function(whichPlayer, value)
+    hplayer.setPlayerState(whichPlayer, PLAYER_STATE_FOOD_CAP_CEILING, math.floor(value))
 end

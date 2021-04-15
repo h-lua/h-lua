@@ -10,13 +10,16 @@ hring = {
 --- 成功则返回ID字符串,失败返回false
 ---@private
 ---@param id number|string
----@return boolean|string
+---@return table
 hring.check = function(id)
     local rs = hslk.i2v(id)
     if (rs == nil) then
         return false
     end
-    return rs._id
+    if (rs._ring == nil) then
+        return false
+    end
+    return rs
 end
 
 ---@private
@@ -24,30 +27,31 @@ end
 ---@param id number|string
 ---@param level number
 hring.insert = function(whichUnit, id, level)
-    id = hring.check(id)
-    if (id == false) then
+    local _slk = hring.check(id)
+    if (_slk == false) then
         return
     end
     level = level or 1
     if (his.deleted(whichUnit) == false) then
-        local _ring = hslk.i2v(id, "_ring")
+        local _id = _slk._id
+        local _ring = _slk._ring
         if (type(_ring) == "table") then
             if (#_ring > 0) then
                 _ring = _ring[level]
             end
             if (_ring.disabled ~= true) then
-                table.insert(hring.ACTIVE_RING, { status = 2, unit = whichUnit, id = id, group = {}, level = level })
+                table.insert(hring.ACTIVE_RING, { status = 2, unit = whichUnit, id = _id, group = {}, level = level })
                 if (_ring.effect) then
-                    if (hring.ACTIVE_EFFECT[id] == nil) then
-                        hring.ACTIVE_EFFECT[id] = {}
+                    if (hring.ACTIVE_EFFECT[_id] == nil) then
+                        hring.ACTIVE_EFFECT[_id] = {}
                     end
-                    if (hring.ACTIVE_EFFECT[id][whichUnit] == nil) then
-                        hring.ACTIVE_EFFECT[id][whichUnit] = {
+                    if (hring.ACTIVE_EFFECT[_id][whichUnit] == nil) then
+                        hring.ACTIVE_EFFECT[_id][whichUnit] = {
                             effect = heffect.bindUnit(_ring.effect, whichUnit, _ring.attach or 'origin', -1),
                             count = 1,
                         }
                     else
-                        hring.ACTIVE_EFFECT[id][whichUnit].count = hring.ACTIVE_EFFECT[id][whichUnit].count + 1
+                        hring.ACTIVE_EFFECT[_id][whichUnit].count = hring.ACTIVE_EFFECT[_id][whichUnit].count + 1
                     end
                 end
             end
@@ -278,13 +282,13 @@ end
 ---@param whichUnit userdata
 ---@param id number|string
 hring.remove = function(whichUnit, id)
-    id = hring.check(id)
-    if (id == false) then
+    local _slk = hring.check(id)
+    if (_slk == false) then
         return
     end
     for _, v in ipairs(hring.ACTIVE_RING) do
         if (v.status ~= -1) then
-            if (v.unit == whichUnit and v.id == id) then
+            if (v.unit == whichUnit and v.id == _slk._id) then
                 v.status = -1
                 break
             end

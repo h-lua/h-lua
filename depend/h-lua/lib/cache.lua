@@ -68,7 +68,6 @@ end
 ---@param value any|nil
 hcache.set = function(handle, key, value)
     if (handle == nil) then
-        print_stack()
         return
     end
     if (hcache._c_[handle] ~= nil) then
@@ -81,7 +80,6 @@ end
 ---@param default any|nil
 hcache.get = function(handle, key, default)
     if (handle == nil) then
-        print_stack()
         return
     end
     if (hcache._c_[handle] == nil) then

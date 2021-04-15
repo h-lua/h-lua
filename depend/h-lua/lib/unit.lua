@@ -5,7 +5,21 @@ hunit = {}
 ---@param uOrId userdata|string|number
 ---@return string
 hunit.getAvatar = function(uOrId)
-    return hslk.i2v(hunit.getId(uOrId), "slk", "Art") or ""
+    return hslk.i2v(hunit.getId(uOrId), "slk", "Art") or "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp"
+end
+
+--- 获取单位的物编白天视野
+---@param uOrId userdata|string|number
+---@return string
+hunit.getSight = function(uOrId)
+    return math.floor(hslk.i2v(hunit.getId(uOrId), "slk", "sight")) or 0
+end
+
+--- 获取单位的物编黑夜视野
+---@param uOrId userdata|string|number
+---@return string
+hunit.getNSight = function(uOrId)
+    return math.floor(hslk.i2v(hunit.getId(uOrId), "slk", "nsight")) or 0
 end
 
 --- 获取单位的攻击1浮动
@@ -157,7 +171,39 @@ end
 ---@param u userdata
 ---@param life number
 hunit.setPeriod = function(u, life)
-    cj.UnitApplyTimedLife(u, string.char2id("BTLF"), life)
+    if (life > 0) then
+        cj.UnitApplyTimedLife(u, string.char2id("BTLF"), life)
+        if (hcache.exist(u) == false) then
+            hcache.alloc(u)
+        end
+        hcache.set(u, CONST_CACHE.UNIT_PERIOD_START_TIME, htime.count)
+        hcache.set(u, CONST_CACHE.UNIT_PERIOD, life)
+    end
+end
+
+--- 获取单位的生命周期
+--- 无生命周期时为-1
+---@param u userdata
+---@return number
+hunit.getPeriod = function(u)
+    return hcache.get(u, CONST_CACHE.UNIT_PERIOD, -1)
+end
+
+--- 获取单位的剩余生命周期
+--- 无生命周期时为-1
+---@param u userdata
+---@return number
+hunit.getPeriodRemain = function(u)
+    local st = hcache.get(u, CONST_CACHE.UNIT_PERIOD_START_TIME, htime.count)
+    local p = hcache.get(u, CONST_CACHE.UNIT_PERIOD, -1)
+    if (p == -1) then
+        return -1
+    end
+    local remain = p - (htime.count - st)
+    if (remain < 0) then
+        return 0
+    end
+    return remain
 end
 
 --- 设置单位面向角度
@@ -450,6 +496,14 @@ hunit.embed = function(u, options)
     if (options.attr ~= nil and type(options.attr) == "table") then
         hattribute.set(u, 0, options.attr)
     end
+    -- 处理物编单位技能
+    local abilList = hslk.i2v(id, "slk", "abilList") or ""
+    abilList = string.explode(",", abilList)
+    if (#abilList > 0) then
+        for _, abid in ipairs(abilList) do
+            hskill.addProperty(u, abid, 1)
+        end
+    end
 end
 
 --[[
@@ -469,7 +523,7 @@ end
         blue = 蓝色，0～255，可选
         opacity = 不透明度，0.0～1.0，可选,0不可见
         qty = 1, --数量，可选，可选
-        life = nil, --生命周期，到期死亡，可选
+        period = nil, --生命周期，到期死亡，可选
         during = nil, --持续时间，到期删除，可选
         facing = nil, --面向角度，可选
         facingX = nil, --面向X，可选
@@ -581,10 +635,6 @@ hunit.create = function(options)
         if (options.isInvulnerable ~= nil and options.isInvulnerable == true) then
             cj.UnitAddAbility(u, HL_ID.ability_invulnerable)
         end
-        --开启硬直，执行硬直计算
-        if (options.isOpenPunish ~= nil and options.isOpenPunish == true) then
-            hunit.enablePunish(u)
-        end
         --影子，无敌蝗虫暂停,且不注册系统
         if (options.isShadow ~= nil and options.isShadow == true) then
             cj.PauseUnit(u, true)
@@ -605,10 +655,16 @@ hunit.create = function(options)
         if (options.register == true) then
             hunit.embed(u, options)
         end
+        --开启硬直，执行硬直计算
+        if (options.isOpenPunish ~= nil and options.isOpenPunish == true) then
+            hunit.enablePunish(u)
+        end
         -- 生命周期 dead
-        if (options.life ~= nil and options.life > 0) then
-            hunit.setPeriod(u, options.life)
-            hunit.del(u, options.life + 1)
+        if (options.period ~= nil and options.period > 0) then
+            hunit.setPeriod(u, options.period)
+            if (options.during == nil or options.during <= 0) then
+                options.during = options.period + 1
+            end
         end
         -- 持续时间 delete
         if (options.during ~= nil and options.during >= 0) then

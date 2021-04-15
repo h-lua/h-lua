@@ -63,19 +63,34 @@ hevent.pool = function(handle, conditionAction, regEvent)
     regEvent(hevent.POOL[key][poolIndex].trigger)
 end
 
---- set最后一位伤害的单位
+--- set最后一位伤害的单位关系
 ---@protected
-hevent.setLastDamageUnit = function(whichUnit, lastUnit)
-    if (whichUnit == nil and lastUnit == nil) then
-        return
+hevent.setLastDamage = function(sourceUnit, targetUnit)
+    if (sourceUnit ~= nil) then
+        hcache.set(sourceUnit, CONST_CACHE.EVENT_LAST_DMG_TARGET, targetUnit)
+        hcache.set(hunit.getOwner(sourceUnit), CONST_CACHE.EVENT_LAST_DMG_TARGET_PLAYER, targetUnit)
+        if (targetUnit ~= nil) then
+            hcache.set(targetUnit, CONST_CACHE.EVENT_LAST_DMG_SRC, sourceUnit)
+        end
     end
-    hcache.set(whichUnit, CONST_CACHE.EVENT_LAST_DAMAGE_SRC, lastUnit)
 end
 
 --- 最后一位伤害的单位
 ---@protected
-hevent.getLastDamageUnit = function(whichUnit)
-    return hcache.get(whichUnit, CONST_CACHE.EVENT_LAST_DAMAGE_SRC)
+hevent.getUnitLastDamageSource = function(whichUnit)
+    return hcache.get(whichUnit, CONST_CACHE.EVENT_LAST_DMG_SRC)
+end
+
+--- 获取单位最后一次伤害的目标单位
+---@protected
+hevent.getUnitLastDamageTarget = function(whichUnit)
+    return hcache.get(whichUnit, CONST_CACHE.EVENT_LAST_DMG_TARGET)
+end
+
+--- 获取玩家最后一次伤害的目标单位
+---@protected
+hevent.getPlayerLastDamageTarget = function(whichPlayer)
+    return hcache.get(whichPlayer, CONST_CACHE.EVENT_LAST_DMG_TARGET_PLAYER)
 end
 
 --- 注册事件，会返回一个event_id（私有通用）

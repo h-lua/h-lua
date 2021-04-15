@@ -966,7 +966,7 @@ hjapi.DzFrameGetChatMessage = function()
     return hjapi.exec("DzFrameGetChatMessage", nil)
 end
 
---- 原生 - 技能按钮"
+--- 原生 - 技能按钮
 --- 技能按钮:(row, column)
 --- 参考物编中的技能按钮(x,y)坐标
 ---@param row number integer

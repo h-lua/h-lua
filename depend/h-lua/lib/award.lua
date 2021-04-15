@@ -1,6 +1,6 @@
 ---@class haward 奖励
 haward = {
-    shareRange = 1000.00
+    shareRange = hslk.misc("Misc", "HeroExpRange") or 1000.00
 }
 
 --- 设置共享范围
@@ -25,7 +25,6 @@ haward.forUnit = function(whichUnit, exp, gold, lumber)
     if (realExp >= 1 and his.hero(whichUnit)) then
         hunit.addExp(whichUnit, realExp, true)
     end
-    local ttgColorLen = 0
     if (realGold >= 1) then
         hplayer.addGold(p, realGold, whichUnit)
     end

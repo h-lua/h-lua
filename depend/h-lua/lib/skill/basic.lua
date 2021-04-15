@@ -198,7 +198,7 @@ hskill.diy = function(options)
             targetX,targetY 对XY时可选
             targetLoc, 对点时可选
             targetUnit, 对单位时可选
-            life, 马甲生命周期
+            during, 马甲生命周期
         }
     ]]
     if (options.whichPlayer == nil or options.skillId == nil or options.orderString == nil) then
@@ -207,9 +207,8 @@ hskill.diy = function(options)
     if (options.x == nil or options.y == nil) then
         return
     end
-    local life = options.life
-    if (options.life == nil or options.life < 2.00) then
-        life = 2.00
+    if (options.during == nil or options.during < 2.00) then
+        options.during = 2
     end
     local token = hunit.create({
         register = false,
@@ -218,6 +217,7 @@ hskill.diy = function(options)
         x = options.x,
         y = options.y,
         facing = bj_UNIT_FACING,
+        during = options.during,
     })
     cj.UnitAddAbility(token, options.skillId)
     if (options.targetUnit ~= nil) then
@@ -229,5 +229,4 @@ hskill.diy = function(options)
     else
         cj.IssueImmediateOrder(token, options.orderString)
     end
-    hunit.del(token, life)
 end

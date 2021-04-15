@@ -55,8 +55,8 @@ _onRing = function(_v)
     return _v
 end
 
----@alias pilotUnitCreate {register,registerOrderEvent,whichPlayer,id,x,y,height,timeScale,modelScale,red,green,blue,opacity,qty,life,during,facing,facingX,facingY,facingUnit,attackX,attackY,attackUnit,isOpenSlot,isOpenPunish,isShadow,isUnSelectable,isPause,isInvulnerable,isShareSight,attr}
----@alias pilotEnemyCreate {teamNo,register,registerOrderEvent,id,x,y,height,timeScale,modelScale,red,green,blue,opacity,qty,life,during,facing,facingX,facingY,facingUnit,attackX,attackY,attackUnit,isOpenSlot,isOpenPunish,isShadow,isUnSelectable,isPause,isInvulnerable,isShareSight,attr}
+---@alias pilotUnitCreate {register,registerOrderEvent,whichPlayer,id,x,y,height,timeScale,modelScale,red,green,blue,opacity,qty,period,during,facing,facingX,facingY,facingUnit,attackX,attackY,attackUnit,isOpenSlot,isOpenPunish,isShadow,isUnSelectable,isPause,isInvulnerable,isShareSight,attr}
+---@alias pilotEnemyCreate {teamNo,register,registerOrderEvent,id,x,y,height,timeScale,modelScale,red,green,blue,opacity,qty,period,during,facing,facingX,facingY,facingUnit,attackX,attackY,attackUnit,isOpenSlot,isOpenPunish,isShadow,isUnSelectable,isPause,isInvulnerable,isShareSight,attr}
 ---@alias pilotWeatherCreate {x,y,w,h,whichRect,type,during}
 ---@alias pilotRectLock {type,during,width,height,lockRect,lockUnit,lockX,lockY}
 ---@alias pilotQuestCreate {side:"位置",title:"标题",content:"内容",icon:"图标",during:"持续时间"}
@@ -85,3 +85,4 @@ end
 ---@alias pilotLeapReflex {qty,radius,arrowUnit,sourceUnit,targetUnit,x,y,speed,acceleration,height,shake,filter,tokenX,tokenY,tokenArrow,tokenArrowScale,tokenArrowOpacity,tokenArrowHeight,effectMovement,effectEnd,damageMovement,damageMovementRadius,damageMovementRepeat,damageMovementDrag,damageEnd,damageEndRadius,damageSrc,damageType,isFixed,damageEffect,oneHitOnly,onEnding,extraInfluence}
 ---@alias pilotRectangleStrike {deg,radius,distance,frequency,filter,sourceUnit,targetUnit,x,y,effect,effectScale,effectOffset,damageSrc,damageType,isFixed,damageEffect,oneHitOnly,extraInfluence}
 ---@alias pilotEffectTTG {msg,width,scale,speed,whichUnit,x,y,red,green,blue}
+---@alias pilotUIDEMO {target_hp_unit}

@@ -4,7 +4,7 @@ hslk = {}
 --- 根据ID获取slk数据（包含原生的slk和hslk）
 --- 原生的slk数值键值是根据地图编辑器作为标准的，所以大小写也是与之一致
 ---@param id string|number
----@vararg string 可选，直接获取该key的值
+---@vararg string 可选，直接获取级层key的值，如 hslk.i2v("slk","Primary") == "STR"
 ---@return table|nil
 hslk.i2v = function(id, ...)
     if (id == nil) then
@@ -111,4 +111,29 @@ hslk.typeIds = function(t)
         end
     end
     return ids
+end
+
+--- 根据ID获取misc数据（slk-misc.md）
+--- misc一般指平衡常数，可查阅docs/md或编辑器内描述
+---@param id string|number
+---@vararg string 可选，直接获取级层key的值，如 hslk.misc("Misc","FadeBuffMinDuration") == "10"
+---@return table|nil
+hslk.misc = function(...)
+    local n = select("#", ...)
+    if (n > 0) then
+        local val = HSLK_MISC
+        for i = 1, n, 1 do
+            local k = select(i, ...)
+            if (val[k] ~= nil) then
+                val = val[k]
+            else
+                val = nil
+            end
+            if (val == nil) then
+                break
+            end
+        end
+        return val
+    end
+    return HSLK_MISC
 end

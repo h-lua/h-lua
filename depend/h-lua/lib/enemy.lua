@@ -102,7 +102,7 @@ end
         blue = 蓝色，0～255，可选
         opacity = 不透明度，0.0～1.0，可选,0不可见
         qty = 1, --数量，可选，可选
-        life = nil, --生命周期，到期死亡，可选
+        period = nil, --生命周期，到期死亡，可选
         during = nil, --持续时间，到期删除，可选
         facing = nil, --面向角度，可选
         facingX = nil, --面向X，可选

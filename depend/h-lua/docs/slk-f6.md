@@ -1,21 +1,5 @@
 ## 物编字段参考
 
-```hslk
-_id = "自动生成的物编ID"
-_id_force = "自定义物编ID"
-_class = "hslk数据类别(一般改不了)"
-_type = "hslk数据形式"
-_parent = "模版物编ID"
-_overlie = "叠加"
-_weight = "重量"
-_attr = "属性"
-_ring = "光环"
-_remarks = "结尾灰字描述"
-_cooldown = "冷却时间"
-_cooldownTarget = "冷却技能目标"
-_shadow = "强制使用影子物品"
-```
-
 ```slk
 abilList = "主动技能ID列表"
 Requires = "科技树"

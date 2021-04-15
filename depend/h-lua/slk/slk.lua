@@ -16,11 +16,14 @@ HSLK_SYNTHESIS = {
     fragment = {},
     fragmentNeeds = {},
 }
+HSLK_MISC = {}
 
 hslk_init = function()
     if (jass_slk == nil) then
         jass_slk = require "jass.slk"
     end
+    -- 载入平衡常数数据
+    HSLK_MISC = jass_slk.misc
     -- 处理物编数据
     if (#hslk_cli_ids > 0) then
         for _, id in ipairs(hslk_cli_ids) do

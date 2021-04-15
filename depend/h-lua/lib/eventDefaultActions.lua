@@ -372,7 +372,7 @@ hevent_default_actions = {
         end),
         dead = cj.Condition(function()
             local u = cj.GetTriggerUnit()
-            local killer = hevent.getLastDamageUnit(u)
+            local killer = hevent.getUnitLastDamageSource(u)
             if (killer ~= nil) then
                 hplayer.addKill(hunit.getOwner(killer), 1)
             end

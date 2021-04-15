@@ -29,20 +29,24 @@
         │   ├── globals.jass
         │   └── function.jass
         ├── map
-        │   ├── implant DZUI、CommandUI、BalanceUI、OriginUI、ttf
         │   ├── resource - F12
         │   │   ├── hLua -  h-lua required! Don't remove!
-        │   │   ├── interface -  cooldown UI.No need to delete and modify implant/war3mapSkin.txt
         │   │   ├── ReplaceableTextures
+        │   │   │   ├── Cliff - with TerrainArt,No need to delete directly.
+        │   │   │   ├── CommandButtonsDisabled - DIS dark icons
+        │   │   │   └── selection - No need to delete directly.
         │   │   ├── TerrainArt - No need to delete directly.
-        │   │   │   ├── Cliff - No need to delete directly.
-        │   │   │   ├── CommandButtonsDisabled - Dark icons.
-        │   │   │   └── selection - SelectionUI. No need to delete directly.
         │   │   ├── UI - SystemUI(Excluding dzui).No need to delete and modify implant/war3mapSkin.txt
         │   │   ├── war3mapImported - Common import.
         │   │   └── war3mapMap.blp - Small map file, which is not handled manually, is handed over to "-yd"
         │   ├── slk - ini
-        │   └── w3x - ini
+        │   └── w3x - 地图lni
+        │       ├── UI - fdf UI files
+        │       ├── units
+        │       │   └── CommandFunc.txt - Buttons position, attack,stop,etc.(modifiable)
+        │       ├── fonts.ttf - font file (modifiable with war3mapSkin.txt)
+        │       ├── war3mapSkin.txt - game UI(modifiable)
+        │       └── other(Don't modify them)
         ├── scripts - lua scripts(It's just a suggestion)
         └── main.lua - Enter
 ```
@@ -57,7 +61,7 @@
 ./h-lua-sdk> sdk.exe help
 ./h-lua-sdk> sdk.exe new [:PROJECT_NAME] - new a project
 ./h-lua-sdk> sdk.exe ydwe [:PROJECT_NAME] - open map by YDWE
-./h-lua-sdk> sdk.exe model [*PROJECT_NAME] [~PAGE CUR:0] - view models by YDWE, one page support 289 models
+./h-lua-sdk> sdk.exe model [*PROJECT_NAME] [~CURRENT_PAGE:0] - view models in YDWE, one page support 289 models
 ./h-lua-sdk> sdk.exe clear [:PROJECT_NAME] - clear temp
 ./h-lua-sdk> sdk.exe test [:PROJECT_NAME] - test a project
 ./h-lua-sdk> sdk.exe build [:PROJECT_NAME] - build a project for launch
@@ -69,7 +73,7 @@
 ./h-lua-sdk> sdk.exe -h
 ./h-lua-sdk> sdk.exe -n [:PROJECT_NAME] - new a project
 ./h-lua-sdk> sdk.exe -we|-yd [:PROJECT_NAME] - open map by YDWE
-./h-lua-sdk> sdk.exe model [*PROJECT_NAME] [~PAGE CUR:0] - view models by YDWE, one page support 289 models
+./h-lua-sdk> sdk.exe model [*PROJECT_NAME] [~CURRENT_PAGE:0] - view models in YDWE, one page support 289 models
 ./h-lua-sdk> sdk.exe -c [:PROJECT_NAME] - clear temp
 ./h-lua-sdk> sdk.exe -t [:PROJECT_NAME] - test a project
 ./h-lua-sdk> sdk.exe -b [:PROJECT_NAME] - build a project for launch

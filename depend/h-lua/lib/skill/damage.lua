@@ -24,7 +24,7 @@ end
         damageSrc = "unknown", --伤害来源请查看 CONST_DAMAGE_SRC
         damageType = { "common" }, --伤害类型请查看 CONST_DAMAGE_TYPE
         breakArmorType = {} --破防(无视防御)类型请查看 CONST_BREAK_ARMOR_TYPE
-        isFixed = false, --是否固定伤害，伤害在固定下(无视类型、魔抗、自然、增幅、减伤)不计算，而自然虽然不影响伤害，但会有自然效果
+        isFixed = false, --是否固定伤害，伤害在固定下(无视类型、护甲、魔抗、自然、增幅、减伤)不计算，而自然虽然不影响伤害，但会有自然效果
     }
 ]]
 ---@param options pilotDamage
@@ -63,32 +63,6 @@ hskill.damage = function(options)
         end
     end
     local damageSrc = options.damageSrc
-    local damageType = options.damageType
-    -- 攻击者的攻击里各种类型的占比
-    if (damageType == nil or #damageType <= 0) then
-        if (damageSrc == CONST_DAMAGE_SRC.attack and sourceUnit ~= nil) then
-            damageType = {}
-            for _, con in ipairs(CONST_ENCHANT) do
-                if (sourceUnitAttr['e_' .. con.value .. '_attack'] > 0) then
-                    for _ = 1, sourceUnitAttr['e_' .. con.value .. '_attack'], 1 do
-                        table.insert(damageType, con.value)
-                    end
-                end
-            end
-        end
-    end
-    --常规伤害判定
-    if (damageType == nil or #damageType <= 0) then
-        damageType = { CONST_DAMAGE_TYPE.common } -- common是个通常设置，实际上并无特定效果
-    end
-    local damageTypeRatioPiece = 1 / #damageType
-    local damageTypeRatio = {}
-    for _, dt in ipairs(damageType) do
-        if (damageTypeRatio[dt] == nil) then
-            damageTypeRatio[dt] = 0
-        end
-        damageTypeRatio[dt] = damageTypeRatio[dt] + damageTypeRatioPiece
-    end
     -- 最终伤害
     local lastDamage = 0
     local lastDamagePercent = 0.0
@@ -120,12 +94,65 @@ hskill.damage = function(options)
     else
         damageSrc = CONST_DAMAGE_SRC.unknown
     end
+    local ignores = { "defend", "avoid", "invincible", "enchant" }
+    local ignore = { defend = false, avoid = false, invincible = false, enchant = false }
+    if (isFixed == false) then
+        -- 判断无视装甲类型
+        if (breakArmorType ~= nil and #breakArmorType > 0) then
+            damageString = damageString .. "无视"
+            for _, ig in ipairs(ignores) do
+                if (table.includes(breakArmorType, ig)) then
+                    damageString = damageString .. CONST_BREAK_ARMOR_TYPE[ig].label
+                    damageRGB = CONST_BREAK_ARMOR_TYPE[ig].rgb
+                    ignore[ig] = true
+                end
+            end
+            -- @触发无视防御事件
+            hevent.triggerEvent(sourceUnit, CONST_EVENT.breakArmor, {
+                triggerUnit = sourceUnit,
+                targetUnit = targetUnit,
+                breakType = breakArmorType
+            })
+            -- @触发被无视防御事件
+            hevent.triggerEvent(targetUnit, CONST_EVENT.beBreakArmor, {
+                triggerUnit = targetUnit,
+                sourceUnit = sourceUnit,
+                breakType = breakArmorType
+            })
+        end
+    end
     -- 计算单位是否无敌（无敌属性为百分比计算，被动触发抵挡一次）
     if (his.invincible(targetUnit) == true or math.random(1, 100) < targetUnitAttr.invincible) then
-        if (table.includes(breakArmorType, CONST_BREAK_ARMOR_TYPE.invincible.value) == false) then
+        if (ignore.invincible == false) then
             htextTag.model({ msg = "无敌", whichUnit = targetUnit, red = 255, green = 215, blue = 0 })
             return
         end
+    end
+    local damageType = options.damageType
+    -- 攻击者的攻击里各种类型的占比
+    if (damageType == nil or #damageType <= 0) then
+        if (damageSrc == CONST_DAMAGE_SRC.attack and sourceUnit ~= nil) then
+            damageType = {}
+            for _, con in ipairs(CONST_ENCHANT) do
+                if (sourceUnitAttr['e_' .. con.value .. '_attack'] > 0) then
+                    for _ = 1, sourceUnitAttr['e_' .. con.value .. '_attack'], 1 do
+                        table.insert(damageType, con.value)
+                    end
+                end
+            end
+        end
+    end
+    --常规伤害判定
+    if (damageType == nil or #damageType <= 0) then
+        damageType = { CONST_DAMAGE_TYPE.common } -- common是个通常设置，实际上并无特定效果
+    end
+    local damageTypeRatioPiece = 1 / #damageType
+    local damageTypeRatio = {}
+    for _, dt in ipairs(damageType) do
+        if (damageTypeRatio[dt] == nil) then
+            damageTypeRatio[dt] = 0
+        end
+        damageTypeRatio[dt] = damageTypeRatio[dt] + damageTypeRatioPiece
     end
     -- 计算硬直抵抗
     punishEffectRatio = 0.99
@@ -135,49 +162,31 @@ hskill.damage = function(options)
             punishEffectRatio = 0.100
         end
     end
-    if (isFixed == false) then
-        -- 判断无视装甲类型
-        if (breakArmorType ~= nil and #breakArmorType > 0) then
-            damageString = damageString .. "无视"
-            if (table.includes(breakArmorType, CONST_BREAK_ARMOR_TYPE.avoid.value)) then
-                if (targetUnitAttr.avoid > 0) then
-                    targetUnitAttr.avoid = 0
-                end
-                damageString = damageString .. CONST_BREAK_ARMOR_TYPE.avoid.label
-                damageRGB = { 118, 165, 175 }
+    -- 护甲>0,如果无视护甲，补回伤害
+    -- 护甲<=0,忽略,负护甲增伤可不处理
+    local defenseArmor = math.round(hslk.misc("Misc", "DefenseArmor"), 2) or 0
+    if (defenseArmor <= 0) then
+        -- *重要* 当地图平衡常数设定为[DefenseArmor|护甲因子]小于等于0时，这里为了修正魔兽负护甲依然因子保持0.06的bug,补回伤害
+        -- 当护甲x为负时，最大-20,公式2-(1-a)^abs(x)
+        if (targetUnitAttr.defend < 0) then
+            if (targetUnitAttr.defend >= -20) then
+                damage = damage / (2 - 0.94 ^ math.abs(targetUnitAttr.defend))
+            else
+                damage = damage / (2 - 0.94 ^ 20)
             end
-            if (table.includes(breakArmorType, CONST_BREAK_ARMOR_TYPE.invincible.value)) then
-                if (targetUnitAttr.avoid > 0) then
-                    targetUnitAttr.avoid = 0
-                end
-                damageString = damageString .. CONST_BREAK_ARMOR_TYPE.invincible.label
-                damageRGB = { 255, 69, 0 }
+        end
+    else
+        -- 当地图平衡常数[DefenseArmor|护甲因子]大于0时
+        if (ignore.defend and targetUnitAttr.defend > 0) then
+            local defenseArmorRemain = 1 - hattribute.getArmorReducePercent(targetUnitAttr.defend)
+            if (defenseArmorRemain > 0) then
+                damage = damage * (1 / defenseArmorRemain)
             end
-            -- @触发无视防御事件
-            hevent.triggerEvent(
-                sourceUnit,
-                CONST_EVENT.breakArmor,
-                {
-                    triggerUnit = sourceUnit,
-                    targetUnit = targetUnit,
-                    breakType = breakArmorType
-                }
-            )
-            -- @触发被无视防御事件
-            hevent.triggerEvent(
-                targetUnit,
-                CONST_EVENT.beBreakArmor,
-                {
-                    triggerUnit = targetUnit,
-                    sourceUnit = sourceUnit,
-                    breakType = breakArmorType
-                }
-            )
         end
     end
     -- 开始神奇的伤害计算
     lastDamage = damage
-    -- 自身暴击计算，自身暴击触发下，回避几率减少一半
+    -- 自身暴击计算，自身暴击触发下，回避无效（模拟原生魔兽）
     local isKnocking = false
     if (isFixed == false and lastDamage > 0 and sourceUnitAttr.knocking_odds > 0 and sourceUnitAttr.knocking_extent > 0) then
         local targetKnockingOppose = hattribute.get(targetUnit, "knocking_oppose")
@@ -187,26 +196,25 @@ hskill.damage = function(options)
             damageString = "暴击!" .. damageString
             damageRGB = { 255, 0, 0 }
             lastDamagePercent = lastDamagePercent + sourceUnitAttr.knocking_extent * 0.01
-            if (targetUnitAttr.avoid > 0) then
-                targetUnitAttr.avoid = targetUnitAttr.avoid * 0.5
-            end
-            heffect.toUnit("hLua\\crit.mdl", targetUnit, 0.5)
+            ignore.avoid = true
         end
     end
     -- 计算回避 X 命中
-    if (damageSrc == CONST_DAMAGE_SRC.attack and targetUnitAttr.avoid - (sourceUnitAttr.aim or 0) > 0 and math.random(1, 100) <= targetUnitAttr.avoid - (sourceUnitAttr.aim or 0)) then
-        lastDamage = 0
-        htextTag.model({ msg = "回避", whichUnit = targetUnit, red = 94, green = 247, blue = 142 })
-        -- @触发回避事件
-        hevent.triggerEvent(targetUnit, CONST_EVENT.avoid, {
-            triggerUnit = targetUnit,
-            attackUnit = sourceUnit
-        })
-        -- @触发被回避事件
-        hevent.triggerEvent(sourceUnit, CONST_EVENT.beAvoid, {
-            triggerUnit = sourceUnit,
-            avoidUnit = targetUnit
-        })
+    if (ignore.avoid == false) then
+        if (damageSrc == CONST_DAMAGE_SRC.attack and targetUnitAttr.avoid - (sourceUnitAttr.aim or 0) > 0 and math.random(1, 100) <= targetUnitAttr.avoid - (sourceUnitAttr.aim or 0)) then
+            lastDamage = 0
+            htextTag.model({ msg = "回避", whichUnit = targetUnit, red = 94, green = 247, blue = 142 })
+            -- @触发回避事件
+            hevent.triggerEvent(targetUnit, CONST_EVENT.avoid, {
+                triggerUnit = targetUnit,
+                attackUnit = sourceUnit
+            })
+            -- @触发被回避事件
+            hevent.triggerEvent(sourceUnit, CONST_EVENT.beAvoid, {
+                triggerUnit = sourceUnit,
+                avoidUnit = targetUnit
+            })
+        end
     end
     if (lastDamage > 0) then
         -- 计算附魔属性
@@ -214,7 +222,12 @@ hskill.damage = function(options)
         for _, enchant in ipairs(CONST_ENCHANT) do
             local ev = enchant.value
             if (damageTypeRatio[ev] ~= nil and damageTypeRatio[ev] > 0) then
-                tempNatural[ev] = henchant.INTRINSIC_ADDITION + (sourceUnitAttr["e_" .. ev] or 0) - targetUnitAttr["e_" .. ev .. "_oppose"]
+                -- 无视附魔抵抗
+                if (ignore.enchant == false) then
+                    tempNatural[ev] = henchant.INTRINSIC_ADDITION + (sourceUnitAttr["e_" .. ev] or 0) - targetUnitAttr["e_" .. ev .. "_oppose"]
+                else
+                    tempNatural[ev] = henchant.INTRINSIC_ADDITION + (sourceUnitAttr["e_" .. ev] or 0)
+                end
                 if (tempNatural[ev] < -100) then
                     tempNatural[ev] = -100
                 end
@@ -228,6 +241,20 @@ hskill.damage = function(options)
             end
         end
         if (isFixed == false) then
+            -- 计算护甲（不涉及伤害类型）
+            if (targetUnitAttr.defend ~= 0) then
+                local defendPercent = 0
+                if (targetUnitAttr.defend > 0) then
+                    -- 非无视护甲
+                    if (ignore.defend == false) then
+                        defendPercent = targetUnitAttr.defend / (targetUnitAttr.defend + 200)
+                    end
+                else
+                    local dfd = math.abs(targetUnitAttr.defend)
+                    defendPercent = -dfd / (dfd * 0.33 + 100)
+                end
+                lastDamagePercent = lastDamagePercent - defendPercent
+            end
             -- 计算伤害增幅
             if (lastDamage > 0 and sourceUnit ~= nil and sourceUnitAttr.damage_extent ~= 0) then
                 lastDamagePercent = lastDamagePercent + sourceUnitAttr.damage_extent * 0.01
@@ -273,7 +300,7 @@ hskill.damage = function(options)
             sourceUnit = sourceUnit,
             enchants = damageType,
         })
-        -- 设置单位正在受伤
+        -- 设置单位|玩家正在受伤
         local isBeDamagingTimer = hcache.get(targetUnit, CONST_CACHE.ATTR_BE_DAMAGING_TIMER, nil)
         if (isBeDamagingTimer ~= nil) then
             htime.delTimer(isBeDamagingTimer)
@@ -291,6 +318,23 @@ hskill.damage = function(options)
                 end
             end)
         )
+        local targetPlayer = hunit.getOwner(targetUnit)
+        hplayer.addBeDamage(targetPlayer, lastDamage)
+        local isPlayerBeDamagingTimer = hcache.get(targetPlayer, CONST_CACHE.ATTR_BE_DAMAGING_TIMER, nil)
+        if (isPlayerBeDamagingTimer ~= nil) then
+            htime.delTimer(isPlayerBeDamagingTimer)
+            hcache.set(targetPlayer, CONST_CACHE.ATTR_BE_DAMAGING_TIMER, nil)
+        end
+        hcache.set(targetPlayer, CONST_CACHE.ATTR_BE_DAMAGING, true)
+        hcache.set(
+            targetPlayer, CONST_CACHE.ATTR_BE_DAMAGING_TIMER,
+            htime.setTimeout(3.5, function(t)
+                htime.delTimer(t)
+                hcache.set(targetPlayer, CONST_CACHE.ATTR_BE_DAMAGING_TIMER, nil)
+                hcache.set(targetPlayer, CONST_CACHE.ATTR_BE_DAMAGING, false)
+            end)
+        )
+        -- 设置单位|玩家正在造成伤害
         if (sourceUnit ~= nil and his.deleted(sourceUnit) == false) then
             local isDamagingTimer = hcache.get(sourceUnit, CONST_CACHE.ATTR_DAMAGING_TIMER, nil)
             if (isDamagingTimer ~= nil) then
@@ -298,21 +342,36 @@ hskill.damage = function(options)
                 hcache.set(sourceUnit, CONST_CACHE.ATTR_DAMAGING_TIMER, nil)
             end
             hcache.set(sourceUnit, CONST_CACHE.ATTR_DAMAGING, true)
+            hevent.setLastDamage(sourceUnit, targetUnit)
             hcache.set(
                 sourceUnit, CONST_CACHE.ATTR_DAMAGING_TIMER,
                 htime.setTimeout(3.5, function(t)
                     htime.delTimer(t)
                     hcache.set(sourceUnit, CONST_CACHE.ATTR_DAMAGING_TIMER, nil)
                     hcache.set(sourceUnit, CONST_CACHE.ATTR_DAMAGING, false)
+                    hevent.setLastDamage(sourceUnit, nil)
                 end)
             )
-            hevent.setLastDamageUnit(targetUnit, sourceUnit)
-            hplayer.addDamage(hunit.getOwner(sourceUnit), lastDamage)
+            local sourcePlayer = hunit.getOwner(sourceUnit)
+            hplayer.addDamage(sourcePlayer, lastDamage)
+            local isPlayerDamagingTimer = hcache.get(sourcePlayer, CONST_CACHE.ATTR_DAMAGING_TIMER, nil)
+            if (isPlayerDamagingTimer ~= nil) then
+                htime.delTimer(isPlayerDamagingTimer)
+                hcache.set(sourcePlayer, CONST_CACHE.ATTR_DAMAGING_TIMER, nil)
+            end
+            hcache.set(sourcePlayer, CONST_CACHE.ATTR_DAMAGING, true)
+            hcache.set(
+                sourcePlayer, CONST_CACHE.ATTR_DAMAGING_TIMER,
+                htime.setTimeout(3.5, function(t)
+                    htime.delTimer(t)
+                    hcache.set(sourcePlayer, CONST_CACHE.ATTR_DAMAGING_TIMER, nil)
+                    hcache.set(sourcePlayer, CONST_CACHE.ATTR_DAMAGING, false)
+                end)
+            )
         end
         -- 造成伤害及漂浮字
         _damageTtg(targetUnit, lastDamage, damageString, damageRGB)
         --
-        hplayer.addBeDamage(hunit.getOwner(targetUnit), lastDamage)
         hunit.subCurLife(targetUnit, lastDamage)
         if (type(effect) == "string" and string.len(effect) > 0) then
             heffect.toXY(effect, hunit.x(targetUnit), hunit.y(targetUnit), 0)
@@ -421,6 +480,7 @@ hskill.damage = function(options)
         end
         -- 本体暴击
         if (isKnocking == true) then
+            heffect.toUnit("hLua\\crit.mdl", targetUnit, 0.5)
             --@触发物理暴击事件
             hevent.triggerEvent(sourceUnit, CONST_EVENT.knocking, {
                 triggerUnit = sourceUnit,
@@ -522,6 +582,7 @@ hskill.damage = function(options)
                 htime.setTimeout(punishDuring + 1, function(t)
                     htime.delTimer(t)
                     hcache.set(targetUnit, CONST_CACHE.ATTR_PUNISHING, false)
+                    hattribute.set(targetUnit, 0, { punish_current = "+" .. targetUnitAttr.punish })
                 end)
                 local punishEffectAttackSpeed = (100 + targetUnitAttr.attack_speed) * punishEffectRatio
                 local punishEffectMove = targetUnitAttr.move * punishEffectRatio
@@ -551,29 +612,22 @@ hskill.damage = function(options)
             if (targetUnitDamageRebound > 0) then
                 local ldr = math.round(lastDamage * targetUnitDamageRebound * 0.01)
                 if (ldr > 0.01) then
-                    hevent.setLastDamageUnit(sourceUnit, targetUnit)
+                    hevent.setLastDamage(targetUnit, sourceUnit)
+                    hplayer.addDamage(hunit.getOwner(targetUnit), ldr)
                     hunit.subCurLife(sourceUnit, ldr)
                     htextTag.model({ msg = "反伤 -" .. ldr, whichUnit = sourceUnit, red = 248, green = 170, blue = 235 })
                     -- @触发反伤事件
-                    hevent.triggerEvent(
-                        targetUnit,
-                        CONST_EVENT.rebound,
-                        {
-                            triggerUnit = targetUnit,
-                            sourceUnit = sourceUnit,
-                            damage = ldr
-                        }
-                    )
+                    hevent.triggerEvent(targetUnit, CONST_EVENT.rebound, {
+                        triggerUnit = targetUnit,
+                        sourceUnit = sourceUnit,
+                        damage = ldr
+                    })
                     -- @触发被反伤事件
-                    hevent.triggerEvent(
-                        sourceUnit,
-                        CONST_EVENT.beRebound,
-                        {
-                            triggerUnit = sourceUnit,
-                            sourceUnit = targetUnit,
-                            damage = ldr
-                        }
-                    )
+                    hevent.triggerEvent(sourceUnit, CONST_EVENT.beRebound, {
+                        triggerUnit = sourceUnit,
+                        sourceUnit = targetUnit,
+                        damage = ldr
+                    })
                 end
             end
         end
@@ -779,17 +833,15 @@ hskill.damageGroup = function(options)
     end
     if (times <= 1) then
         hgroup.forEach(options.whichGroup, function(eu)
-            hskill.damage(
-                {
-                    sourceUnit = options.sourceUnit,
-                    targetUnit = eu,
-                    effect = options.effect,
-                    damage = damage,
-                    damageSrc = options.damageSrc,
-                    damageType = options.damageType,
-                    isFixed = options.isFixed,
-                }
-            )
+            hskill.damage({
+                sourceUnit = options.sourceUnit,
+                targetUnit = eu,
+                effect = options.effect,
+                damage = damage,
+                damageSrc = options.damageSrc,
+                damageType = options.damageType,
+                isFixed = options.isFixed,
+            })
             if (type(options.extraInfluence) == "function") then
                 options.extraInfluence(eu)
             end
@@ -803,17 +855,15 @@ hskill.damageGroup = function(options)
                 return
             end
             hgroup.forEach(options.whichGroup, function(eu)
-                hskill.damage(
-                    {
-                        sourceUnit = options.sourceUnit,
-                        targetUnit = eu,
-                        effect = options.effect,
-                        damage = damage,
-                        damageSrc = options.damageSrc,
-                        damageType = options.damageType,
-                        isFixed = options.isFixed,
-                    }
-                )
+                hskill.damage({
+                    sourceUnit = options.sourceUnit,
+                    targetUnit = eu,
+                    effect = options.effect,
+                    damage = damage,
+                    damageSrc = options.damageSrc,
+                    damageType = options.damageType,
+                    isFixed = options.isFixed,
+                })
                 if (type(options.extraInfluence) == "function") then
                     options.extraInfluence(eu)
                 end

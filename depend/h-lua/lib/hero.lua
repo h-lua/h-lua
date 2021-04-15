@@ -29,6 +29,37 @@ hhero.getPrimaryLabel = function(whichHero)
     return CONST_HERO_PRIMARY[hhero.getPrimary(whichHero)]
 end
 
+--- 获取英雄力量成长
+---@param whichHero
+---@return string
+hhero.getStrPlus = function(whichHero)
+    local val = hslk.i2v(hunit.getId(whichHero), "slk", "STRplus") or 0
+    return math.round(val, 2)
+end
+
+--- 获取英雄敏捷成长
+---@param whichHero
+---@return string
+hhero.getAgiPlus = function(whichHero)
+    local val = hslk.i2v(hunit.getId(whichHero), "slk", "AGIplus") or 0
+    return math.round(val, 2)
+end
+
+--- 获取英雄智力成长
+---@param whichHero
+---@return string
+hhero.getIntPlus = function(whichHero)
+    local val = hslk.i2v(hunit.getId(whichHero), "slk", "INTplus") or 0
+    return math.round(val, 2)
+end
+
+--- 获取英雄谓称
+---@param whichHero
+---@return string
+hhero.getProperName = function(whichHero)
+    return cj.GetHeroProperName(whichHero) or ""
+end
+
 --- 设置英雄之前的等级
 ---@protected
 ---@param whichHero userdata
@@ -70,12 +101,43 @@ hhero.setCurLevel = function(whichHero, newLevel, showEffect)
     hhero.setPrevLevel(whichHero, newLevel)
 end
 
---- 获取英雄的黄金消耗
+--- 获取英雄当前经验值
 ---@param whichHero userdata
----@return string STR|AGI|INT
-hhero.getSlkGoldcost = function(whichHero)
-    local slk = hhero.getSlk(whichHero)
-    return slk.goldcost or 0
+---@return number integer
+hhero.getExp = function(whichHero)
+    return cj.GetHeroXP(whichHero) or 0
+end
+
+--- 获取英雄升级到某等级需要的总经验
+--- 根据地图的平衡常数计算[英雄EXP-需求|NeedHeroXP]项
+---@return number integer
+hhero.getExpNeed = function(targetLevel)
+    targetLevel = math.floor(targetLevel) or 1
+    if (targetLevel <= 1) then
+        return 0
+    end
+    local NeedHeroXP = hslk.misc("Misc", "NeedHeroXP") or { 200 }
+    if (type(NeedHeroXP) == "string") then
+        NeedHeroXP = string.explode(",", NeedHeroXP)
+    end
+    if ((targetLevel - 1) <= #NeedHeroXP) then
+        return math.ceil(NeedHeroXP[targetLevel - 1])
+    end
+    local NeedHeroXPFormulaA = math.round(hslk.misc("Misc", "NeedHeroXPFormulaA"), 2) or 1
+    local NeedHeroXPFormulaB = math.round(hslk.misc("Misc", "NeedHeroXPFormulaB"), 2) or 100
+    local NeedHeroXPFormulaC = math.round(hslk.misc("Misc", "NeedHeroXPFormulaC"), 2) or 0
+    local exp = NeedHeroXP[#NeedHeroXP]
+    for lv = #NeedHeroXP + 2, targetLevel, 1 do
+        exp = exp * NeedHeroXPFormulaA + lv * NeedHeroXPFormulaB + NeedHeroXPFormulaC
+    end
+    return math.ceil(exp)
+end
+
+--- 获取英雄的尚未分配的技能点数量
+---@param whichHero userdata
+---@return number integer
+hhero.getSkillPoints = function(whichHero)
+    return cj.GetHeroSkillPoints(whichHero) or 0
 end
 
 --- 设置玩家最大英雄数量,支持1 - 7
