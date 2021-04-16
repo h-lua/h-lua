@@ -140,8 +140,10 @@ hattribute.init = function(whichUnit)
     if (uSlk.acquire) then
         attribute.attack_range_acquire = math.floor(uSlk.acquire)
     end
-    if (uSlk.weapsOn == "1" and uSlk.cool1) then
+    if ((uSlk.weapsOn == "1" or uSlk.weapsOn == "3") and uSlk.cool1) then
         attribute.attack_space_origin = math.round(uSlk.cool1)
+    elseif ((uSlk.weapsOn == "2") and uSlk.cool2) then
+        attribute.attack_space_origin = math.round(uSlk.cool2)
     end
     -- 初始化数据
     hcache.set(whichUnit, CONST_CACHE.ATTR, attribute)

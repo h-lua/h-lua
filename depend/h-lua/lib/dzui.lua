@@ -604,11 +604,12 @@ hdzui.DEMO = function(options)
                             { "reborn" }, false,
                             math.round(attr.reborn, 1), "秒"
                         )
-                        local can_attack = ("1" == hslk.i2v(hunit.getId(selection), "slk", "weapsOn"))
+                        local weapsOn = hslk.i2v(hunit.getId(selection), "slk", "weapsOn") or "0"
+                        local can_attack = ("0" ~= weapsOn)
                         data.attack = attrBuilder(
                             "攻击", "无", not can_attack,
                             { "attack_white", "attack_green" }, true,
-                            math.integerFormat(attr.attack_sides[1]) .. "~" .. math.integerFormat(attr.attack_sides[2]), "")
+                            math.numberFormat(attr.attack_sides[1], 1) .. "~" .. math.numberFormat(attr.attack_sides[2], 1), "")
                         data.attack_speed = attrBuilder(
                             "攻速", "无", not can_attack,
                             { "attack_speed" }, true,
