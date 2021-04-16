@@ -8,6 +8,7 @@
 * [[老CK教程]官方平台界面功能入门](http://bbs.dz.blizzard.cn/forum.php?mod=viewthread&tid=8038&extra=page%3D1%26filter%3Dtypeid%26typeid%3D18)
 
 ### frameDef.toc
+> 可参考原生写法：https://github.com/hunzsig-warcraft3/FrameDef
 ```
     UI\FrameDef\GlobalStrings.fdf
     UI\FrameDef\InfoPanelStrings.fdf
