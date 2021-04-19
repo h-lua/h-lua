@@ -969,6 +969,7 @@ end
 --- 原生 - 技能按钮
 --- 技能按钮:(row, column)
 --- 参考物编中的技能按钮(x,y)坐标
+--- (x,y)对应(column,row)反一下
 ---@param row number integer
 ---@param column number integer
 ---@return number integer

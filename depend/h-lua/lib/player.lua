@@ -21,6 +21,7 @@ hplayer = {
     --- 当前玩家数量
     qty_current = 0,
     --- 换算比率，默认：1000000金 -> 1木
+    ---@private
     convert_ratio = 1000000
 }
 

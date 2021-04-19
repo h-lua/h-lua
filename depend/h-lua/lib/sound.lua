@@ -1,6 +1,6 @@
 ---@class hsound 声音
 hsound = {
-    BREAK_DELAY = 3
+    BREAK_DELAY = 3.3
 }
 
 --- 创建音效(播放音效前都要创建的)
