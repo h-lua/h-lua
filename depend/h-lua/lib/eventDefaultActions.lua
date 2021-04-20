@@ -400,7 +400,7 @@ hevent_default_actions = {
                 end)
             else
                 -- 如果是英雄，检测属性重生秒数
-                local rebornSec = hattribute.get(u, "reborn") or -999
+                local rebornSec = hattribute.get(u, "reborn", -999)
                 if (rebornSec >= 0) then
                     hevent_default_actions.hero.reborn(u, rebornSec)
                 end

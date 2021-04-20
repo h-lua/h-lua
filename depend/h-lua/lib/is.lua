@@ -78,6 +78,13 @@ his.hasSlot = function(whichUnit, slotId)
     return cj.GetUnitAbilityLevel(whichUnit, slotId) >= 1
 end
 
+--- 单位是否可攻击
+---@param whichUnit userdata
+---@return boolean
+his.canAttack = function(whichUnit)
+    return "0" ~= (hslk.i2v(hunit.getId(whichUnit), "slk", "weapsOn") or "0")
+end
+
 --- 是否死亡
 ---@param whichUnit userdata
 ---@return boolean

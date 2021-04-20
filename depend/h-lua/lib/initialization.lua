@@ -95,14 +95,14 @@ end
 -- 恢复生命监听器
 hmonitor.create(CONST_MONITOR.LIFE_BACK, 0.5,
     function(object)
-        local val = hattribute.get(object, "life_back") or 0
+        local val = hattribute.get(object, "life_back")
         hunit.addCurLife(object, val * 0.5)
     end,
     function(object)
         if (his.dead(object) or his.deleted(object)) then
             return true
         end
-        local val = hattribute.get(object, "life_back") or 0
+        local val = hattribute.get(object, "life_back")
         if (val > 0 and hunit.getCurLifePercent(object) >= 100) then
             return true
         end
@@ -113,14 +113,14 @@ hmonitor.create(CONST_MONITOR.LIFE_BACK, 0.5,
 -- 恢复魔法监听器
 hmonitor.create(CONST_MONITOR.MANA_BACK, 0.7,
     function(object)
-        local val = hattribute.get(object, "mana_back") or 0
+        local val = hattribute.get(object, "mana_back")
         hunit.addCurMana(object, val * 0.7)
     end,
     function(object)
         if (his.dead(object) or his.deleted(object)) then
             return true
         end
-        local val = hattribute.get(object, "mana_back") or 0
+        local val = hattribute.get(object, "mana_back")
         if (val > 0 and hunit.getCurManaPercent(object) >= 100) then
             return true
         end

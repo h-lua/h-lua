@@ -232,7 +232,7 @@ hattribute.xtras = function(triggerUnit, eventKey, evtData)
                             -- 以上两个都是大于0才有效
                             if (val > 0) then
                                 -- buff; > 0
-                                local buff_oppose = hattribute.get(targetUnit, 'buff_oppose')
+                                local buff_oppose = hattribute.get(targetUnit, "buff_oppose")
                                 if (buff_oppose > 0) then
                                     val = val * (1 - 0.01 * buff_oppose)
                                 end
@@ -244,7 +244,7 @@ hattribute.xtras = function(triggerUnit, eventKey, evtData)
                                 end
                             else
                                 -- debuff; < 0
-                                local debuff_oppose = hattribute.get(targetUnit, 'debuff_oppose')
+                                local debuff_oppose = hattribute.get(targetUnit, "debuff_oppose")
                                 if (debuff_oppose > 0) then
                                     val = val * (1 - 0.01 * debuff_oppose)
                                 end

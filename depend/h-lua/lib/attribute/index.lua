@@ -484,17 +484,19 @@ end
 --- 通用get
 ---@param whichUnit userdata
 ---@param attr string
+---@param default any 默认值，默认为0
 ---@return any
-hattribute.get = function(whichUnit, attr)
+hattribute.get = function(whichUnit, attr, default)
+    default = default or 0
     if (whichUnit == nil) then
-        return nil
+        return default
     end
     local attribute = hcache.get(whichUnit, CONST_CACHE.ATTR, nil)
     if (attribute == nil) then
-        return nil
+        return default
     elseif (attribute == -1) then
         if (hattribute.init(whichUnit) == false) then
-            return nil
+            return default
         end
         attribute = hcache.get(whichUnit, CONST_CACHE.ATTR)
     end
@@ -510,9 +512,9 @@ hattribute.get = function(whichUnit, attr)
     attribute.sight_day = hunit.getSight(whichUnit) + (attribute.sight or 0)
     attribute.sight_night = hunit.getNSight(whichUnit) + (attribute.sight or 0)
     if (attr == nil) then
-        return attribute
+        return attribute or {}
     end
-    return attribute[attr]
+    return attribute[attr] or default
 end
 
 --- 计算单位的属性浮动影响

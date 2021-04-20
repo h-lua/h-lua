@@ -231,7 +231,7 @@ end
         tavernId = nil, -- 酒馆模式下，你可以自定义酒馆单位是哪一个(建议使用slkHelper创建酒馆，这样自动就有出售单位等必备技能)
         tavernUnitQty = 10, -- 酒馆模式下，一个酒馆最多拥有几种单位
         onUnitSell = function, -- 酒馆模式时，购买单位的动作，默认是系统pickHero事件，你可自定义
-        direct = {1,1}, -- 生成方向，默认左上角开始到右下角结束
+        direct = {1,1}, -- 生成方向，默认左下角开始到右上角结束
     }
 ]]
 ---@param options pilotHeroBuildSelector
@@ -264,7 +264,7 @@ hhero.buildSelector = function(options)
                 currentRowQty = 0
                 totalRow = totalRow + 1
                 x = buildX
-                y = y - buildDistanceY
+                y = y + buildDistanceY
             else
                 x = buildX + currentRowQty * buildDistanceX
             end
@@ -332,7 +332,7 @@ hhero.buildSelector = function(options)
                     currentRowQty = 0
                     totalRow = totalRow + 1
                     x = buildX
-                    y = y - buildDistanceY
+                    y = y + buildDistanceY
                 else
                     x = buildX + currentRowQty * buildDistanceX
                 end

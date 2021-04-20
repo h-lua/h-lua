@@ -387,7 +387,7 @@ hattributeSetter.setUnitDefendWhite = function(whichUnit, futureVal)
     elseif (futureVal > 99999999) then
         futureVal = 99999999
     end
-    local defend_green = hattribute.get(whichUnit, 'defend_green') or 0
+    local defend_green = hattribute.get(whichUnit, 'defend_green')
     hjapi.SetUnitState(whichUnit, UNIT_STATE_DEFEND_WHITE, futureVal + defend_green)
 end
 

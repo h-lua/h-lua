@@ -38,7 +38,7 @@ hskill.damage = function(options)
     if (targetUnit == nil) then
         return
     end
-    if (his.alive(options.targetUnit) == false or his.deleted(targetUnit)) then
+    if (his.dead(options.targetUnit) or his.deleted(targetUnit)) then
         return
     end
     if (his.deleted(targetUnit)) then
@@ -51,16 +51,11 @@ hskill.damage = function(options)
         options.damageSrc = CONST_DAMAGE_SRC.unknown
     end
     --双方attr get
-    local targetUnitAttr = hattribute.get(targetUnit)
-    local sourceUnitAttr = {}
-    if (targetUnitAttr == nil) then
+    if (hattribute.get(targetUnit) == nil) then
         return
     end
-    if (sourceUnit ~= nil) then
-        sourceUnitAttr = hattribute.get(sourceUnit)
-        if (sourceUnitAttr == nil) then
-            return
-        end
+    if (sourceUnit ~= nil and hattribute.get(sourceUnit) == nil) then
+        return
     end
     local damageSrc = options.damageSrc
     -- 最终伤害
@@ -122,7 +117,7 @@ hskill.damage = function(options)
         end
     end
     -- 计算单位是否无敌（无敌属性为百分比计算，被动触发抵挡一次）
-    if (his.invincible(targetUnit) == true or math.random(1, 100) < targetUnitAttr.invincible) then
+    if (his.invincible(targetUnit) == true or math.random(1, 100) < hattribute.get(targetUnit, "invincible")) then
         if (ignore.invincible == false) then
             htextTag.model({ msg = "无敌", whichUnit = targetUnit, red = 255, green = 215, blue = 0 })
             return
@@ -134,8 +129,9 @@ hskill.damage = function(options)
         if (damageSrc == CONST_DAMAGE_SRC.attack and sourceUnit ~= nil) then
             damageType = {}
             for _, con in ipairs(CONST_ENCHANT) do
-                if (sourceUnitAttr['e_' .. con.value .. '_attack'] > 0) then
-                    for _ = 1, sourceUnitAttr['e_' .. con.value .. '_attack'], 1 do
+                local eAtk = hattribute.get(sourceUnit, 'e_' .. con.value .. '_attack')
+                if (eAtk > 0) then
+                    for _ = 1, eAtk, 1 do
                         table.insert(damageType, con.value)
                     end
                 end
@@ -156,8 +152,9 @@ hskill.damage = function(options)
     end
     -- 计算硬直抵抗
     punishEffectRatio = 0.99
-    if (targetUnitAttr.punish_oppose > 0) then
-        punishEffectRatio = punishEffectRatio - targetUnitAttr.punish_oppose * 0.01
+    local punishOppose = hattribute.get(targetUnit, "punish_oppose")
+    if (punishOppose > 0) then
+        punishEffectRatio = punishEffectRatio - punishOppose * 0.01
         if (punishEffectRatio < 0.100) then
             punishEffectRatio = 0.100
         end
@@ -165,20 +162,21 @@ hskill.damage = function(options)
     -- 护甲>0,如果无视护甲，补回伤害
     -- 护甲<=0,忽略,负护甲增伤可不处理
     local defenseArmor = math.round(hslk.misc("Misc", "DefenseArmor"), 2) or 0
+    local defend = hattribute.get(targetUnit, "defend")
     if (defenseArmor <= 0) then
         -- *重要* 当地图平衡常数设定为[DefenseArmor|护甲因子]小于等于0时，这里为了修正魔兽负护甲依然因子保持0.06的bug,补回伤害
         -- 当护甲x为负时，最大-20,公式2-(1-a)^abs(x)
-        if (targetUnitAttr.defend < 0) then
-            if (targetUnitAttr.defend >= -20) then
-                damage = damage / (2 - 0.94 ^ math.abs(targetUnitAttr.defend))
+        if (defend < 0) then
+            if (defend >= -20) then
+                damage = damage / (2 - 0.94 ^ math.abs(defend))
             else
                 damage = damage / (2 - 0.94 ^ 20)
             end
         end
     else
         -- 当地图平衡常数[DefenseArmor|护甲因子]大于0时
-        if (ignore.defend and targetUnitAttr.defend > 0) then
-            local defenseArmorRemain = 1 - hattribute.getArmorReducePercent(targetUnitAttr.defend)
+        if (ignore.defend and defend > 0) then
+            local defenseArmorRemain = 1 - hattribute.getArmorReducePercent(defend)
             if (defenseArmorRemain > 0) then
                 damage = damage * (1 / defenseArmorRemain)
             end
@@ -188,20 +186,24 @@ hskill.damage = function(options)
     lastDamage = damage
     -- 自身暴击计算，自身暴击触发下，回避无效（模拟原生魔兽）
     local isKnocking = false
-    if (isFixed == false and lastDamage > 0 and sourceUnitAttr.knocking_odds > 0 and sourceUnitAttr.knocking_extent > 0) then
+    local knockingOdds = hattribute.get(sourceUnit, "knocking_odds")
+    local knockingExtent = hattribute.get(sourceUnit, "knocking_extent")
+    if (isFixed == false and lastDamage > 0 and knockingOdds > 0 and knockingExtent > 0) then
         local targetKnockingOppose = hattribute.get(targetUnit, "knocking_oppose")
-        sourceUnitAttr.knocking_odds = sourceUnitAttr.knocking_odds - targetKnockingOppose
-        if (math.random(1, 100) <= sourceUnitAttr.knocking_odds) then
+        knockingOdds = knockingOdds - targetKnockingOppose
+        if (math.random(1, 100) <= knockingOdds) then
             isKnocking = true
             damageString = "暴击!" .. damageString
             damageRGB = { 255, 0, 0 }
-            lastDamagePercent = lastDamagePercent + sourceUnitAttr.knocking_extent * 0.01
+            lastDamagePercent = lastDamagePercent + knockingExtent * 0.01
             ignore.avoid = true
         end
     end
     -- 计算回避 X 命中
     if (ignore.avoid == false) then
-        if (damageSrc == CONST_DAMAGE_SRC.attack and targetUnitAttr.avoid - (sourceUnitAttr.aim or 0) > 0 and math.random(1, 100) <= targetUnitAttr.avoid - (sourceUnitAttr.aim or 0)) then
+        local avoid = hattribute.get(targetUnit, "avoid")
+        local aim = hattribute.get(sourceUnit, "aim")
+        if (damageSrc == CONST_DAMAGE_SRC.attack and avoid - aim > 0 and math.random(1, 100) <= (avoid - aim)) then
             lastDamage = 0
             htextTag.model({ msg = "回避", whichUnit = targetUnit, red = 94, green = 247, blue = 142 })
             -- @触发回避事件
@@ -223,10 +225,12 @@ hskill.damage = function(options)
             local ev = enchant.value
             if (damageTypeRatio[ev] ~= nil and damageTypeRatio[ev] > 0) then
                 -- 无视附魔抵抗
+                local ea = hattribute.get(sourceUnit, "e_" .. ev)
+                local eo = hattribute.get(targetUnit, "e_" .. ev .. "_oppose")
                 if (ignore.enchant == false) then
-                    tempNatural[ev] = henchant.INTRINSIC_ADDITION + (sourceUnitAttr["e_" .. ev] or 0) - targetUnitAttr["e_" .. ev .. "_oppose"]
+                    tempNatural[ev] = henchant.INTRINSIC_ADDITION + ea - eo
                 else
-                    tempNatural[ev] = henchant.INTRINSIC_ADDITION + (sourceUnitAttr["e_" .. ev] or 0)
+                    tempNatural[ev] = henchant.INTRINSIC_ADDITION + ea
                 end
                 if (tempNatural[ev] < -100) then
                     tempNatural[ev] = -100
@@ -242,22 +246,23 @@ hskill.damage = function(options)
         end
         if (isFixed == false) then
             -- 计算护甲（不涉及伤害类型）
-            if (targetUnitAttr.defend ~= 0) then
+            if (defend ~= 0) then
                 local defendPercent = 0
-                if (targetUnitAttr.defend > 0) then
+                if (defend > 0) then
                     -- 非无视护甲
                     if (ignore.defend == false) then
-                        defendPercent = targetUnitAttr.defend / (targetUnitAttr.defend + 200)
+                        defendPercent = defend / (defend + 200)
                     end
                 else
-                    local dfd = math.abs(targetUnitAttr.defend)
+                    local dfd = math.abs(defend)
                     defendPercent = -dfd / (dfd * 0.33 + 100)
                 end
                 lastDamagePercent = lastDamagePercent - defendPercent
             end
             -- 计算伤害增幅
-            if (lastDamage > 0 and sourceUnit ~= nil and sourceUnitAttr.damage_extent ~= 0) then
-                lastDamagePercent = lastDamagePercent + sourceUnitAttr.damage_extent * 0.01
+            local damageExtent = hattribute.get(sourceUnit, "damage_extent")
+            if (lastDamage > 0 and sourceUnit ~= nil and damageExtent ~= 0) then
+                lastDamagePercent = lastDamagePercent + damageExtent * 0.01
             end
         end
         -- 合计 lastDamagePercent
@@ -266,12 +271,14 @@ hskill.damage = function(options)
             -- 计算减伤
             local resistance = 0
             -- 固定值减少
-            if (targetUnitAttr.damage_reduction > 0) then
-                resistance = resistance + targetUnitAttr.damage_reduction
+            local damageReduction = hattribute.get(targetUnit, "damage_reduction")
+            if (damageReduction > 0) then
+                resistance = resistance + damageReduction
             end
             -- 百分比减少
-            if (targetUnitAttr.damage_decrease > 0) then
-                resistance = resistance + lastDamage * targetUnitAttr.damage_decrease * 0.01
+            local damageDecrease = hattribute.get(targetUnit, "damage_decrease")
+            if (damageDecrease > 0) then
+                resistance = resistance + lastDamage * damageDecrease * 0.01
             end
             if (resistance > 0) then
                 if (resistance >= lastDamage) then
@@ -486,21 +493,21 @@ hskill.damage = function(options)
                 triggerUnit = sourceUnit,
                 targetUnit = targetUnit,
                 damage = lastDamage,
-                odds = sourceUnitAttr.knocking_odds,
-                percent = sourceUnitAttr.knocking_extent
+                odds = knockingOdds,
+                percent = knockingExtent
             })
             --@触发被物理暴击事件
             hevent.triggerEvent(targetUnit, CONST_EVENT.beKnocking, {
                 triggerUnit = sourceUnit,
                 sourceUnit = targetUnit,
                 damage = lastDamage,
-                odds = sourceUnitAttr.knocking_odds,
-                percent = sourceUnitAttr.knocking_extent
+                odds = knockingOdds,
+                percent = knockingExtent
             })
         end
         -- 吸血
         if (sourceUnit ~= nil and damageSrc == CONST_DAMAGE_SRC.attack) then
-            local hemophagia = sourceUnitAttr.hemophagia - targetUnitAttr.hemophagia_oppose
+            local hemophagia = hattribute.get(sourceUnit, "hemophagia") - hattribute.get(targetUnit, "hemophagia_oppose")
             if (hemophagia > 0) then
                 hunit.addCurLife(sourceUnit, lastDamage * hemophagia * 0.01)
                 heffect.bindUnit(
@@ -535,7 +542,7 @@ hskill.damage = function(options)
         end
         -- 技能吸血
         if (sourceUnit ~= nil and damageSrc == CONST_DAMAGE_SRC.skill) then
-            local hemophagiaSkill = sourceUnitAttr.hemophagia_skill - targetUnitAttr.hemophagia_skill_oppose
+            local hemophagiaSkill = hattribute.get(sourceUnit, "hemophagia_skill") - hattribute.get(targetUnit, "hemophagia_skill_oppose")
             if (hemophagiaSkill > 0) then
                 hunit.addCurLife(sourceUnit, lastDamage * hemophagiaSkill * 0.01)
                 heffect.bindUnit(
@@ -572,7 +579,7 @@ hskill.damage = function(options)
         local punishDuring = 5.00
         if (lastDamage > 1 and his.alive(targetUnit) and his.punish(targetUnit) == false and hunit.isPunishing(targetUnit)) then
             local cutVal = lastDamage * 1
-            local isCut = (targetUnitAttr.punish_current - cutVal <= 0)
+            local isCut = hattribute.get(targetUnit, "punish_current") - cutVal <= 0
             hattribute.set(targetUnit, 0, {
                 punish_current = "-" .. cutVal
             })
@@ -582,10 +589,10 @@ hskill.damage = function(options)
                 htime.setTimeout(punishDuring + 1, function(t)
                     htime.delTimer(t)
                     hcache.set(targetUnit, CONST_CACHE.ATTR_PUNISHING, false)
-                    hattribute.set(targetUnit, 0, { punish_current = "+" .. targetUnitAttr.punish })
+                    hattribute.set(targetUnit, 0, { punish_current = "+" .. hattribute.get(targetUnit, "punish") })
                 end)
-                local punishEffectAttackSpeed = (100 + targetUnitAttr.attack_speed) * punishEffectRatio
-                local punishEffectMove = targetUnitAttr.move * punishEffectRatio
+                local punishEffectAttackSpeed = (100 + hattribute.get(targetUnit, "attack_speed")) * punishEffectRatio
+                local punishEffectMove = hattribute.get(targetUnit, "move") * punishEffectRatio
                 if (punishEffectAttackSpeed < 1) then
                     punishEffectAttackSpeed = 1
                 end
@@ -608,7 +615,7 @@ hskill.damage = function(options)
         end
         -- 反伤
         if (sourceUnit ~= nil and his.invincible(sourceUnit) == false) then
-            local targetUnitDamageRebound = targetUnitAttr.damage_rebound - sourceUnitAttr.damage_rebound_oppose
+            local targetUnitDamageRebound = hattribute.get(targetUnit, "damage_rebound") - hattribute.get(sourceUnit, "damage_rebound_oppose")
             if (targetUnitDamageRebound > 0) then
                 local ldr = math.round(lastDamage * targetUnitDamageRebound * 0.01)
                 if (ldr > 0.01) then
