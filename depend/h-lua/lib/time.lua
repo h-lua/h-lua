@@ -106,7 +106,9 @@ htime.timerInKernel = function(time, yourFunc, isInterval)
             function()
                 for k, v in ipairs(htime.kernel[space]) do
                     if (v.running == true) then
-                        v.remain = v.remain - space
+                        if (v.abort ~= true) then
+                            v.remain = v.remain - space
+                        end
                         if (v.remain <= 0) then
                             local status, sErr = xpcall(v.yourFunc, debug.traceback, string.implode("_", { space, k }))
                             if (status == true) then
@@ -187,6 +189,30 @@ htime.getElapsedTime = function(t)
     local set = htime.kernel[k[1]][k[2]].set
     local remain = htime.kernel[k[1]][k[2]].remain
     return set - remain
+end
+
+--- 暂停一个计时器
+---@param t string
+htime.pause = function(t)
+    local k = htime.kernelInfo(t)
+    if (htime.kernel[k[1]] ~= nil and htime.kernel[k[1]][k[2]] ~= nil) then
+        htime.kernel[k[1]][k[2]].abort = true
+    end
+    if (htime.reflect[t] ~= nil) then
+        cj.PauseTimer(htime.reflect[t])
+    end
+end
+
+--- 恢复一个被暂停的计时器
+---@param t string
+htime.resume = function(t)
+    local k = htime.kernelInfo(t)
+    if (htime.reflect[t] ~= nil) then
+        cj.ResumeTimer(htime.reflect[t])
+    end
+    if (htime.kernel[k[1]] ~= nil and htime.kernel[k[1]][k[2]] ~= nil) then
+        htime.kernel[k[1]][k[2]].abort = false
+    end
 end
 
 --- 删除计时器

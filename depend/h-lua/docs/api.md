@@ -151,7 +151,7 @@ table.obj2arr(obj, keyMap)
  * [L]**lib\attribute\index.lua**
 ```
 hattribute.isValType(field, valType)
-hattribute.setThreeBuff(buff)
+hattribute.setRelation(buff)
 hattribute.init(whichUnit)
 hattribute.setHandle(whichUnit, attr, opr, val, during)
 hattribute.set(whichUnit, during, data)
