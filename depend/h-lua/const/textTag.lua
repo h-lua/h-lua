@@ -5,6 +5,10 @@ CONST_MODEL_TTG_SPD_DMG = 1.0
 
 --- 模型贴图型特效
 CONST_MODEL_TTG = {
+    ["k"] = { mdl = "hLua\\ttg\\l_K.mdl", bit = 2 },
+    ["K"] = { mdl = "hLua\\ttg\\l_K.mdl", bit = 2 },
+    ["g"] = { mdl = "hLua\\ttg\\l_G.mdl", bit = 2 },
+    ["G"] = { mdl = "hLua\\ttg\\l_G.mdl", bit = 2 },
     ["0"] = { mdl = "hLua\\ttg\\n_0.mdl", bit = 2 },
     ["1"] = { mdl = "hLua\\ttg\\n_1.mdl", bit = 2 },
     ["2"] = { mdl = "hLua\\ttg\\n_2.mdl", bit = 2 },
@@ -28,6 +32,7 @@ CONST_MODEL_TTG = {
     ["避"] = { mdl = "hLua\\ttg\\z_bi.mdl", bit = 2 },
     ["冰"] = { mdl = "hLua\\ttg\\z_bing.mdl", bit = 2 },
     ["草"] = { mdl = "hLua\\ttg\\z_cao.mdl", bit = 2 },
+    ["超"] = { mdl = "hLua\\ttg\\z_chao.mdl", bit = 2 },
     ["沉"] = { mdl = "hLua\\ttg\\z_chen.mdl", bit = 2 },
     ["重"] = { mdl = "hLua\\ttg\\z_chong.mdl", bit = 2 },
     ["虫"] = { mdl = "hLua\\ttg\\z_chong2.mdl", bit = 2 },

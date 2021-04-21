@@ -585,13 +585,19 @@ hevent_default_actions = {
                 return
             end
             -- 判断超重
-            local newWeight = hattribute.get(u, "weight_current") + hitem.getWeight(itId)
+            local newWeight = hattribute.get(u, "weight_current") + hitem.getWeight(itId, charges)
             if (newWeight > hattribute.get(u, "weight")) then
                 local exWeight = math.round(newWeight - hattribute.get(u, "weight"))
-                htextTag.style(
-                    htextTag.create2Unit(u, "超重" .. exWeight .. "kg", 8.00, "ffffff", 1, 1.1, 50.00),
-                    "scale", 0, 0.05
-                )
+                httg.model({
+                    msg = "超重" .. exWeight .. "KG",
+                    width = 10,
+                    scale = 0.25,
+                    speed = 0.5,
+                    whichUnit = u,
+                    red = 255,
+                    green = 0,
+                    blue = 0,
+                })
                 -- 判断如果是真实物品并且有影子，转为影子物品
                 if (hitem.isShadowFront(itId)) then
                     itId = hitem.shadowID(itId)

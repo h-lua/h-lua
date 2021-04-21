@@ -18,7 +18,10 @@ hhero = {
 ---@param whichHero userdata
 ---@return string UNK|STR|AGI|INT
 hhero.getPrimary = function(whichHero)
-    local primary = hslk.i2v(hunit.getId(whichHero), "slk", "Primary") or "UNK"
+    local primary = hslk.i2v(hunit.getId(whichHero), "slk", "Primary")
+    if (primary == nil or primary == "_") then
+        primary = "UNK"
+    end
     return string.upper(primary)
 end
 

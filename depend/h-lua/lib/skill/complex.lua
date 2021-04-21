@@ -31,7 +31,7 @@ hskill.knocking = function(options)
         return
     end
     if (math.random(1, 100) <= odds) then
-        local effect = options.effect or "war3mapImported\\eff_crit.mdl"
+        local effect = options.effect or "hLua\\crit.mdl"
         heffect.toUnit(effect, targetUnit, 0.5)
         --暴！
         local val = damage * percent * 0.01

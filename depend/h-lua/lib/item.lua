@@ -319,15 +319,16 @@ end
 ---@return number
 hitem.getWeight = function(itOrId, charges)
     local id = hitem.getId(itOrId)
-    local iv = hslk.i2v(id)
-    if (iv ~= nil) then
+    local _weight = hslk.i2v(id, "_weight") or 0
+    _weight = math.round(_weight, 3)
+    if (_weight > 0) then
         if (charges == nil and type(itOrId) == "userdata") then
             -- 如果没有传次数，并且传入的是物品对象，会直接获取物品的次数，请注意
             charges = hitem.getCharges(itOrId)
-        else
+        elseif (charges == nil) then
             charges = 1
         end
-        return (iv._weight or 0) * charges
+        return _weight * charges
     else
         return 0
     end
@@ -430,9 +431,8 @@ hitem.addProperty = function(whichUnit, itId, charges)
     if (whichUnit == nil or itId == nil or charges < 1) then
         return
     end
-    local attr = hitem.getAttribute(itId)
-    attr.weight_current = "+" .. hitem.getWeight(itId, 1)
-    hattribute.caleAttribute(CONST_DAMAGE_SRC.item, true, whichUnit, attr, charges)
+    hattribute.set(whichUnit, 0, { weight_current = "+" .. hitem.getWeight(itId, charges) })
+    hattribute.caleAttribute(CONST_DAMAGE_SRC.item, true, whichUnit, hitem.getAttribute(itId), charges)
     for _ = 1, charges, 1 do
         hring.insert(whichUnit, itId)
     end
@@ -443,9 +443,8 @@ hitem.subProperty = function(whichUnit, itId, charges)
     if (whichUnit == nil or itId == nil or charges < 1) then
         return
     end
-    local attr = hitem.getAttribute(itId)
-    attr.weight_current = "+" .. hitem.getWeight(itId, 1)
-    hattribute.caleAttribute(CONST_DAMAGE_SRC.item, false, whichUnit, attr, charges)
+    hattribute.set(whichUnit, 0, { weight_current = "-" .. hitem.getWeight(itId, charges) })
+    hattribute.caleAttribute(CONST_DAMAGE_SRC.item, false, whichUnit, hitem.getAttribute(itId), charges)
     for _ = 1, charges, 1 do
         hring.remove(whichUnit, itId)
     end

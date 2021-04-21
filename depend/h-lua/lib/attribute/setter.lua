@@ -513,16 +513,36 @@ hattributeSetter.setUnitThree = function(whichUnit, futureVal, attr, diff)
             end
         end
     end
-    -- 主属性影响(<= 0自动忽略)
-    if (hattribute.THREE_BUFF.primary > 0) then
-        if (string.upper(thumb) == hhero.getPrimary(whichUnit)) then
-            hattribute.set(whichUnit, 0, { attack_white = "+" .. diff * hattribute.THREE_BUFF.primary })
+end
+
+---@private
+hattributeSetter.relation = function(whichUnit, attr, diff)
+    local three --三围标志
+    if (table.includes({ "str_white", "agi_white", "int_white", "str_green", "agi_green", "int_green" }, attr)) then
+        three = string.sub(attr, 1, 3)
+    end
+    if (three ~= nil and his.hero(whichUnit)) then
+        -- 主属性影响(<= 0自动忽略)
+        if (hattribute.RELATION.primary > 0) then
+            if (string.upper(three) == hhero.getPrimary(whichUnit)) then
+                hattribute.set(whichUnit, 0, { attack_white = "+" .. diff * hattribute.RELATION.primary })
+            end
+        end
+        -- 三围影响
+        if (hattribute.RELATION[three] ~= nil) then
+            for _, d in ipairs(table.obj2arr(hattribute.RELATION[three], CONST_ATTR_KEYS)) do
+                local tempV = diff * d.value
+                if (tempV < 0) then
+                    hattribute.set(whichUnit, 0, { [d.key] = "-" .. math.abs(tempV) })
+                elseif (tempV > 0) then
+                    hattribute.set(whichUnit, 0, { [d.key] = "+" .. tempV })
+                end
+            end
         end
     end
-    -- 三围影响
-    if (hattribute.THREE_BUFF[thumb] ~= nil) then
-        local three = table.obj2arr(hattribute.THREE_BUFF[thumb], CONST_ATTR_KEYS)
-        for _, d in ipairs(three) do
+    -- 自定义属性影响
+    if (type(hattribute.RELATION[attr]) == "table") then
+        for _, d in ipairs(table.obj2arr(hattribute.RELATION[attr], CONST_ATTR_KEYS)) do
             local tempV = diff * d.value
             if (tempV < 0) then
                 hattribute.set(whichUnit, 0, { [d.key] = "-" .. math.abs(tempV) })
