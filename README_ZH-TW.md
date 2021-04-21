@@ -18,7 +18,11 @@
     ├── projects - 用來放置你的地圖項目目錄，如 h-lua-sdk-helloworld
     └── sdk.exe - 編譯好的開發命令工具
 ```
-> [h-lua-sdk-helloworld](https://github.com/hunzsig-warcraft3/h-lua-sdk-helloworld)
+
+ * [docs]http://wenku.hunzsig.org/?_=_6_34
+ * [demo]你好世界 https://github.com/hunzsig-warcraft3/h-lua-sdk-helloworld
+ * [demo]秘地探奇 https://github.com/hunzsig-warcraft3/h-lua-sdk-mysterious-land
+ * [test]崩潰壓力 https://github.com/hunzsig-warcraft3/h-lua-sdk-crash
 
 ### 項目目錄用來放置地圖項目
 > 一個正規的項目應該包括以下結構

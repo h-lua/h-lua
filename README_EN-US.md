@@ -18,7 +18,11 @@
     ├── projects - your maps, ex: h-lua-sdk-helloworld
     └── sdk.exe
 ```
-> [h-lua-sdk-helloworld](https://github.com/hunzsig-warcraft3/h-lua-sdk-helloworld)
+
+ * [docs]http://wenku.hunzsig.org/?_=_6_34
+ * [demo]HelloWorld https://github.com/hunzsig-warcraft3/h-lua-sdk-helloworld
+ * [demo]MysteriousLand https://github.com/hunzsig-warcraft3/h-lua-sdk-mysterious-land
+ * [test]Crash https://github.com/hunzsig-warcraft3/h-lua-sdk-crash
 
 ### The projects directory is used to place map projects
 > A formal project should include the following structure.

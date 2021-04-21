@@ -18,7 +18,11 @@
     ├── projects - 用来放置你的地图项目目录，如 h-lua-sdk-helloworld
     └── sdk.exe - 编译好的开发命令工具
 ```
-> [h-lua-sdk-helloworld](https://github.com/hunzsig-warcraft3/h-lua-sdk-helloworld)
+
+ * [docs]http://wenku.hunzsig.org/?_=_6_34
+ * [demo]你好世界 https://github.com/hunzsig-warcraft3/h-lua-sdk-helloworld
+ * [demo]秘地探奇 https://github.com/hunzsig-warcraft3/h-lua-sdk-mysterious-land
+ * [test]崩溃压力 https://github.com/hunzsig-warcraft3/h-lua-sdk-crash
 
 ### 项目目录用来放置地图项目
 > 一个正规的项目应该包括以下结构

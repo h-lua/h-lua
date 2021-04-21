@@ -7,10 +7,9 @@
 [![image](https://img.shields.io/badge/author-hunzsig-red.svg)](https://www.hunzsig.com)
 ![image](https://img.shields.io/badge/email-mzyhaohaoren@qq.com-green.svg)
 
-[![image](https://img.shields.io/badge/demo-HelloWorld-orange.svg)](https://github.com/hunzsig-warcraft3/w3x-h-lua-helloworld)
-[![image](https://img.shields.io/badge/demo-MysteriousLand-orange.svg)](https://github.com/hunzsig-warcraft3/w3x-mysterious-land)
-[![image](https://img.shields.io/badge/test-DZAPI-lightgrey.svg)](https://github.com/hunzsig-warcraft3/w3x-test-dzapi)
-[![image](https://img.shields.io/badge/test-Crash-lightgrey.svg)](https://github.com/hunzsig-warcraft3/w3x-test-breakdown)
+[![image](https://img.shields.io/badge/demo-HelloWorld-orange.svg)](https://github.com/hunzsig-warcraft3/h-lua-sdk-helloworld)
+[![image](https://img.shields.io/badge/demo-MysteriousLand-orange.svg)](https://github.com/hunzsig-warcraft3/h-lua-sdk-mysterious-land)
+[![image](https://img.shields.io/badge/test-Crash-lightgrey.svg)](https://github.com/hunzsig-warcraft3/h-lua-sdk-crash)
 
 ```
 This set of codes is free for trial by authors who understand Lua.
@@ -25,6 +24,11 @@ If necessary, please modify the source code to make the game.
 ```
 git clone https://github.com/hunzsig-warcraft3/h-lua-sdk.git
 ```
+
+ * [docs]http://wenku.hunzsig.org/?_=_6_34
+ * [demo]HelloWorld https://github.com/hunzsig-warcraft3/h-lua-sdk-helloworld
+ * [demo]MysteriousLand https://github.com/hunzsig-warcraft3/h-lua-sdk-mysterious-land
+ * [test]Crash https://github.com/hunzsig-warcraft3/h-lua-sdk-crash
 
 ## Project structure：
 ```
