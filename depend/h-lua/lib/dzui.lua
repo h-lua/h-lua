@@ -292,13 +292,21 @@ end
 --- 注册鼠标事件
 ---@param frameId number
 ---@param mouseOrder number integer 参考blizzard:^MOUSE_ORDER
----@param whichPlayer userdata 玩家
 ---@param vjFunc string vjFunction
-hdzui.onMouse = function(frameId, mouseOrder, whichPlayer, vjFunc)
+---@param whichPlayer userdata 玩家
+hdzui.onMouse = function(frameId, mouseOrder, vjFunc, whichPlayer)
     if (mouseOrder == nil) then
         return
     end
-    if (cj.GetLocalPlayer() == whichPlayer) then
-        hjapi.DzFrameSetScript(frameId, mouseOrder, vjFunc, false)
+    if (whichPlayer ~= nil) then
+        if (cj.GetLocalPlayer() == whichPlayer) then
+            hjapi.DzFrameSetScript(frameId, mouseOrder, vjFunc, false)
+        end
+    else
+        for i = 1, bj_MAX_PLAYERS, 1 do
+            if (cj.GetLocalPlayer() == hplayer.players[i]) then
+                hjapi.DzFrameSetScript(frameId, mouseOrder, vjFunc, false)
+            end
+        end
     end
 end

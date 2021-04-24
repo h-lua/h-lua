@@ -486,7 +486,11 @@ end
 ---@param default any 默认值，默认为0
 ---@return any
 hattribute.get = function(whichUnit, attr, default)
-    default = default or 0
+    if (attr == nil) then
+        default = default or {}
+    else
+        default = default or 0
+    end
     if (whichUnit == nil) then
         return default
     end
@@ -511,7 +515,7 @@ hattribute.get = function(whichUnit, attr, default)
     attribute.sight_day = hunit.getSight(whichUnit) + (attribute.sight or 0)
     attribute.sight_night = hunit.getNSight(whichUnit) + (attribute.sight or 0)
     if (attr == nil) then
-        return attribute or {}
+        return attribute or default
     end
     return attribute[attr] or default
 end
