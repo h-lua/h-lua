@@ -1,6 +1,7 @@
 local cache = {
     toc = {},
     tagIdx = 0,
+    syncIdx = 0,
     uiGame = nil,
     uiMiniMap = nil,
     uiMiniMapBtn = nil,

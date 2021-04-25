@@ -87,6 +87,12 @@ hplayer.index = function(whichPlayer)
     return idx
 end
 
+--- 获取本地玩家
+---@return userdata player
+hplayer.loc = function()
+    return cj.GetLocalPlayer()
+end
+
 --- 设置换算比率，多少金换1木
 ---@param ratio number
 hplayer.setConvertRatio = function(ratio)

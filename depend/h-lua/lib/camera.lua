@@ -4,7 +4,7 @@ hcamera = {}
 ---@param whichPlayer userdata
 ---@param during number
 hcamera.reset = function(whichPlayer, during)
-    if (whichPlayer == nil or cj.GetLocalPlayer() == whichPlayer) then
+    if (whichPlayer == nil or hplayer.loc() == whichPlayer) then
         cj.ResetToGameCamera(during)
     end
 end
@@ -14,7 +14,7 @@ end
 ---@param during number
 ---@param camerasetup userdata
 hcamera.apply = function(whichPlayer, during, camerasetup)
-    if (whichPlayer == nil or cj.GetLocalPlayer() == whichPlayer) then
+    if (whichPlayer == nil or hplayer.loc() == whichPlayer) then
         cj.CameraSetupApplyForceDuration(camerasetup, true, during)
     end
 end
@@ -25,7 +25,7 @@ end
 ---@param x number
 ---@param y number
 hcamera.toXY = function(whichPlayer, during, x, y)
-    if (whichPlayer == nil or cj.GetLocalPlayer() == whichPlayer) then
+    if (whichPlayer == nil or hplayer.loc() == whichPlayer) then
         cj.PanCameraToTimed(x, y, during)
     end
 end
@@ -38,7 +38,7 @@ hcamera.toUnit = function(whichPlayer, during, whichUnit)
     if (whichUnit == nil) then
         return
     end
-    if (whichPlayer == nil or cj.GetLocalPlayer() == whichPlayer) then
+    if (whichPlayer == nil or hplayer.loc() == whichPlayer) then
         cj.PanCameraToTimed(hunit.x(whichUnit), hunit.y(whichUnit), during)
     end
 end
@@ -47,7 +47,7 @@ end
 ---@param whichPlayer userdata
 ---@param whichUnit userdata
 hcamera.lock = function(whichPlayer, whichUnit)
-    if (whichPlayer ~= nil or cj.GetLocalPlayer() == whichPlayer) then
+    if (whichPlayer ~= nil or hplayer.loc() == whichPlayer) then
         if (his.alive(whichUnit) == true) then
             cj.SetCameraTargetController(whichUnit, 0, 0, false)
         else
@@ -63,7 +63,7 @@ hcamera.changeDistance = function(whichPlayer, diffDistance)
     if (type(diffDistance) ~= "number") then
         diffDistance = 0
     end
-    if (diffDistance ~= 0 and whichPlayer ~= nil and cj.GetLocalPlayer() == whichPlayer) then
+    if (diffDistance ~= 0 and whichPlayer ~= nil and hplayer.loc() == whichPlayer) then
         local oldDistance = cj.GetCameraField(CAMERA_FIELD_TARGET_DISTANCE)
         local toDistance = math.floor(oldDistance + diffDistance)
         if (toDistance < 500) then
@@ -108,7 +108,7 @@ hcamera.shock = function(whichPlayer, whichType, during, scale)
         htime.setTimeout(during, function(t)
             htime.delTimer(t)
             hplayer.setIsShocking(whichPlayer, false)
-            if (cj.GetLocalPlayer() == whichPlayer) then
+            if (hplayer.loc() == whichPlayer) then
                 cj.CameraSetTargetNoise(0, 0)
             end
         end)
@@ -117,7 +117,7 @@ hcamera.shock = function(whichPlayer, whichType, during, scale)
         htime.setTimeout(during, function(t)
             htime.delTimer(t)
             hplayer.setIsShocking(whichPlayer, false)
-            if (cj.GetLocalPlayer() == whichPlayer) then
+            if (hplayer.loc() == whichPlayer) then
                 cj.CameraClearNoiseForPlayer(0, 0)
             end
         end)

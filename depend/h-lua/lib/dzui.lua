@@ -277,7 +277,7 @@ end
 hdzui.frameToggle = function(frameId, enable, whichPlayer)
     if (whichPlayer == nil) then
         hjapi.DzFrameShow(frameId, enable)
-    elseif (cj.GetLocalPlayer() == whichPlayer) then
+    elseif (hplayer.loc() == whichPlayer) then
         hjapi.DzFrameShow(frameId, enable)
     end
 end
@@ -299,12 +299,12 @@ hdzui.onMouse = function(frameId, mouseOrder, vjFunc, whichPlayer)
         return
     end
     if (whichPlayer ~= nil) then
-        if (cj.GetLocalPlayer() == whichPlayer) then
+        if (hplayer.loc() == whichPlayer) then
             hjapi.DzFrameSetScript(frameId, mouseOrder, vjFunc, false)
         end
     else
         for i = 1, bj_MAX_PLAYERS, 1 do
-            if (cj.GetLocalPlayer() == hplayer.players[i]) then
+            if (hplayer.loc() == hplayer.players[i]) then
                 hjapi.DzFrameSetScript(frameId, mouseOrder, vjFunc, false)
             end
         end

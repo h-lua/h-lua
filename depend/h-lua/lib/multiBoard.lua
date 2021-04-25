@@ -33,7 +33,7 @@ hmultiBoard.create = function(key, refreshFrequency, yourData)
             pmb.timer = htime.setInterval(refreshFrequency, function()
                 --检查玩家是否隐藏了多面板 -mbv
                 if (pmb.visible ~= true) then
-                    if (cj.GetLocalPlayer() == p) then
+                    if (hplayer.loc() == p) then
                         cj.MultiboardDisplay(pmb.boards[key], false)
                     end
                     --而且隐藏就没必要展示数据了，后续流程中止
@@ -94,7 +94,7 @@ hmultiBoard.create = function(key, refreshFrequency, yourData)
                     end
                 end
                 --显示
-                if (cj.GetLocalPlayer() == p) then
+                if (hplayer.loc() == p) then
                     cj.MultiboardDisplay(pmb.boards[key], true)
                 end
             end)

@@ -45,7 +45,7 @@ end
 ---@param s userdata
 ---@param whichPlayer userdata
 hsound.voice2Player = function(s, whichPlayer)
-    if (s ~= nil and cj.GetLocalPlayer() == whichPlayer) then
+    if (s ~= nil and hplayer.loc() == whichPlayer) then
         cj.StartSound(s)
     end
 end
@@ -101,7 +101,7 @@ hsound.bgmStop = function(whichPlayer)
         cj.StopMusic(true)
     else
         hcache.set(whichPlayer, CONST_CACHE.PLAYER_BGM_CURRENT, nil)
-        if (cj.GetLocalPlayer() == whichPlayer) then
+        if (hplayer.loc() == whichPlayer) then
             cj.StopMusic(true)
         end
     end
@@ -130,7 +130,7 @@ hsound.bgm = function(musicFileName, whichPlayer)
                     htime.setTimeout(hsound.BREAK_DELAY, function(t)
                         htime.delTimer(t)
                         hcache.set(whichPlayer, CONST_CACHE.PLAYER_BGM_DELAY_TIMER, nil)
-                        if (cj.GetLocalPlayer() == whichPlayer) then
+                        if (hplayer.loc() == whichPlayer) then
                             cj.PlayMusic(musicFileName)
                         end
                     end)
@@ -151,7 +151,7 @@ hsound.bgm = function(musicFileName, whichPlayer)
                         htime.setTimeout(hsound.BREAK_DELAY, function(t)
                             htime.delTimer(t)
                             hcache.set(hplayer.players[i], CONST_CACHE.PLAYER_BGM_DELAY_TIMER, nil)
-                            if (cj.GetLocalPlayer() == hplayer.players[i]) then
+                            if (hplayer.loc() == hplayer.players[i]) then
                                 cj.PlayMusic(musicFileName)
                             end
                         end)
@@ -168,7 +168,7 @@ end
 hsound.bgmVolume = function(percent, whichPlayer)
     percent = percent or 50
     if (whichPlayer ~= nil) then
-        if (cj.GetLocalPlayer() == whichPlayer) then
+        if (hplayer.loc() == whichPlayer) then
             cj.VolumeGroupSetVolume(SOUND_VOLUMEGROUP_MUSIC, percent * 0.01)
         end
     else

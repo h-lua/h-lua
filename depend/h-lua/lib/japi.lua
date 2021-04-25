@@ -2232,3 +2232,18 @@ end
 hjapi.SetUnitState = function(whichUnit, state, value)
     hjapi.exec('SetUnitState', { whichUnit, state, value })
 end
+
+--- H-Lua同步
+---@param syncDataStr string
+hjapi.HSync = function(syncDataStr)
+    return hjapi.jass("HSync", { syncDataStr })
+end
+
+--- 注册UI事件回调(func name)
+--- 注册 frame 的 eventId 事件 运行:funcName
+---@param frame number integer
+---@param eventId number integer
+---@param syncDataStr string
+hjapi.HFrameSetScript = function(frame, eventId, syncDataStr)
+    return hjapi.jass("HFrameSetScript", { frame, eventId, syncDataStr })
+end

@@ -16,6 +16,9 @@ local preReadUnit = cj.CreateUnit(hplayer.player_passive, HL_ID.unit_token, 0, 0
 hattributeSetter.relyRegister(preReadUnit)
 hunit.del(preReadUnit)
 
+-- 同步
+hsync.init()
+
 ---default handle and protect
 local def = { "global" }
 for i = 0, bj_MAX_PLAYERS - 1, 1 do
