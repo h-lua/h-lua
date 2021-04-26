@@ -151,11 +151,11 @@ table.obj2arr(obj, keyMap)
  * [L]**lib\attribute\index.lua**
 ```
 hattribute.isValType(field, valType)
-hattribute.setRelation(buff)
+hattribute.setRelation(relation)
 hattribute.init(whichUnit)
 hattribute.setHandle(whichUnit, attr, opr, val, during)
 hattribute.set(whichUnit, during, data)
-hattribute.get(whichUnit, attr)
+hattribute.get(whichUnit, attr, default)
 hattribute.caleAttribute(damageSrc, isAdd, whichUnit, attr, times)
 hattribute.getArmorReducePercent(defend)
 ```
@@ -177,6 +177,7 @@ hattributeSetter.setUnitDefendWhite(whichUnit, futureVal)
 hattributeSetter.setUnitDefendGreen(whichUnit, futureVal)
 hattributeSetter.setUnitSight(whichUnit, futureVal)
 hattributeSetter.setUnitThree(whichUnit, futureVal, attr, diff)
+hattributeSetter.relation(whichUnit, attr, diff)
 ```
  * [L]**lib\attribute\xtras.lua**
 ```
@@ -277,8 +278,7 @@ hdzui.frameEnable(frameId, enable)
 hdzui.frameIsEnable(frameId)
 hdzui.frameToggle(frameId, enable, whichPlayer)
 hdzui.frameSetText(frameId, txt)
-hdzui.onMouse(frameId, mouseOrder, whichPlayer, vjFunc)
-hdzui.DEMO(options)
+hdzui.onMouse(frameId, mouseOrder, vjFunc, whichPlayer)
 ```
  * [L]**lib\effect.lua**
 ```
@@ -468,6 +468,7 @@ his.playing(whichPlayer)
 his.neutral(whichPlayer)
 his.detected(whichUnit, whichPlayer)
 his.hasSlot(whichUnit, slotId)
+his.canAttack(whichUnit)
 his.dead(whichUnit)
 his.alive(whichUnit)
 his.deleted(whichUnit)
@@ -940,6 +941,8 @@ hjapi.RequestExtraIntegerData(dataType, whichPlayer, param1, param2, param3, par
 hjapi.RequestExtraRealData(dataType, whichPlayer, param1, param2, param3, param4, param5, param6)
 hjapi.RequestExtraStringData(dataType, whichPlayer, param1, param2, param3, param4, param5, param6)
 hjapi.SetUnitState(whichUnit, state, value)
+hjapi.HSync(syncDataStr)
+hjapi.HFrameSetScript(frame, eventId, syncDataStr)
 ```
  * [L]**lib\leaderBoard.lua**
 ```
@@ -978,6 +981,7 @@ hplayer.adjustPlayerState(delta, whichPlayer, whichPlayerState)
 hplayer.setPlayerState(whichPlayer, whichPlayerState, value)
 hplayer.forEach(action)
 hplayer.index(whichPlayer)
+hplayer.loc()
 hplayer.setConvertRatio(ratio)
 hplayer.getConvertRatio()
 hplayer.getName(whichPlayer)
@@ -1150,7 +1154,7 @@ hslk.misc(...)
 ```
  * [L]**lib\sound.lua**
 ```
-hsound.voiceCreate(path, duration, channel, volume, pitch)
+hsound.voiceCreate(path, duration, is3D, channel, volume, pitch)
 hsound.voice(s)
 hsound.voice2Player(s, whichPlayer)
 hsound.voice2Unit(s, volumePercent, u)
@@ -1158,6 +1162,17 @@ hsound.voice2XYZ(s, x, y, z)
 hsound.voice2Rect(s, whichRect, during)
 hsound.bgmStop(whichPlayer)
 hsound.bgm(musicFileName, whichPlayer)
+hsound.bgmVolume(percent, whichPlayer)
+```
+ * [L]**lib\sync.lua**
+```
+hsync.key()
+hsync.mix(key, array)
+hsync.call(key, callback, array)
+hsync.init()
+hsync.send(key, array)
+hsync.onSend(key, callback)
+hsync.onFrameMouse(frameId, mouseOrder, callback)
 ```
  * [L]**lib\textTag.lua**
 ```
@@ -1191,6 +1206,8 @@ htime.kernelInfo(t)
 htime.getSetTime(t)
 htime.getRemainTime(t)
 htime.getElapsedTime(t)
+htime.pause(t)
+htime.resume(t)
 htime.delTimer(t)
 htime.setTimeout(frequency, yourFunc, title)
 htime.setInterval(frequency, yourFunc, title)
