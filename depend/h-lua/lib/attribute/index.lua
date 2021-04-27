@@ -286,7 +286,7 @@ hattribute.setHandle = function(whichUnit, attr, opr, val, during)
                 else
                     hmonitor.ignore(CONST_MONITOR[string.upper(attr)], whichUnit)
                 end
-            elseif (attr == "punish" and hunit.isPunishing(whichUnit)) then
+            elseif (attr == "punish" and his.enablePunish(whichUnit)) then
                 -- 硬直
                 if (currentVal > 0) then
                     local punishCurrent = params.punish_current or 0
@@ -296,7 +296,7 @@ hattribute.setHandle = function(whichUnit, attr, opr, val, during)
                 else
                     params.punish_current = futureVal
                 end
-            elseif (attr == "punish_current" and hunit.isPunishing(whichUnit)) then
+            elseif (attr == "punish_current" and his.enablePunish(whichUnit)) then
                 -- 硬直(current)
                 if (futureVal <= 0) then
                     params.punish_current = 0

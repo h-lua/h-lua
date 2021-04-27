@@ -15,5 +15,4 @@ _remarks = "结尾灰字描述"
 _cooldown = "冷却时间"
 _cooldownTarget = "冷却技能目标"
 _shadow = "强制使用影子物品"
-_lv = "用于替换多级技能的Tip说明，“等级”二字"
 ```

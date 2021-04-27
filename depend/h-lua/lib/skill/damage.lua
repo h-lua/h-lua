@@ -320,7 +320,7 @@ hskill.damage = function(options)
                 htime.delTimer(t)
                 hcache.set(targetUnit, CONST_CACHE.ATTR_BE_DAMAGING_TIMER, nil)
                 hcache.set(targetUnit, CONST_CACHE.ATTR_BE_DAMAGING, false)
-                if (hunit.isPunishing(targetUnit)) then
+                if (his.enablePunish(targetUnit)) then
                     hmonitor.listen(CONST_MONITOR.PUNISH, targetUnit)
                 end
             end)
@@ -577,7 +577,7 @@ hskill.damage = function(options)
         end
         -- 硬直
         local punishDuring = 5.00
-        if (lastDamage > 1 and his.alive(targetUnit) and his.punish(targetUnit) == false and hunit.isPunishing(targetUnit)) then
+        if (lastDamage > 1 and his.alive(targetUnit) and his.punish(targetUnit) == false and his.enablePunish(targetUnit)) then
             local cutVal = lastDamage * 1
             local isCut = hattribute.get(targetUnit, "punish_current") - cutVal <= 0
             hattribute.set(targetUnit, 0, {
@@ -588,8 +588,8 @@ hskill.damage = function(options)
                 hunit.setRGBA(targetUnit, 77, 77, 77, 1, punishDuring)
                 htime.setTimeout(punishDuring + 1, function(t)
                     htime.delTimer(t)
+                    hattribute.set(targetUnit, 0, { punish_current = "=" .. hattribute.get(targetUnit, "punish") })
                     hcache.set(targetUnit, CONST_CACHE.ATTR_PUNISHING, false)
-                    hattribute.set(targetUnit, 0, { punish_current = "+" .. hattribute.get(targetUnit, "punish") })
                 end)
                 local punishEffectAttackSpeed = (100 + hattribute.get(targetUnit, "attack_speed")) * punishEffectRatio
                 local punishEffectMove = hattribute.get(targetUnit, "move") * punishEffectRatio

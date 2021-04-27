@@ -6,7 +6,7 @@ DzTriggerRegisterSyncData
 DzGetTriggerSyncPlayer
 DzGetTriggerSyncData
 ```
-> 原理和服务器请求反馈一样，简单易懂
+> 原理和服务器请求响应一样，简单易懂
 
 > 教程：http://wenku.hunzsig.org/?_=_4_39
 

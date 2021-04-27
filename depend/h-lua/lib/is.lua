@@ -251,6 +251,13 @@ his.swim = function(whichUnit)
     return hcache.get(whichUnit, CONST_CACHE.SKILL_SWIM, false)
 end
 
+--- 单位是否启用硬直（系统默认不启用）
+---@param whichUnit userdata
+---@return boolean
+his.enablePunish = function(whichUnit)
+    return (true == hcache.get(whichUnit, CONST_CACHE.UNIT_PUNISH, false))
+end
+
 --- 是否被硬直
 ---@param whichUnit userdata
 ---@return boolean

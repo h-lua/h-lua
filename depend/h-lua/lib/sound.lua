@@ -164,7 +164,7 @@ end
 
 --- 设置BGM音量
 ---@param percent number 0-100%
----@param whichPlayer userdata player
+---@param whichPlayer userdata|nil player
 hsound.bgmVolume = function(percent, whichPlayer)
     percent = percent or 50
     if (whichPlayer ~= nil) then

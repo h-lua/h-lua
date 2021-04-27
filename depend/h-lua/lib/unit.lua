@@ -265,24 +265,17 @@ hunit.z = function(u)
     return cj.GetUnitFlyHeight(u)
 end
 
---- 单位是否启用硬直（系统默认不启用）
----@param u userdata
----@return boolean
-hunit.isPunishing = function(u)
-    return (true == hcache.get(u, CONST_CACHE.UNIT_PUNISHING, false))
-end
-
---- 单位启用硬直（系统默认不启用）
+--- 单位启用硬直（启用后硬直属性才有效）
 ---@param u userdata
 hunit.enablePunish = function(u)
-    hcache.set(u, CONST_CACHE.UNIT_PUNISHING, true)
+    hcache.set(u, CONST_CACHE.UNIT_PUNISH, true)
     hmonitor.listen(CONST_MONITOR.PUNISH, u)
 end
 
---- 单位停用硬直（系统默认不启用）
+--- 单位停用硬直（停用硬直属性无效）
 ---@param u userdata
 hunit.disablePunish = function(u)
-    hcache.set(u, CONST_CACHE.UNIT_PUNISHING, false)
+    hcache.set(u, CONST_CACHE.UNIT_PUNISH, false)
     hmonitor.ignore(CONST_MONITOR.PUNISH, u)
 end
 
@@ -481,6 +474,9 @@ hunit.embed = function(u, options)
         hhero.setPrevLevel(u, 1)
         hevent.pool(u, hevent_default_actions.hero.levelUp, function(tgr)
             cj.TriggerRegisterUnitEvent(tgr, u, EVENT_UNIT_HERO_LEVEL)
+        end)
+        hevent.pool(u, hevent_default_actions.unit.skillStudy, function(tgr)
+            cj.TriggerRegisterUnitEvent(tgr, u, EVENT_UNIT_HERO_SKILL)
         end)
         hattribute.set(u, 0, {
             str_white = "=" .. cj.GetHeroStr(u, false),

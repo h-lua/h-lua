@@ -125,6 +125,9 @@ hevent_default_actions = {
                 agi_white = "=" .. cj.GetHeroAgi(u, false),
                 int_white = "=" .. cj.GetHeroInt(u, false),
             })
+            if (his.enablePunish(u)) then
+                hmonitor.listen(CONST_MONITOR.PUNISH, u)
+            end
         end),
         reborn = function(u, rebornSec)
             local x = hunit.x(u)
@@ -195,14 +198,19 @@ hevent_default_actions = {
             )
         end),
         skillStudy = cj.Condition(function()
-            hevent.triggerEvent(
-                cj.GetTriggerUnit(),
-                CONST_EVENT.skillStudy,
-                {
-                    triggerUnit = cj.GetTriggerUnit(),
-                    triggerSkill = cj.GetLearnedSkill()
-                }
-            )
+            local triggerUnit = cj.GetTriggerUnit()
+            local learnedSkill = cj.GetLearnedSkill()
+            hevent.triggerEvent(triggerUnit, CONST_EVENT.skillStudy, {
+                triggerUnit = triggerUnit,
+                triggerSkill = learnedSkill,
+            })
+            local lv = cj.GetUnitAbilityLevel(triggerUnit, learnedSkill)
+            if (lv == 1) then
+                hskill.addProperty(triggerUnit, learnedSkill, lv)
+            elseif (lv > 1) then
+                hskill.subProperty(triggerUnit, learnedSkill, lv - 1)
+                hskill.addProperty(triggerUnit, learnedSkill, lv)
+            end
         end),
         skillReady = cj.Condition(function()
             hevent.triggerEvent(

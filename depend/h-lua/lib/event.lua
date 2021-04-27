@@ -243,9 +243,6 @@ end
 ---@param callFunc onSkillStudy | "function(evtData) end"
 ---@return any
 hevent.onSkillStudy = function(whichUnit, callFunc)
-    hevent.pool(whichUnit, hevent_default_actions.unit.skillStudy, function(tgr)
-        cj.TriggerRegisterUnitEvent(tgr, whichUnit, EVENT_UNIT_HERO_SKILL)
-    end)
     return hevent.registerEvent(whichUnit, CONST_EVENT.skillStudy, callFunc)
 end
 

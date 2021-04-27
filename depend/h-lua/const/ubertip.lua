@@ -1,16 +1,58 @@
+CONST_UBERTIP_I18N = {
+    colon = "：",
+    def_passive = "未命名空被动",
+    def_ring = "未命名空光环",
+    def_skill = "未命名技能",
+    def_hero = "未命名英雄",
+    def_unit = "未命名单位",
+    def_item = "未命名物品",
+    def_buff = "未命名魔法效果",
+    def_upgrade = "未命名科技",
+    lv = "等级",
+    learn = "学习",
+    choose = "选择",
+    get = "获得",
+    cd = "冷却",
+    sec = "秒",
+    perSec = "每秒",
+    layer = "层",
+    ring = "光环",
+    ringRadius = "光环范围",
+    ringTarget = "光环目标",
+    ringAttr = "光环效果",
+    ringInRadius = "范围内的",
+    overlie = "叠加",
+    weight = "重量",
+    kg = "KG",
+    fragment = "可以合成",
+    profit = "需要零件",
+    weapTp1 = "攻击类型",
+    cool1 = "秒/击",
+    dmgplus1 = "基础攻击",
+    rangeN1 = "攻击范围",
+    STR = "力量",
+    AGI = "敏捷",
+    INT = "智力",
+    spd = "移动",
+    ally = "友军",
+    enemies = "敌军",
+    enemy = "敌人",
+    self = "自己",
+}
+
 --- 属性系统目标文本修正
 CONST_UBERTIP_TARGET_LABEL = function(target, actionType, actionField, isValue)
     if (actionType == 'spec' and isValue ~= true and table.includes({ 'split', 'bomb', 'lightning_chain' }, actionField)) then
         if (target == '己') then
-            target = '友军'
+            target = CONST_UBERTIP_I18N.ally
         else
-            target = '敌军'
+            target = CONST_UBERTIP_I18N.enemies
         end
     else
         if (target == '己') then
-            target = '自己'
+            target = CONST_UBERTIP_I18N.self
         else
-            target = '敌人'
+            target = CONST_UBERTIP_I18N.enemy
         end
     end
     return target
@@ -57,7 +99,7 @@ end
 CONST_UBERTIP_ATTR_XTRAS = function(data, indent)
     indent = indent or ""
     local tempStr = {}
-    for vvi, vv in ipairs(data) do
+    for _, vv in ipairs(data) do
         local on = vv["on"]
         local actions = string.explode('.', vv["action"] or '')
         if (CONST_EVENT_LABELS[on] ~= nil and #actions == 3) then
@@ -135,7 +177,7 @@ CONST_UBERTIP_ATTR_XTRAS = function(data, indent)
                     valLabel = valLabel .. "%"
                 end
                 -- 对象名称修正
-                target = CONST_UBERTIP_TARGET_LABEL(target, actionType, actionField)
+                target = CONST_UBERTIP_TARGET_LABEL(target, actionType, actionField, false)
                 if (valLabel ~= nil) then
                     if (actionType == 'attr') then
                         if (isNegative) then
@@ -203,16 +245,16 @@ CONST_UBERTIP_ATTR = function(attr, sep, indent)
         local v = arr.value
         -- 附加单位
         if (k == "attack_space" or k == "reborn") then
-            v = v .. "秒"
+            v = v .. CONST_UBERTIP_I18N.sec
         end
         if (table.includes({ "life_back", "mana_back" }, k)) then
-            v = v .. "每秒"
+            v = v .. CONST_UBERTIP_I18N.perSec
         end
         if (CONST_UBERTIP_IS_PERCENT(k) == true) then
             v = v .. "%"
         end
         if (CONST_UBERTIP_IS_LEVEL(k) == true) then
-            v = v .. "层"
+            v = v .. CONST_UBERTIP_I18N.layer
         end
         --
         if (k == "xtras") then
@@ -235,24 +277,80 @@ end
 CONST_UBERTIP_RING_ABILITY = function(data)
     local d = {}
     if (data.radius ~= nil) then
-        table.insert(d, "光环范围：" .. data.radius)
+        table.insert(d, CONST_UBERTIP_I18N.ringRadius .. CONST_UBERTIP_I18N.colon .. data.radius)
     end
     if (type(data.target) == 'table' and #data.target > 0) then
         local labels = {}
         for _, t in ipairs(data.target) do
             table.insert(labels, CONST_TARGET_LABEL[t])
         end
-        table.insert(d, "光环目标：" .. string.implode(',', labels))
+        table.insert(d, CONST_UBERTIP_I18N.ringTarget .. CONST_UBERTIP_I18N.colon .. string.implode(',', labels))
         labels = nil
     end
     if (data.attr ~= nil) then
-        table.insert(d, "光环效果：|n" .. CONST_UBERTIP_ATTR(data.attr, "|n", ' - '))
+        table.insert(d, CONST_UBERTIP_I18N.ringAttr .. CONST_UBERTIP_I18N.colon .. CONST_UBERTIP_ATTR(data.attr, "|n", '-'))
     end
     return d
 end
 
 --- 物品光环文本构建
 CONST_UBERTIP_RING_ITEM = function(data)
-    local txt = "光环：[" .. data.radius .. "px]|n"
-    return txt .. CONST_UBERTIP_ATTR(data.attr, "|n", ' - ')
+    local txt = CONST_UBERTIP_I18N.ring .. CONST_UBERTIP_I18N.colon .. "[" .. data.radius .. "px]|n"
+    return txt .. CONST_UBERTIP_ATTR(data.attr, "|n", '-')
+end
+
+--- _attr学习文本构建
+CONST_RESEARCH_UBERTIP_ATTR = function(attr)
+    local str = {}
+    local strTable = {}
+    for _, arr in ipairs(table.obj2arr(attr, CONST_ATTR_KEYS)) do
+        local k = arr.key
+        local v = arr.value
+        -- 附加单位
+        if (k == "attack_space" or k == "reborn") then
+            v = v .. CONST_UBERTIP_I18N.sec
+        end
+        if (table.includes({ "life_back", "mana_back" }, k)) then
+            v = v .. CONST_UBERTIP_I18N.perSec
+        end
+        if (CONST_UBERTIP_IS_PERCENT(k) == true) then
+            v = v .. "%"
+        end
+        if (CONST_UBERTIP_IS_LEVEL(k) == true) then
+            v = v .. CONST_UBERTIP_I18N.layer
+        end
+        --
+        if (k == "xtras") then
+            local xu = CONST_UBERTIP_ATTR_XTRAS(v)
+            if (#xu > 0) then
+                for xi, xv in ipairs(xu) do
+                    xu[xi] = xv
+                end
+            end
+            table.insert(strTable, string.implode(",", xu))
+        else
+            table.insert(str, v .. (CONST_ATTR[k] or ""))
+        end
+    end
+    return string.implode(",", table.merge(str, strTable))
+end
+
+--- 技能学习光环文本构建
+CONST_RESEARCH_UBERTIP_RING_ABILITY = function(data)
+    local d = {}
+    if (data.radius ~= nil) then
+        table.insert(d, data.radius .. CONST_UBERTIP_I18N.ringInRadius)
+    end
+    if (type(data.target) == 'table' and #data.target > 0) then
+        local labels = {}
+        for _, t in ipairs(data.target) do
+            table.insert(labels, CONST_TARGET_LABEL[t])
+        end
+        table.insert(d, "[" .. string.implode(',', labels) .. "]")
+        labels = nil
+    end
+    if (data.attr ~= nil) then
+        table.insert(d, CONST_RESEARCH_UBERTIP_ATTR(data.attr))
+    end
+    return d
 end

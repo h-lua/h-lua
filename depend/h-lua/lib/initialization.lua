@@ -146,7 +146,7 @@ hmonitor.create(CONST_MONITOR.PUNISH, 1,
     function(object)
         local punish_current = hattribute.get(object, "punish_current")
         local punish = hattribute.get(object, "punish")
-        return punish_current >= punish or his.dead(object) or his.deleted(object) or his.beDamaging(object) or hunit.isPunishing(object) == false
+        return punish_current >= punish or his.dead(object) or his.deleted(object) or his.beDamaging(object) or his.enablePunish(object) == false
     end
 )
 
