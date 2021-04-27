@@ -352,12 +352,13 @@ his.ally = function(whichUnit, otherUnit)
     return cj.IsUnitAlly(whichUnit, hunit.getOwner(otherUnit))
 end
 
---- 判断两个单位是否背对着
+--- 判断两个单位是否接近平行同方向
+--- 本质上是两单位面向角度接近
 ---@param u1 userdata
 ---@param u2 userdata
 ---@param maxDistance number 最大相对距离
 ---@return number
-his.behind = function(u1, u2, maxDistance)
+his.parallel = function(u1, u2, maxDistance)
     if (his.alive(u1) == false or his.alive(u2) == false) then
         return false
     end
@@ -370,12 +371,13 @@ his.behind = function(u1, u2, maxDistance)
     return math.abs(fac1 - fac2) <= 50
 end
 
---- 判断两个单位是否正对着
+--- 判断两个单位是否"正对着"或"背对着"
+--- 本质上是两单位面向极度相反
 ---@param u1 userdata
 ---@param u2 userdata
 ---@param maxDistance number 最大相对距离
 ---@return number
-his.face = function(u1, u2, maxDistance)
+his.intersect = function(u1, u2, maxDistance)
     if (his.alive(u1) == false or his.alive(u2) == false) then
         return false
     end
