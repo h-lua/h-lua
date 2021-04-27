@@ -109,13 +109,14 @@ math.integerFormat = function(value)
 end
 
 --- 获取两个坐标间角度，如果其中一个单位为空 返回0
+--- 返回的范围是[0-360(0)]
 ---@param x1 number
 ---@param y1 number
 ---@param x2 number
 ---@param y2 number
 ---@return number
 math.getDegBetweenXY = function(x1, y1, x2, y2)
-    return math_rad2deg * math.atan(y2 - y1, x2 - x1)
+    return math.round((math_rad2deg * math.atan(y2 - y1, x2 - x1) + 360) % 360, 4)
 end
 
 --- 获取两个单位间角度，如果其中一个单位为空 返回0

@@ -357,8 +357,9 @@ end
 ---@param u1 userdata
 ---@param u2 userdata
 ---@param maxDistance number 最大相对距离
+---@param forcedOrder boolean 是否强制顺序，也就是主观上必须u1在前，u2在后
 ---@return number
-his.parallel = function(u1, u2, maxDistance)
+his.parallel = function(u1, u2, maxDistance, forcedOrder)
     if (his.alive(u1) == false or his.alive(u2) == false) then
         return false
     end
@@ -368,7 +369,10 @@ his.parallel = function(u1, u2, maxDistance)
     end
     local fac1 = hunit.getFacing(u1)
     local fac2 = hunit.getFacing(u2)
-    return math.abs(fac1 - fac2) <= 50
+    if (type(forcedOrder) == "boolean" and forcedOrder == true) then
+        return math.abs(fac1 - fac2) < 50 and math.abs(math.getDegBetweenUnit(u2, u1) - fac2) < 90
+    end
+    return math.abs(fac1 - fac2) < 50
 end
 
 --- 判断两个单位是否"正对着"或"背对着"
@@ -376,8 +380,9 @@ end
 ---@param u1 userdata
 ---@param u2 userdata
 ---@param maxDistance number 最大相对距离
+---@param face2face boolean 是否面对面而不是背对背
 ---@return number
-his.intersect = function(u1, u2, maxDistance)
+his.intersect = function(u1, u2, maxDistance, face2face)
     if (his.alive(u1) == false or his.alive(u2) == false) then
         return false
     end
@@ -387,7 +392,10 @@ his.intersect = function(u1, u2, maxDistance)
     end
     local fac1 = hunit.getFacing(u1)
     local fac2 = hunit.getFacing(u2)
-    return math.abs((math.abs(fac1 - fac2) - 180)) <= 50
+    if (type(face2face) == "boolean" and face2face == true) then
+        return math.abs((math.abs(fac1 - fac2) - 180)) < 50 and math.abs(math.getDegBetweenUnit(u2, u1) - fac2) < 90
+    end
+    return math.abs((math.abs(fac1 - fac2) - 180)) < 50
 end
 
 --- 是否敌人玩家
