@@ -12,7 +12,11 @@ end
 
 ---@private
 hsync.mix = function(key, array)
-    local data = table.merge({ key }, (array or {}))
+    array = array or {}
+    if (type(array) ~= "table") then
+        array = {}
+    end
+    local data = table.merge({ key }, array)
     return string.implode("|", data)
 end
 
@@ -33,6 +37,7 @@ hsync.init = function()
         if (type(hsyncCache.callback[key]) ~= "function") then
             return
         end
+        table.remove(syncData, 1)
         local callbackData = {
             triggerPlayer = hjapi.DzGetTriggerSyncPlayer(),
             triggerKey = key,
@@ -43,6 +48,7 @@ hsync.init = function()
 end
 
 --- 发送执行一般消息同步操作
+--- 与onSend配套，hsync.onSend 接数据
 ---@param key string 自定义回调key
 ---@param array table<string> 支持string、number
 hsync.send = function(key, array)
@@ -52,7 +58,8 @@ hsync.send = function(key, array)
     hjapi.HSync(hsync.mix(key, array))
 end
 
---- [事件]注册一般消息同步操作，接 hsync.send
+--- [事件]注册一般消息同步操作
+--- 与send配套，接 hsync.send
 ---@alias onHSync fun(syncData: {triggerPlayer:"触发玩家",triggerKey:"触发索引",triggerData:"数组数据"}):void
 ---@param key string 自定义回调key
 ---@param callback onHSync | "function(syncData) end" 同步响应回调
@@ -62,6 +69,7 @@ hsync.onSend = function(key, callback)
 end
 
 --- [事件]注册frame鼠标操作
+--- ! 此事件由UI点击触发，不需要手动send
 ---@alias onFrameMouseSync fun(syncData: {triggerPlayer:"触发玩家",syncPlayer:"同步的玩家",triggerKey:"触发索引",triggerFrameId:"触发Frame",triggerMouseOrder:"触发鼠标事件ID"}):void
 ---@param frameId number
 ---@param mouseOrder number integer 参考blizzard:^MOUSE_ORDER

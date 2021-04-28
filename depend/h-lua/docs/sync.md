@@ -13,7 +13,8 @@ DzGetTriggerSyncData
 #### 若使用hsync库，例子
 
 ```lua
--- frameUI鼠标事件
+
+-- frameUI鼠标事件型，单例
 hsync.onFrameMouse(demoCache.more_btn, MOUSE_ORDER_CLICK, function(syncData)
     demoCache.flag = (demoCache.flag ~= true)
     if (hplayer.loc() == syncData.triggerPlayer) then
@@ -28,13 +29,14 @@ hsync.onFrameMouse(demoCache.more_btn, MOUSE_ORDER_CLICK, function(syncData)
     end
 end)
 
--- 通用操作
+-- 通用型操作，两个配套
 hsync.onSend("hzg", function(syncData)
-    echo(syncData.triggerData[2] .. syncData.triggerData[3] .. "人类")
+    echo(syncData.triggerData[1] .. syncData.triggerData[2] .. "人类")
 end)
 local a = 0
 htime.setInterval(2, function(curTimer)
     hsync.send("hzg", { "hunzsig", "是个" .. a .. "级" })
     a = a + 1
 end)
+
 ```
