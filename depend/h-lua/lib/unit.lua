@@ -434,13 +434,17 @@ hunit.embed = function(u, options)
     hcache.alloc(u)
     hcache.set(u, CONST_CACHE.UNIT_ANIMATE_SPEED, options.timeScale or 1.00)
     hcache.set(u, CONST_CACHE.ATTR, -1)
-    -- 单位受伤
     hevent.pool(u, hevent_default_actions.unit.damaged, function(tgr)
         cj.TriggerRegisterUnitEvent(tgr, u, EVENT_UNIT_DAMAGED)
     end)
-    -- 单位死亡
     hevent.pool(u, hevent_default_actions.unit.dead, function(tgr)
         cj.TriggerRegisterUnitEvent(tgr, u, EVENT_UNIT_DEATH)
+    end)
+    hevent.pool(u, hevent_default_actions.unit.skillEffect, function(tgr)
+        cj.TriggerRegisterUnitEvent(tgr, u, EVENT_UNIT_SPELL_EFFECT)
+    end)
+    hevent.pool(u, hevent_default_actions.unit.skillFinish, function(tgr)
+        cj.TriggerRegisterUnitEvent(tgr, u, EVENT_UNIT_SPELL_FINISH)
     end)
     --[[
         单位指令，如果单位的玩家是真人或者开发者要求嵌入，才会使指令捕捉生效
@@ -454,12 +458,6 @@ hunit.embed = function(u, options)
             cj.TriggerRegisterUnitEvent(tgr, u, EVENT_UNIT_ISSUED_ORDER)
             cj.TriggerRegisterUnitEvent(tgr, u, EVENT_UNIT_ISSUED_POINT_ORDER)
             cj.TriggerRegisterUnitEvent(tgr, u, EVENT_UNIT_ISSUED_TARGET_ORDER)
-        end)
-        hevent.onSkillEffect(u, function(evtData)
-            local ahSlk = hslk.i2v(evtData.triggerSkill)
-            if (type(ahSlk._onSkillEffect) == "function") then
-                ahSlk._onSkillEffect(evtData)
-            end
         end)
     end
     -- 物品系统

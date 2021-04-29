@@ -4,10 +4,8 @@ hattribute.xtrasSupportEvents = {
     CONST_EVENT.skill, CONST_EVENT.beSkill,
     CONST_EVENT.item, CONST_EVENT.beItem,
     CONST_EVENT.damage, CONST_EVENT.beDamage,
-    CONST_EVENT.attackDetect, CONST_EVENT.attackGetTarget, CONST_EVENT.beAttackReady,
-    CONST_EVENT.skillStudy, CONST_EVENT.skillReady, CONST_EVENT.skillCast, CONST_EVENT.skillEffect, CONST_EVENT.skillStop, CONST_EVENT.skillFinish,
-    CONST_EVENT.itemUsed, CONST_EVENT.itemSell, CONST_EVENT.unitSell, CONST_EVENT.itemDrop, CONST_EVENT.itemPawn, CONST_EVENT.itemGet,
-    CONST_EVENT.itemSynthesis, CONST_EVENT.itemOverWeight, CONST_EVENT.itemOverSlot,
+    CONST_EVENT.skillStudy, CONST_EVENT.skillEffect, CONST_EVENT.skillFinish,
+    CONST_EVENT.itemUsed, CONST_EVENT.itemDrop, CONST_EVENT.itemPawn, CONST_EVENT.itemGet,
     CONST_EVENT.damageResistance,
     CONST_EVENT.avoid, CONST_EVENT.beAvoid, CONST_EVENT.breakArmor, CONST_EVENT.beBreakArmor,
     CONST_EVENT.swim, CONST_EVENT.beSwim, CONST_EVENT.broken, CONST_EVENT.beBroken,
@@ -154,6 +152,7 @@ hattribute.xtras = function(triggerUnit, eventKey, evtData)
     end
     -- 排除不支持的事件
     if (table.includes(hattribute.xtrasSupportEvents, eventKey) == false) then
+        print_err(eventKey .. " event is not supported")
         return
     end
     -- 排除非单位

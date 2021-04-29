@@ -198,18 +198,21 @@ hevent_default_actions = {
             )
         end),
         skillStudy = cj.Condition(function()
-            local triggerUnit = cj.GetTriggerUnit()
-            local learnedSkill = cj.GetLearnedSkill()
-            hevent.triggerEvent(triggerUnit, CONST_EVENT.skillStudy, {
-                triggerUnit = triggerUnit,
-                triggerSkill = learnedSkill,
-            })
-            local lv = cj.GetUnitAbilityLevel(triggerUnit, learnedSkill)
+            local evtData = {
+                triggerUnit = cj.GetTriggerUnit(),
+                learnedSkill = cj.GetLearnedSkill(),
+            }
+            hevent.triggerEvent(triggerUnit, CONST_EVENT.skillStudy, evtData)
+            local lv = cj.GetUnitAbilityLevel(evtData.triggerUnit, evtData.learnedSkill)
             if (lv == 1) then
-                hskill.addProperty(triggerUnit, learnedSkill, lv)
+                hskill.addProperty(evtData.triggerUnit, evtData.learnedSkill, lv)
             elseif (lv > 1) then
-                hskill.subProperty(triggerUnit, learnedSkill, lv - 1)
-                hskill.addProperty(triggerUnit, learnedSkill, lv)
+                hskill.subProperty(evtData.triggerUnit, evtData.learnedSkill, lv - 1)
+                hskill.addProperty(evtData.triggerUnit, evtData.learnedSkill, lv)
+            end
+            local _onSkillStudy = hslk.i2v(evtData.learnedSkill, "_onSkillStudy")
+            if (type(_onSkillStudy) == "function") then
+                _onSkillStudy(evtData)
             end
         end),
         skillReady = cj.Condition(function()
@@ -247,27 +250,25 @@ hevent_default_actions = {
             )
         end),
         skillEffect = cj.Condition(function()
-            hevent.triggerEvent(
-                cj.GetTriggerUnit(),
-                CONST_EVENT.skillEffect,
-                {
-                    triggerUnit = cj.GetTriggerUnit(),
-                    triggerSkill = cj.GetSpellAbilityId(),
-                    targetUnit = cj.GetSpellTargetUnit(),
-                    targetItem = cj.GetSpellTargetItem(),
-                    targetLoc = cj.GetSpellTargetLoc()
-                }
-            )
+            local evtData = {
+                triggerUnit = cj.GetTriggerUnit(),
+                triggerSkill = cj.GetSpellAbilityId(),
+                targetUnit = cj.GetSpellTargetUnit(),
+                targetItem = cj.GetSpellTargetItem(),
+                targetLoc = cj.GetSpellTargetLoc(),
+            }
+            hevent.triggerEvent(evtData.triggerUnit, CONST_EVENT.skillEffect, evtData)
+            local _onSkillEffect = hslk.i2v(evtData.triggerSkill, "_onSkillEffect")
+            if (type(_onSkillEffect) == "function") then
+                _onSkillEffect(evtData)
+            end
         end),
         skillFinish = cj.Condition(function()
-            hevent.triggerEvent(
-                cj.GetTriggerUnit(),
-                CONST_EVENT.skillFinish,
-                {
-                    triggerUnit = cj.GetTriggerUnit(),
-                    triggerSkill = cj.GetSpellAbilityId()
-                }
-            )
+            local evtData = {
+                triggerUnit = cj.GetTriggerUnit(),
+                triggerSkill = cj.GetSpellAbilityId(),
+            }
+            hevent.triggerEvent(evtData.triggerUnit, CONST_EVENT.skillFinish, evtData)
         end),
         upgradeStart = cj.Condition(function()
             hevent.triggerEvent(
@@ -638,7 +639,12 @@ hevent_default_actions = {
                 return
             end
             -- 触发获得物品
-            hevent.triggerEvent(u, CONST_EVENT.itemGet, { triggerUnit = u, triggerItem = it })
+            local evtData = { triggerUnit = u, triggerItem = it }
+            hevent.triggerEvent(u, CONST_EVENT.itemGet, evtData)
+            local _onItemGet = hslk.i2v(itId, "_onItemGet")
+            if (type(_onItemGet) == "function") then
+                _onItemGet(evtData)
+            end
             if (false == his.destroy(it)) then
                 -- 如果是自动使用的，用一波
                 if (hitem.getIsPowerUp(itId)) then

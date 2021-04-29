@@ -288,9 +288,6 @@ end
 ---@param callFunc onSkillEffect | "function(evtData) end"
 ---@return any
 hevent.onSkillEffect = function(whichUnit, callFunc)
-    hevent.pool(whichUnit, hevent_default_actions.unit.skillEffect, function(tgr)
-        cj.TriggerRegisterUnitEvent(tgr, whichUnit, EVENT_UNIT_SPELL_EFFECT)
-    end)
     return hevent.registerEvent(whichUnit, CONST_EVENT.skillEffect, callFunc)
 end
 
@@ -300,9 +297,6 @@ end
 ---@param callFunc onSkillFinish | "function(evtData) end"
 ---@return any
 hevent.onSkillFinish = function(whichUnit, callFunc)
-    hevent.pool(whichUnit, hevent_default_actions.unit.skillFinish, function(tgr)
-        cj.TriggerRegisterUnitEvent(tgr, whichUnit, EVENT_UNIT_SPELL_FINISH)
-    end)
     return hevent.registerEvent(whichUnit, CONST_EVENT.skillFinish, callFunc)
 end
 
