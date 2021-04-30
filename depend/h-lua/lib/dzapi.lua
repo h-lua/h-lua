@@ -25,40 +25,40 @@ end
 ---@param whichPlayer userdata
 ---@return boolean
 hdzapi.isRedVip = function(whichPlayer)
-    if (cache.isRedVip == nil) then
-        cache.isRedVip = hjapi.DzAPI_Map_IsRedVIP(whichPlayer) or false
+    if (cache.isRedVip[whichPlayer] == nil) then
+        cache.isRedVip[whichPlayer] = hjapi.DzAPI_Map_IsRedVIP(whichPlayer) or false
     end
-    return cache.isRedVip
+    return cache.isRedVip[whichPlayer]
 end
 
 --- 是否蓝V
 ---@param whichPlayer userdata
 ---@return boolean
 hdzapi.isBlueVip = function(whichPlayer)
-    if (cache.isBlueVip == nil) then
-        cache.isBlueVip = hjapi.DzAPI_Map_IsBlueVIP(whichPlayer) or false
+    if (cache.isBlueVip[whichPlayer] == nil) then
+        cache.isBlueVip[whichPlayer] = hjapi.DzAPI_Map_IsBlueVIP(whichPlayer) or false
     end
-    return cache.isBlueVip
+    return cache.isBlueVip[whichPlayer]
 end
 
 --- 是否平台VIP
 ---@param whichPlayer userdata
 ---@return boolean
 hdzapi.isPlatformVIP = function(whichPlayer)
-    if (cache.isPlatformVIP == nil) then
-        cache.isPlatformVIP = hjapi.DzAPI_Map_IsPlatformVIP(whichPlayer) or false
+    if (cache.isPlatformVIP[whichPlayer] == nil) then
+        cache.isPlatformVIP[whichPlayer] = hjapi.DzAPI_Map_IsPlatformVIP(whichPlayer) or false
     end
-    return cache.isPlatformVIP
+    return cache.isPlatformVIP[whichPlayer]
 end
 
 --- 获取地图等级
 ---@param whichPlayer userdata
 ---@return number
 hdzapi.mapLevel = function(whichPlayer)
-    if (cache.mapLevel == nil) then
-        cache.mapLevel = math.max(1, hjapi.DzAPI_Map_GetMapLevel(whichPlayer) or 1)
+    if (cache.mapLevel[whichPlayer] == nil) then
+        cache.mapLevel[whichPlayer] = math.max(1, hjapi.DzAPI_Map_GetMapLevel(whichPlayer) or 1)
     end
-    return cache.mapLevel
+    return cache.mapLevel[whichPlayer]
 end
 
 --- 是否有商城道具,由于官方设置的key必须大写，所以这里自动转换

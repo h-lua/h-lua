@@ -208,7 +208,7 @@ end
 
 ---@return {_id}
 hslk_item_fleeting = function(Name, file, modelScale, moveHeight)
-    if (Name == nil or file == nil or modelScale == nil or moveHeight) then
+    if (Name == nil or file == nil or modelScale == nil or moveHeight == nil) then
         return
     end
     local _v = {
