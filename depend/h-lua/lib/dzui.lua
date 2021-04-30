@@ -227,7 +227,7 @@ end
         whichUnit = nil, --某单位
         texture = {file="",w=0.1,h=0.12,opacity}, --是用的单位标志：贴图文件、宽、高、透明[0.0-1.0]
         miniMap = {frame=0,w=0,h=0}, -- 小地图大小位置参数：UI—id、宽、高
-        action = function(trackOptions, trackIdx){}, -- 每周期行为
+        action = function(trackOptions){}, -- 每周期行为
     }
 ]]
 ---@param options pilotDZUIMiniMapTrack
