@@ -15,7 +15,6 @@ local cache = {
     uiHero = nil,
     uiInfoPanel = nil,
     uiSkill = nil,
-    miniMapTrack = {},
 }
 
 return cache

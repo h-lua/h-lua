@@ -224,6 +224,7 @@ end
 --[[
     绑定一个单位在"小地图"上显示你想要的贴图
     options = {
+        frequency = 0.05, --刷新频率
         whichUnit = nil, --某单位
         texture = {file="",w=0.1,h=0.12,opacity}, --是用的单位标志：贴图文件、宽、高、透明[0.0-1.0]
         miniMap = {frame=0,w=0,h=0}, -- 小地图大小位置参数：UI—id、宽、高
@@ -235,6 +236,7 @@ hdzui.miniMapTrack = function(options)
     if (options.whichUnit == nil or his.deleted(options.whichUnit)) then
         return
     end
+    options.frequency = options.frequency or 0.05
     options.texture = options.texture or {}
     options.texture.file = options.texture.file or hunit.getAvatar(hunit.getId(options.whichUnit))
     options.texture.w = options.texture.w or 0.016
@@ -258,9 +260,6 @@ hdzui.miniMapTrack = function(options)
             end)
         end
     end
-    options.disabled = options.disabled or function(whichUnit)
-        return his.deleted(whichUnit)
-    end
     local track = hdzui.frameTag("BACKDROP", "StandardMenuTinyButtonBaseBackdrop", hdzui.origin.game())
     if (track <= 0) then
         return
@@ -271,29 +270,18 @@ hdzui.miniMapTrack = function(options)
     hjapi.DzFrameShow(track, false)
     options.frame = track
     options.deleted = false
-    table.insert(cache.miniMapTrack, options)
-    if (cache.miniMapTrackTimer == nil) then
-        cache.miniMapTrackTimer = htime.setInterval(0.03, function(curTimer)
-            if (#cache.miniMapTrack <= 0) then
-                htime.delTimer(curTimer)
-                cache.miniMapTrackTimer = nil
-                return
-            end
-            for ti, t in ipairs(cache.miniMapTrack) do
-                if (t.deleted == true or his.deleted(t.whichUnit)) then
-                    hjapi.DzFrameShow(t.frame, false)
-                    hjapi.DzFrameSetEnable(t.frame, false)
-                    table.remove(cache.miniMapTrack, ti)
-                    ti = ti - 1
-                else
-                    local x = (hunit.x(t.whichUnit) - hrect.getMinX(hrect.world())) / hrect.getWidth(hrect.world()) * t.miniMap.w
-                    local y = (hunit.y(t.whichUnit) - hrect.getMinY(hrect.world())) / hrect.getHeight(hrect.world()) * t.miniMap.h
-                    hdzui.framePoint(t.frame, t.miniMap.frame, FRAME_ALIGN_CENTER, FRAME_ALIGN_LEFT_BOTTOM, x, y)
-                    t.action(t)
-                end
-            end
-        end)
-    end
+    htime.setInterval(options.frequency, function(curTimer)
+        if (options.deleted == true or his.deleted(options.whichUnit)) then
+            htime.delTimer(curTimer)
+            hjapi.DzFrameShow(options.frame, false)
+            hjapi.DzFrameSetEnable(options.frame, false)
+            return
+        end
+        local x = (hunit.x(options.whichUnit) - hrect.getMinX(hrect.world())) / hrect.getWidth(hrect.world()) * options.miniMap.w
+        local y = (hunit.y(options.whichUnit) - hrect.getMinY(hrect.world())) / hrect.getHeight(hrect.world()) * options.miniMap.h
+        hdzui.framePoint(options.frame, options.miniMap.frame, FRAME_ALIGN_CENTER, FRAME_ALIGN_LEFT_BOTTOM, x, y)
+        options.action(options)
+    end)
 end
 
 --- 注册鼠标事件

@@ -150,17 +150,6 @@ table.value(arr, key)
 table.obj2arr(obj, keyMap)
 ```
  * [B]h-lua.lua
- * [L]**lib\attribute\index.lua**
-```
-hattribute.isValType(field, valType)
-hattribute.setRelation(relation)
-hattribute.init(whichUnit)
-hattribute.setHandle(whichUnit, attr, opr, val, during)
-hattribute.set(whichUnit, during, data)
-hattribute.get(whichUnit, attr, default)
-hattribute.caleAttribute(damageSrc, isAdd, whichUnit, attr, times)
-hattribute.getArmorReducePercent(defend)
-```
  * [L]**lib\attribute\setter.lua**
 ```
 hattributeSetter.getDecimalTemporaryStorage(whichUnit, attr)
@@ -187,6 +176,17 @@ hattribute.xtrasPassAlive(targetUnit, type, field)
 hattribute.getXtras(whichUnit, eventKey)
 hattribute.hasXtras(whichUnit, eventKey)
 hattribute.xtras(triggerUnit, eventKey, evtData)
+```
+ * [L]**lib\attribute.lua**
+```
+hattribute.isValType(field, valType)
+hattribute.setRelation(relation)
+hattribute.init(whichUnit)
+hattribute.setHandle(whichUnit, attr, opr, val, during)
+hattribute.set(whichUnit, during, data)
+hattribute.get(whichUnit, attr, default)
+hattribute.caleAttribute(damageSrc, isAdd, whichUnit, attr, times)
+hattribute.getArmorReducePercent(defend)
 ```
  * [L]**lib\award.lua**
 ```
@@ -272,6 +272,7 @@ hdzui.loadToc(tocFilePath)
 hdzui.frame(fdfName, parent, id)
 hdzui.frameTag(fdfType, fdfName, parent, tag, id)
 hdzui.framePoint(frameId, relation, align, alignRelation, x, y)
+hdzui.miniMapTrack(options)
 hdzui.onMouse(frameId, mouseOrder, vjFunc, whichPlayer)
 ```
  * [L]**lib\effect.lua**
@@ -302,6 +303,9 @@ henv.setFogStatus(enableFog, enableMark)
 henv.clearDestructable(whichRect)
 henv.build(whichRect, typeStr, isInvulnerable, isDestroyRect, ground, doodad, units)
 henv.random(whichRect, typeStr, isInvulnerable, isDestroyRect)
+```
+ * [L]**lib\event\defaultActions.lua**
+```
 ```
  * [L]**lib\event.lua**
 ```
@@ -406,9 +410,6 @@ hevent.onMoving(whichUnit, callFunc)
 hevent.onMoveStop(whichUnit, callFunc)
 hevent.onHoldOn(whichUnit, callFunc)
 hevent.onStop(whichUnit, callFunc)
-```
- * [L]**lib\eventDefaultActions.lua**
-```
 ```
  * [L]**lib\group.lua**
 ```
@@ -1119,7 +1120,13 @@ hskill.damageStep(options)
 hskill.damageRange(options)
 hskill.damageGroup(options)
 ```
- * [L]**lib\skill\index.lua**
+ * [L]**lib\skill\ring.lua**
+```
+hring.check(id)
+hring.insert(whichUnit, id, level)
+hring.remove(whichUnit, id)
+```
+ * [L]**lib\skill.lua**
 ```
 hskill.getAttribute(abilityId)
 hskill.addProperty(whichUnit, abilityId, level)
@@ -1131,12 +1138,6 @@ hskill.del(whichUnit, abilityId, delay)
 hskill.forever(whichUnit, abilityId)
 hskill.has(whichUnit, abilityId)
 hskill.setCoolDown(whichUnit, abilityID, coolDown)
-```
- * [L]**lib\skill\ring.lua**
-```
-hring.check(id)
-hring.insert(whichUnit, id, level)
-hring.remove(whichUnit, id)
 ```
  * [L]**lib\slk.lua**
 ```
