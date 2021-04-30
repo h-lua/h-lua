@@ -221,6 +221,81 @@ hdzui.framePoint = function(frameId, relation, align, alignRelation, x, y)
     hjapi.DzFrameSetPoint(frameId, align, relation, alignRelation, x, y)
 end
 
+--[[
+    绑定一个单位在"小地图"上显示你想要的贴图
+    options = {
+        whichUnit = nil, --某单位
+        texture = {file="",w=0.1,h=0.12,opacity}, --是用的单位标志：贴图文件、宽、高、透明[0.0-1.0]
+        miniMap = {frame=0,w=0,h=0}, -- 小地图大小位置参数：UI—id、宽、高
+        action = function(trackOptions, trackIdx){}, -- 每周期行为
+    }
+]]
+---@param options pilotDZUIMiniMapTrack
+hdzui.miniMapTrack = function(options)
+    if (options.whichUnit == nil or his.deleted(options.whichUnit)) then
+        return
+    end
+    options.texture = options.texture or {}
+    options.texture.file = options.texture.file or hunit.getAvatar(hunit.getId(options.whichUnit))
+    options.texture.w = options.texture.w or 0.016
+    options.texture.h = options.texture.h or 0.016
+    options.texture.opacity = options.texture.opacity or 1.0
+    options.miniMap = options.miniMap or {}
+    options.miniMap.frame = options.miniMap.frame or hdzui.origin.miniMap()
+    options.miniMap.w = options.miniMap.w or 0.13875
+    options.miniMap.h = options.miniMap.h or 0.1375
+    if (type(options.action) ~= "function") then
+        options.action = function(_t)
+            -- 设_t.deleted=true则中止追踪
+            if (his.dead(_t.whichUnit)) then
+                hjapi.DzFrameShow(_t.frame, false)
+                return
+            end
+            hplayer.forEach(function(enumPlayer, _)
+                if (enumPlayer == hplayer.loc()) then
+                    hjapi.DzFrameShow(_t.frame, his.allyPlayer(_t.whichUnit, enumPlayer))
+                end
+            end)
+        end
+    end
+    options.disabled = options.disabled or function(whichUnit)
+        return his.deleted(whichUnit)
+    end
+    local track = hdzui.frameTag("BACKDROP", "StandardMenuTinyButtonBaseBackdrop", hdzui.origin.game())
+    if (track <= 0) then
+        return
+    end
+    hjapi.DzFrameSetTexture(track, options.texture.file)
+    hjapi.DzFrameSetAlpha(track, 255 * options.texture.opacity)
+    hjapi.DzFrameSetSize(track, options.texture.w, options.texture.h)
+    hjapi.DzFrameShow(track, false)
+    options.frame = track
+    options.deleted = false
+    table.insert(cache.miniMapTrack, options)
+    if (cache.miniMapTrackTimer == nil) then
+        cache.miniMapTrackTimer = htime.setInterval(0.03, function(curTimer)
+            if (#cache.miniMapTrack <= 0) then
+                htime.delTimer(curTimer)
+                cache.miniMapTrackTimer = nil
+                return
+            end
+            for ti, t in ipairs(cache.miniMapTrack) do
+                if (t.deleted == true or his.deleted(t.whichUnit)) then
+                    hjapi.DzFrameShow(t.frame, false)
+                    hjapi.DzFrameSetEnable(t.frame, false)
+                    table.remove(cache.miniMapTrack, ti)
+                    ti = ti - 1
+                else
+                    local x = (hunit.x(t.whichUnit) - hrect.getMinX(hrect.world())) / hrect.getWidth(hrect.world()) * t.miniMap.w
+                    local y = (hunit.y(t.whichUnit) - hrect.getMinY(hrect.world())) / hrect.getHeight(hrect.world()) * t.miniMap.h
+                    hdzui.framePoint(t.frame, t.miniMap.frame, FRAME_ALIGN_CENTER, FRAME_ALIGN_LEFT_BOTTOM, x, y)
+                    t.action(t)
+                end
+            end
+        end)
+    end
+end
+
 --- 注册鼠标事件
 ---@param frameId number
 ---@param mouseOrder number integer 参考blizzard:^MOUSE_ORDER

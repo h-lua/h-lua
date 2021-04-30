@@ -95,3 +95,4 @@ end
 ---@alias pilotLeapReflex {qty,radius,arrowUnit,sourceUnit,targetUnit,x,y,speed,acceleration,height,shake,filter,tokenX,tokenY,tokenArrow,tokenArrowScale,tokenArrowOpacity,tokenArrowHeight,effectMovement,effectEnd,damageMovement,damageMovementRadius,damageMovementRepeat,damageMovementDrag,damageEnd,damageEndRadius,damageSrc,damageType,isFixed,damageEffect,oneHitOnly,onEnding,extraInfluence}
 ---@alias pilotRectangleStrike {deg,radius,distance,frequency,filter,sourceUnit,targetUnit,x,y,effect,effectScale,effectOffset,damageSrc,damageType,isFixed,damageEffect,oneHitOnly,extraInfluence}
 ---@alias pilotEffectTTG {msg,width,scale,speed,whichUnit,x,y,red,green,blue}
+---@alias pilotDZUIMiniMapTrack {whichUnit,texture:{file,w,h,opacity},miniMap:{w,h,x,y}}

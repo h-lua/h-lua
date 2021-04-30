@@ -43,7 +43,6 @@ git clone https://github.com/hunzsig-warcraft3/h-lua-sdk.git
     │   ├── string.lua
     │   └── table.lua
     ├── lib
-    │   ├── skill
     │   ├── attrbute - Universal Property System
     │   ├── cache.lua
     │   ├── award.lua
@@ -59,7 +58,6 @@ git clone https://github.com/hunzsig-warcraft3/h-lua-sdk.git
     │   ├── enemy.lua - Used to set enemy players, automatically assign units
     │   ├── env.lua
     │   ├── event.lua
-    │   ├── eventDefaultActions.lua
     │   ├── group.lua - Unit Group
     │   ├── hero.lua
     │   ├── id.lua
@@ -77,6 +75,7 @@ git clone https://github.com/hunzsig-warcraft3/h-lua-sdk.git
     │   ├── quest.lua
     │   ├── rect.lua
     │   ├── shop.lua
+    │   ├── skill
     │   ├── sound.lua
     │   ├── textTag.lua
     │   ├── texture.lua

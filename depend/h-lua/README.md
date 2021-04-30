@@ -44,7 +44,6 @@ git clone https://github.com/hunzsig-warcraft3/h-lua-sdk.git
     │   └── table.lua - 表库
     ├── lib
     │   ├── attrbute - 基础/拓展/伤害特效/自然/单位关联，万能属性系统，自由、强大
-    │   ├── skill - 技能库
     │   ├── cache.lua - 缓存
     │   ├── award.lua - 奖励模块，用于控制玩家的黄金木头经验
     │   ├── buff.lua - buff模块，可控状态管理
@@ -58,7 +57,6 @@ git clone https://github.com/hunzsig-warcraft3/h-lua-sdk.git
     │   ├── enemy.lua - 敌人模块，用于设定敌人玩家，自动分配单位
     │   ├── env.lua - 环境模块，可随机为区域生成装饰物及地表纹理
     │   ├── event.lua - 事件模块，自定义事件，包括物品合成分拆/暴击，精确攻击捕捉等
-    │   ├── eventDefaultActions.lua - 框架默认事件函数
     │   ├── group.lua - 单位组
     │   ├── hero.lua - 英雄/选英雄模块，包含点击/酒馆选择，repick/random功能等
     │   ├── id.lua - h-lua id配置
@@ -75,6 +73,7 @@ git clone https://github.com/hunzsig-warcraft3/h-lua-sdk.git
     │   ├── quest.lua - 任务
     │   ├── rect.lua - 区域
     │   ├── shop.lua - 商店模块
+    │   ├── skill - 技能库
     │   ├── slk.lua - slk模块
     │   ├── sound.lua - 声音模块
     │   ├── textTag.lua - 漂浮字
