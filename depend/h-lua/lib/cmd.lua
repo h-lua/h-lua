@@ -58,37 +58,6 @@ hcmd._cds["-apc"] = {
     end
 }
 
--- Command: -eff 开关特效显示
-hcmd._cds["-eff"] = {
-    pattern = "^-eff$",
-    action = function(evtData)
-        if (hplayer.qty_current == 1) then
-            if (heffect.enable == true) then
-                heffect.enable = false
-                hlightning.enable = false
-                echo("|cffffcc00已关闭|r大部分特效", evtData.triggerPlayer)
-            else
-                heffect.enable = true
-                hlightning.enable = true
-                echo("|cffffcc00已开启|r大部分特效", evtData.triggerPlayer)
-            end
-        else
-            echo("此命令仅在单人时有效", evtData.triggerPlayer)
-        end
-    end,
-    quest = function()
-        hquest.create({
-            side = "right",
-            title = "开关特效[单人]",
-            icon = "ReplaceableTextures\\CommandButtons\\BTNTomeOfRetraining.blp",
-            content = {
-                "-eff 开关特效",
-                "这个命令只有在单人时有效，可关闭大部分的特效",
-            }
-        })
-    end
-}
-
 -- Command: -random 随机选择英雄（必须使用hhero的选取法）
 hcmd._cds["-random"] = {
     pattern = "^-random$",
@@ -240,7 +209,6 @@ hcmd._cds["-d"] = {
 --- -gg 投降
 --- -apm 显示每分钟操作数
 --- -apc 开关金自动转木
---- -eff 开关特效
 --- -random 随机选择英雄
 --- -repick 重新选择英雄
 --- -d [+|-][NUMBER] 升降视距；例：-d +100 / -d -50
@@ -256,11 +224,13 @@ hcmd.conf = function(commands, playerIndexes)
     hcmd._c = { commands = commands, playerIndexes = playerIndexes }
     for _, c in ipairs(commands) do
         local cd = hcmd._cds[c]
-        cd.quest()
-        for _, pIdx in ipairs(playerIndexes) do
-            local p = hplayer.players[pIdx]
-            if (p ~= nil and his.computer(p) == false) then
-                hevent.onChat(p, cd.pattern, cd.action)
+        if (cd ~= nil) then
+            cd.quest()
+            for _, pIdx in ipairs(playerIndexes) do
+                local p = hplayer.players[pIdx]
+                if (p ~= nil and his.computer(p) == false) then
+                    hevent.onChat(p, cd.pattern, cd.action)
+                end
             end
         end
     end

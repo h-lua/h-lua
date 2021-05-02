@@ -221,6 +221,28 @@ hdzui.framePoint = function(frameId, relation, align, alignRelation, x, y)
     hjapi.DzFrameSetPoint(frameId, align, relation, alignRelation, x, y)
 end
 
+--- 注册鼠标事件
+---@param frameId number
+---@param mouseOrder number integer 参考blizzard:^MOUSE_ORDER
+---@param vjFunc string vjFunction
+---@param whichPlayer userdata 玩家
+hdzui.onMouse = function(frameId, mouseOrder, vjFunc, whichPlayer)
+    if (mouseOrder == nil) then
+        return
+    end
+    if (whichPlayer ~= nil) then
+        if (hplayer.loc() == whichPlayer) then
+            hjapi.DzFrameSetScript(frameId, mouseOrder, vjFunc, false)
+        end
+    else
+        for i = 1, bj_MAX_PLAYERS, 1 do
+            if (hplayer.loc() == hplayer.players[i]) then
+                hjapi.DzFrameSetScript(frameId, mouseOrder, vjFunc, false)
+            end
+        end
+    end
+end
+
 --[[
     绑定一个单位在"小地图"上显示你想要的贴图
     options = {
@@ -282,26 +304,4 @@ hdzui.miniMapTrack = function(options)
         hdzui.framePoint(options.frame, options.miniMap.frame, FRAME_ALIGN_CENTER, FRAME_ALIGN_LEFT_BOTTOM, x, y)
         options.action(options)
     end)
-end
-
---- 注册鼠标事件
----@param frameId number
----@param mouseOrder number integer 参考blizzard:^MOUSE_ORDER
----@param vjFunc string vjFunction
----@param whichPlayer userdata 玩家
-hdzui.onMouse = function(frameId, mouseOrder, vjFunc, whichPlayer)
-    if (mouseOrder == nil) then
-        return
-    end
-    if (whichPlayer ~= nil) then
-        if (hplayer.loc() == whichPlayer) then
-            hjapi.DzFrameSetScript(frameId, mouseOrder, vjFunc, false)
-        end
-    else
-        for i = 1, bj_MAX_PLAYERS, 1 do
-            if (hplayer.loc() == hplayer.players[i]) then
-                hjapi.DzFrameSetScript(frameId, mouseOrder, vjFunc, false)
-            end
-        end
-    end
 end
