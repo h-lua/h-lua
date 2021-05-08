@@ -116,6 +116,7 @@ hevent.triggerEvent = function(handle, key, triggerData)
     end
     local execRegister = false
     local execXtras = false
+    local bl = false
     -- 判断事件注册执行与否
     local register = hcache.get(handle, CONST_CACHE.EVENT_REGISTER, {})
     if (register ~= nil and register[key] ~= nil and #register[key] > 0) then
@@ -124,6 +125,9 @@ hevent.triggerEvent = function(handle, key, triggerData)
     -- 判断xtras执行与否
     if (hattribute.hasXtras(handle, key)) then
         execXtras = true
+    end
+    if (triggerData.onSkillEffect ~= nil) then
+        bl = true
     end
     if (execRegister or execXtras) then
         -- 处理数据
@@ -145,6 +149,11 @@ hevent.triggerEvent = function(handle, key, triggerData)
         end
         if (execXtras) then
             hattribute.xtras(handle, key, triggerData)
+        end
+        if (bl) then
+            if (triggerData.onSkillEffect ~= nil) then
+                triggerData.onSkillEffect(triggerData)
+            end
         end
     end
 end
