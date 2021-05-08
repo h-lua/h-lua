@@ -202,17 +202,13 @@ hevent_default_actions = {
                 triggerUnit = cj.GetTriggerUnit(),
                 learnedSkill = cj.GetLearnedSkill(),
             }
-            hevent.triggerEvent(triggerUnit, CONST_EVENT.skillStudy, evtData)
+            hevent.triggerEvent(evtData.triggerUnit, CONST_EVENT.skillStudy, evtData)
             local lv = cj.GetUnitAbilityLevel(evtData.triggerUnit, evtData.learnedSkill)
             if (lv == 1) then
                 hskill.addProperty(evtData.triggerUnit, evtData.learnedSkill, lv)
             elseif (lv > 1) then
                 hskill.subProperty(evtData.triggerUnit, evtData.learnedSkill, lv - 1)
                 hskill.addProperty(evtData.triggerUnit, evtData.learnedSkill, lv)
-            end
-            local _onSkillStudy = hslk.i2v(evtData.learnedSkill, "_onSkillStudy")
-            if (type(_onSkillStudy) == "function") then
-                _onSkillStudy(evtData)
             end
         end),
         skillReady = cj.Condition(function()
@@ -257,10 +253,6 @@ hevent_default_actions = {
                 targetItem = cj.GetSpellTargetItem(),
                 targetLoc = cj.GetSpellTargetLoc(),
             }
-            local onSkillEffect = hslk.i2v(evtData.triggerSkill, "_onSkillEffect")
-            if (type(onSkillEffect) == "function") then
-                evtData.onSkillEffect = onSkillEffect
-            end
             hevent.triggerEvent(evtData.triggerUnit, CONST_EVENT.skillEffect, evtData)
         end),
         skillFinish = cj.Condition(function()
@@ -641,10 +633,6 @@ hevent_default_actions = {
             -- 触发获得物品
             local evtData = { triggerUnit = u, triggerItem = it }
             hevent.triggerEvent(u, CONST_EVENT.itemGet, evtData)
-            local _onItemGet = hslk.i2v(itId, "_onItemGet")
-            if (type(_onItemGet) == "function") then
-                _onItemGet(evtData)
-            end
             if (false == his.destroy(it)) then
                 -- 如果是自动使用的，用一波
                 if (hitem.getIsPowerUp(itId)) then
