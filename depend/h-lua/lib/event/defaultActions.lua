@@ -257,11 +257,11 @@ hevent_default_actions = {
                 targetItem = cj.GetSpellTargetItem(),
                 targetLoc = cj.GetSpellTargetLoc(),
             }
-            hevent.triggerEvent(evtData.triggerUnit, CONST_EVENT.skillEffect, evtData)
-            local _onSkillEffect = hslk.i2v(evtData.triggerSkill, "_onSkillEffect")
-            if (type(_onSkillEffect) == "function") then
-                _onSkillEffect(evtData)
+            local onSkillEffect = hslk.i2v(evtData.triggerSkill, "_onSkillEffect")
+            if (type(onSkillEffect) == "function") then
+                evtData.onSkillEffect = onSkillEffect
             end
+            hevent.triggerEvent(evtData.triggerUnit, CONST_EVENT.skillEffect, evtData)
         end),
         skillFinish = cj.Condition(function()
             local evtData = {
