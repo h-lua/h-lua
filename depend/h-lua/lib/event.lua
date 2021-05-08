@@ -142,12 +142,12 @@ hevent.hslk = function(key, triggerData)
             _onSkillEffect(triggerData)
         end
     elseif (key == CONST_EVENT.itemUsed) then
-        local _onItemUsed = hslk.i2v(triggerData.triggerItemId, "_onItemUsed")
+        local _onItemUsed = hslk.i2v(triggerData.triggerItem, "_onItemUsed")
         if (_onItemUsed ~= nil and type(_onItemUsed) == "function") then
             _onItemUsed(triggerData)
         end
     elseif (key == CONST_EVENT.itemGet) then
-        local _onItemGet = hslk.i2v(triggerData.triggerItemId, "_onItemGet")
+        local _onItemGet = hslk.i2v(triggerData.triggerItem, "_onItemGet")
         if (type(_onItemGet) == "function") then
             _onItemGet(triggerData)
         end
