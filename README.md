@@ -80,5 +80,5 @@
 ./h-lua-sdk> sdk.exe -m [*PROJECT_NAME] [~CURRENT_PAGE:0]  //以YDWE浏览项目模型，一页最大289个，可翻页
 ./h-lua-sdk> sdk.exe -c [*PROJECT_NAME]  //清理构建的临时文件
 ./h-lua-sdk> sdk.exe -t [*PROJECT_NAME]  //构建测试版本并开启游戏进行调试
-./h-lua-sdk> sdk.exe -b [*PROJECT_NAME]  //构建上线版本并开启游戏进行调试
+./h-lua-sdk> sdk.exe -b [*PROJECT_NAME]  //构建上线版本并开启游戏进行调试1
 ```
