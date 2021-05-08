@@ -122,18 +122,6 @@ hitem.used = function(whichUnit, whichItem, triggerData)
     triggerData = triggerData or {}
     triggerData.triggerUnit = whichUnit
     triggerData.triggerItem = whichItem
-    if (triggerData.targetLoc ~= nil) then
-        triggerData.targetX = cj.GetLocationX(triggerData.targetLoc)
-        triggerData.targetY = cj.GetLocationY(triggerData.targetLoc)
-        triggerData.targetZ = cj.GetLocationZ(triggerData.targetLoc)
-        cj.RemoveLocation(triggerData.targetLoc)
-        triggerData.targetLoc = nil
-    end
-    local itId = hitem.getId(whichItem)
-    local _onItemUsed = hslk.i2v(itId, "_onItemUsed")
-    if (_onItemUsed ~= nil and type(_onItemUsed) == "function") then
-        _onItemUsed(triggerData)
-    end
     hevent.triggerEvent(whichUnit, CONST_EVENT.itemUsed, triggerData)
 end
 

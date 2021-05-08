@@ -108,45 +108,77 @@ hevent.registerEvent = function(handle, key, callFunc)
     return #register[key]
 end
 
+--- 触发数据（私有通用）
+---@protected
+hevent.triggerData = function(triggerData)
+    triggerData = triggerData or {}
+    if (triggerData.triggerSkill ~= nil and type(triggerData.triggerSkill) == "number") then
+        triggerData.triggerSkill = string.id2char(triggerData.triggerSkill)
+    end
+    if (triggerData.learnedSkillId ~= nil and type(triggerData.learnedSkillId) == "number") then
+        triggerData.learnedSkillId = string.id2char(triggerData.learnedSkillId)
+    end
+    if (triggerData.triggerItem ~= nil) then
+        triggerData.triggerItemId = hitem.getId(triggerData.triggerItem)
+    end
+    if (triggerData.targetLoc ~= nil) then
+        triggerData.targetX = cj.GetLocationX(triggerData.targetLoc)
+        triggerData.targetY = cj.GetLocationY(triggerData.targetLoc)
+        triggerData.targetZ = cj.GetLocationZ(triggerData.targetLoc)
+        cj.RemoveLocation(triggerData.targetLoc)
+        triggerData.targetLoc = nil
+    end
+    return triggerData
+end
+
+--- 处理hslk事件（私有通用）
+---@protected
+hevent.hslk = function(key, triggerData)
+    if (key == CONST_EVENT.skillStudy) then
+        local _onSkillStudy = hslk.i2v(triggerData.learnedSkillId, "_onSkillStudy")
+        if (type(_onSkillStudy) == "function") then
+            _onSkillStudy(triggerData)
+        end
+    elseif (key == CONST_EVENT.skillEffect) then
+        local _onSkillEffect = hslk.i2v(triggerData.triggerSkillId, "_onSkillEffect")
+        if (type(_onSkillEffect) == "function") then
+            _onSkillEffect(triggerData)
+        end
+    elseif (key == CONST_EVENT.itemUsed) then
+        local _onItemUsed = hslk.i2v(triggerData.triggerItemId, "_onItemUsed")
+        if (_onItemUsed ~= nil and type(_onItemUsed) == "function") then
+            _onItemUsed(triggerData)
+        end
+    elseif (key == CONST_EVENT.itemGet) then
+        local _onItemGet = hslk.i2v(triggerData.triggerItemId, "_onItemGet")
+        if (type(_onItemGet) == "function") then
+            _onItemGet(triggerData)
+        end
+    end
+end
+
 --- 触发事件（私有通用）
 ---@protected
 hevent.triggerEvent = function(handle, key, triggerData)
     if (handle == nil or key == nil) then
         return
     end
-    local execRegister = false
-    local execXtras = false
+    -- 数据
+    triggerData = hevent.triggerData(triggerData)
+    -- exec
     -- 判断事件注册执行与否
     local register = hcache.get(handle, CONST_CACHE.EVENT_REGISTER, {})
     if (register ~= nil and register[key] ~= nil and #register[key] > 0) then
-        execRegister = true
+        for _, callFunc in ipairs(register[key]) do
+            callFunc(triggerData)
+        end
     end
     -- 判断xtras执行与否
     if (hattribute.hasXtras(handle, key)) then
-        execXtras = true
+        hattribute.xtras(handle, key, triggerData)
     end
-    if (execRegister or execXtras) then
-        -- 处理数据
-        triggerData = triggerData or {}
-        if (triggerData.triggerSkill ~= nil and type(triggerData.triggerSkill) == "number") then
-            triggerData.triggerSkill = string.id2char(triggerData.triggerSkill)
-        end
-        if (triggerData.targetLoc ~= nil) then
-            triggerData.targetX = cj.GetLocationX(triggerData.targetLoc)
-            triggerData.targetY = cj.GetLocationY(triggerData.targetLoc)
-            triggerData.targetZ = cj.GetLocationZ(triggerData.targetLoc)
-            cj.RemoveLocation(triggerData.targetLoc)
-            triggerData.targetLoc = nil
-        end
-        if (execRegister) then
-            for _, callFunc in ipairs(register[key]) do
-                callFunc(triggerData)
-            end
-        end
-        if (execXtras) then
-            hattribute.xtras(handle, key, triggerData)
-        end
-    end
+    -- hslk
+    hevent.hslk(key, triggerData)
 end
 
 --- 删除事件（需要event_id）
