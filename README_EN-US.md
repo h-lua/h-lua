@@ -73,7 +73,7 @@
 
 ## CMD(Short for)
 ```
-*required ~optional
+*required ~optional I'm a handsome man
 ./h-lua-sdk> sdk.exe -h
 ./h-lua-sdk> sdk.exe -n [:PROJECT_NAME] - new a project
 ./h-lua-sdk> sdk.exe -we|-yd [:PROJECT_NAME] - open map by YDWE
