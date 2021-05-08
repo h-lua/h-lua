@@ -6,6 +6,31 @@
 ---@class hitem 物品
 hitem = {}
 
+--- 获取物品X坐标
+---@param it userdata
+---@return number
+hitem.x = function(it)
+    return cj.GetItemX(it)
+end
+
+--- 获取物品Y坐标
+---@param it userdata
+---@return number
+hitem.y = function(it)
+    return cj.GetItemY(it)
+end
+
+--- 获取物品Z坐标
+---@param it userdata
+---@return number
+hitem.z = function(it)
+    local loc = cj.GetItemLoc(it)
+    local z = cj.GetLocationZ(loc)
+    cj.RemoveLocation(loc)
+    return z
+end
+
+
 -- 单位嵌入到物品到框架系统
 ---@protected
 hitem.embed = function(u)

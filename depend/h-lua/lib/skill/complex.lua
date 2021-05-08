@@ -964,7 +964,7 @@ hskill.crackFly = function(options)
     end
     hunit.setCanFly(options.targetUnit)
     cj.SetUnitPathing(options.targetUnit, false)
-    local originHigh = cj.GetUnitFlyHeight(options.targetUnit)
+    local originHigh = hunit.getFlyHeight(options.targetUnit)
     local originFacing = hunit.getFacing(options.targetUnit)
     local originDeg
     if (options.sourceUnit ~= nil) then
@@ -1047,7 +1047,7 @@ hskill.crackFly = function(options)
                 end
             end
             if (z > 0) then
-                cj.SetUnitFlyHeight(options.targetUnit, cj.GetUnitFlyHeight(options.targetUnit) + z, z / timerSetTime)
+                cj.SetUnitFlyHeight(options.targetUnit, hunit.getFlyHeight(options.targetUnit) + z, z / timerSetTime)
             end
         else
             dist = distance / (during * 0.5 / timerSetTime)
@@ -1065,7 +1065,7 @@ hskill.crackFly = function(options)
                 end
             end
             if (z > 0) then
-                cj.SetUnitFlyHeight(options.targetUnit, cj.GetUnitFlyHeight(options.targetUnit) - z, z / timerSetTime)
+                cj.SetUnitFlyHeight(options.targetUnit, hunit.getFlyHeight(options.targetUnit) - z, z / timerSetTime)
             end
         end
     end)
@@ -1371,7 +1371,7 @@ hskill.leap = function(options)
             hunit.setFlyHeight(arrowUnit, tokenArrowHeight, 9999)
         end
     end
-    local heightOrigin = cj.GetUnitFlyHeight(arrowUnit)
+    local heightOrigin = hunit.getFlyHeight(arrowUnit)
     cj.SetUnitFacing(arrowUnit, initFacing)
     --绑定一个无限的effect
     local tempEffectArrow

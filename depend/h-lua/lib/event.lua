@@ -115,11 +115,8 @@ hevent.triggerData = function(triggerData)
     if (triggerData.triggerSkill ~= nil and type(triggerData.triggerSkill) == "number") then
         triggerData.triggerSkill = string.id2char(triggerData.triggerSkill)
     end
-    if (triggerData.learnedSkillId ~= nil and type(triggerData.learnedSkillId) == "number") then
-        triggerData.learnedSkillId = string.id2char(triggerData.learnedSkillId)
-    end
-    if (triggerData.triggerItem ~= nil) then
-        triggerData.triggerItemId = hitem.getId(triggerData.triggerItem)
+    if (triggerData.learnedSkill ~= nil and type(triggerData.learnedSkill) == "number") then
+        triggerData.learnedSkill = string.id2char(triggerData.learnedSkill)
     end
     if (triggerData.targetLoc ~= nil) then
         triggerData.targetX = cj.GetLocationX(triggerData.targetLoc)
@@ -135,12 +132,12 @@ end
 ---@protected
 hevent.hslk = function(key, triggerData)
     if (key == CONST_EVENT.skillStudy) then
-        local _onSkillStudy = hslk.i2v(triggerData.learnedSkillId, "_onSkillStudy")
+        local _onSkillStudy = hslk.i2v(triggerData.learnedSkill, "_onSkillStudy")
         if (type(_onSkillStudy) == "function") then
             _onSkillStudy(triggerData)
         end
     elseif (key == CONST_EVENT.skillEffect) then
-        local _onSkillEffect = hslk.i2v(triggerData.triggerSkillId, "_onSkillEffect")
+        local _onSkillEffect = hslk.i2v(triggerData.triggerSkill, "_onSkillEffect")
         if (type(_onSkillEffect) == "function") then
             _onSkillEffect(triggerData)
         end
@@ -165,7 +162,6 @@ hevent.triggerEvent = function(handle, key, triggerData)
     end
     -- 数据
     triggerData = hevent.triggerData(triggerData)
-    -- exec
     -- 判断事件注册执行与否
     local register = hcache.get(handle, CONST_CACHE.EVENT_REGISTER, {})
     if (register ~= nil and register[key] ~= nil and #register[key] > 0) then

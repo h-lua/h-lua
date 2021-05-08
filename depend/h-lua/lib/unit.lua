@@ -262,7 +262,10 @@ end
 ---@param u userdata
 ---@return number
 hunit.z = function(u)
-    return cj.GetUnitFlyHeight(u)
+    local loc = cj.GetUnitLoc(u)
+    local z = cj.GetLocationZ(loc)
+    cj.RemoveLocation(loc)
+    return z
 end
 
 --- 单位启用硬直（启用后硬直属性才有效）
@@ -795,7 +798,13 @@ hunit.setCanFly = function(u)
     cj.UnitRemoveAbility(u, string.char2id("Arav"))
 end
 
---- 设置单位高度，用于设置单位可飞行之后
+--- 获取单位飞行高度
+---@param u userdata
+---@return number
+hunit.getFlyHeight = function(u)
+    return cj.GetUnitFlyHeight(u)
+end
+--- 设置单位飞行高度，用于设置单位可飞行之后
 ---@param u userdata
 ---@param height number
 ---@param speed number
