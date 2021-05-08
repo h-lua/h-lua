@@ -414,7 +414,7 @@ hevent_default_actions = {
                 851986:MOVE 移动
                 851993:HOLD 保持原位
                 851972:STOP 停止
-                852003:移动物品栏
+                852002~852007:移动物品栏
             ]]
             local triggerUnit = cj.GetTriggerUnit()
             local orderId = cj.GetIssuedOrderId()
@@ -437,7 +437,7 @@ hevent_default_actions = {
                 lz = cj.GetLocationZ(loc)
                 cj.RemoveLocation(loc)
                 loc = nil
-            elseif (orderTargetItem ~= nil and orderId ~= 852003) then
+            elseif (orderTargetItem ~= nil and not(orderId >= 852002 and orderId <= 852007)) then
                 loc = cj.Location(cj.GetItemX(orderTargetItem), cj.GetItemY(orderTargetItem))
                 lx = cj.GetLocationX(loc)
                 ly = cj.GetLocationY(loc)
