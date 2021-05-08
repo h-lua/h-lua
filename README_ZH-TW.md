@@ -73,7 +73,7 @@
 
 ### 命令行的縮寫版
 ```
-* 必填 ~ 選填
+* 必填 ~ 選填 我是大帥逼
 ./h-lua-sdk> sdk.exe -h  //提示cmd工具命令
 ./h-lua-sdk> sdk.exe -n [*PROJECT_NAME]  //新建一個地圖項目
 ./h-lua-sdk> sdk.exe -we|-yd [*PROJECT_NAME]  //以YDWE打開地圖項目
