@@ -246,9 +246,11 @@ hplayer.defeat = function(whichPlayer, tips)
     if (cj.GetPlayerController(whichPlayer) == MAP_CONTROL_USER) then
         hdialog.create(whichPlayer, {
             title = tips,
-            buttons = { cj.GetLocalizedString("GAMEOVER_QUIT_MISSION") }
+            buttons = {value = "Q", cj.GetLocalizedString("GAMEOVER_QUIT_MISSION") }
         }, function()
-            cj.EndGame(true)
+            if (whichPlayer == hplayer.loc()) then
+                cj.EndGame(true)
+            end
         end)
     end
 end
@@ -270,9 +272,11 @@ hplayer.victory = function(whichPlayer, tips)
         cg.bj_changeLevelShowScores = true
         hdialog.create(whichPlayer, {
             title = tips,
-            buttons = { cj.GetLocalizedString("GAMEOVER_QUIT_MISSION") }
+            buttons = { value = "Q",cj.GetLocalizedString("GAMEOVER_QUIT_MISSION") }
         }, function()
-            cj.EndGame(true)
+            if (whichPlayer == hplayer.loc()) then
+                cj.EndGame(true)
+            end
         end)
     end
 end
