@@ -30,15 +30,15 @@ hplayer.adjustPlayerState = function(delta, whichPlayer, whichPlayerState)
     if delta > 0 then
         if whichPlayerState == PLAYER_STATE_RESOURCE_GOLD then
             cj.SetPlayerState(
-                whichPlayer,
-                PLAYER_STATE_GOLD_GATHERED,
-                cj.GetPlayerState(whichPlayer, PLAYER_STATE_GOLD_GATHERED) + delta
+                    whichPlayer,
+                    PLAYER_STATE_GOLD_GATHERED,
+                    cj.GetPlayerState(whichPlayer, PLAYER_STATE_GOLD_GATHERED) + delta
             )
         elseif whichPlayerState == PLAYER_STATE_RESOURCE_LUMBER then
             cj.SetPlayerState(
-                whichPlayer,
-                PLAYER_STATE_LUMBER_GATHERED,
-                cj.GetPlayerState(whichPlayer, PLAYER_STATE_LUMBER_GATHERED) + delta
+                    whichPlayer,
+                    PLAYER_STATE_LUMBER_GATHERED,
+                    cj.GetPlayerState(whichPlayer, PLAYER_STATE_LUMBER_GATHERED) + delta
             )
         end
     end
@@ -197,8 +197,8 @@ hplayer.getRandomHero = function()
     end
     local ri = math.random(1, #pi)
     return hhero.getPlayerUnit(
-        hplayer.players[pi[ri]],
-        math.random(1, hhero.getPlayerAllowQty(hplayer.players[pi[ri]]))
+            hplayer.players[pi[ri]],
+            math.random(1, hhero.getPlayerAllowQty(hplayer.players[pi[ri]]))
     )
 end
 
@@ -246,7 +246,7 @@ hplayer.defeat = function(whichPlayer, tips)
     if (cj.GetPlayerController(whichPlayer) == MAP_CONTROL_USER) then
         hdialog.create(whichPlayer, {
             title = tips,
-            buttons = {value = "Q", cj.GetLocalizedString("GAMEOVER_QUIT_MISSION") }
+            buttons = { { value = "Q", cj.GetLocalizedString("GAMEOVER_QUIT_MISSION") } }
         }, function()
             if (whichPlayer == hplayer.loc()) then
                 cj.EndGame(true)
@@ -272,7 +272,7 @@ hplayer.victory = function(whichPlayer, tips)
         cg.bj_changeLevelShowScores = true
         hdialog.create(whichPlayer, {
             title = tips,
-            buttons = { value = "Q",cj.GetLocalizedString("GAMEOVER_QUIT_MISSION") }
+            buttons = { { value = "Q", cj.GetLocalizedString("GAMEOVER_QUIT_MISSION") } }
         }, function()
             if (whichPlayer == hplayer.loc()) then
                 cj.EndGame(true)
