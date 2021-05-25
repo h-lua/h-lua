@@ -397,7 +397,7 @@ hunit.portal = function(whichUnit, x, y, facing)
     end
     cj.SetUnitPosition(whichUnit, x, y)
     if (facing ~= nil) then
-        cj.SetUnitFacing(facing)
+        cj.SetUnitFacing(whichUnit,facing)
     end
 end
 
