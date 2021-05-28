@@ -82,9 +82,9 @@ hsync.onFrameMouse = function(frameId, mouseOrder, callback)
         local newData = {}
         newData.syncPlayer = callbackData.triggerPlayer
         newData.triggerKey = callbackData.triggerKey
-        newData.triggerFrameId = math.floor(callbackData.triggerData[2])
-        newData.triggerMouseOrder = math.floor(callbackData.triggerData[3])
-        newData.triggerPlayer = cj.Player(math.floor(callbackData.triggerData[4]))
+        newData.triggerFrameId = math.floor(callbackData.triggerData[1])
+        newData.triggerMouseOrder = math.floor(callbackData.triggerData[2])
+        newData.triggerPlayer = cj.Player(math.floor(callbackData.triggerData[3]))
         callback(newData)
     end
     hjapi.HFrameSetScript(frameId, mouseOrder, hsync.call(hsync.key(), callback2, { frameId, mouseOrder }))
