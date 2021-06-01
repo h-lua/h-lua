@@ -18,6 +18,54 @@ print = function(...)
     hPrint(...)
 end
 
+local types = { "all", "max" }
+local typesLabel = {
+    all = "总共",
+    max = "最大值",
+    ["+tmr"] = "计时器",
+    ["+ply"] = "玩家",
+    ["+frc"] = "玩家势力",
+    ["+flt"] = "过滤器",
+    ["+w3u"] = "单位",
+    ["+grp"] = "单位组",
+    ["+rct"] = "区域",
+    ["+snd"] = "声音",
+    ["+que"] = "任务",
+    ["+trg"] = "触发器",
+    ["+tac"] = "触发器动作",
+    ["+EIP"] = "对点特效",
+    ["+EIm"] = "附着特效",
+    ["pcvt"] = "玩家聊天事件",
+    ["pevt"] = "玩家事件",
+    ["uevt"] = "单位事件",
+    ["tcnd"] = "触发器条件",
+}
+
+handleDisplay = function()
+    local count = { all = 0, max = ydDebug.handlemax() }
+    for i = 1, count.max do
+        local h = 0x100000 + i
+        local info = ydDebug.handledef(h)
+        if (info and info.type) then
+            if (not table.includes(types, info.type)) then
+                table.insert(types, info.type)
+            end
+            if (count[info.type] == nil) then
+                count[info.type] = 0
+            end
+            count.all = count.all + 1
+            count[info.type] = count[info.type] + 1
+        end
+    end
+    print_mb("┌-----------------------------------")
+    local show = {}
+    for _, t in ipairs(types) do
+        print_mb("├  " .. (typesLabel[t] or t) .. " : " .. (count[t] or 0))
+    end
+    print_mb("└-----------------------------------")
+    return show
+end
+
 ---
 --- 记录运行时间rem方法。只有key1时为记录，有key2时会打印对应记录间的差值，如：
 --- **rem("a") --1**
