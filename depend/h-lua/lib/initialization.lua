@@ -123,8 +123,9 @@ hmonitor.create(CONST_MONITOR.MANA_BACK, 0.7,
         if (his.dead(object) or his.deleted(object)) then
             return true
         end
+        local curManaN = hunit.getMaxMana(object)
         local val = hattribute.get(object, "mana_back")
-        if (val > 0 and hunit.getCurManaPercent(object) >= 100) then
+        if ( curManaN <= 0 or val > 0 and hunit.getCurManaPercent(object) >= 100) then
             return true
         end
         return false
