@@ -751,6 +751,43 @@ hevent.onBeSkillHemophagia = function(whichUnit, callFunc)
     return hevent.registerEvent(whichUnit, CONST_EVENT.beSkillHemophagia, callFunc)
 end
 
+--- 吸魔时
+---@alias onSiphon fun(evtData: {triggerUnit:"触发单位",targetUnit:"目标单位",value:"吸魔值",percent:"吸魔百分比"}):void
+---@param whichUnit userdata
+---@param callFunc onSiphon | "function(evtData) end"
+---@return any
+hevent.onSiphon = function(whichUnit, callFunc)
+    return hevent.registerEvent(whichUnit, CONST_EVENT.siphon, callFunc)
+end
+
+--- 被吸魔时
+---@alias onBeSiphon fun(evtData: {triggerUnit:"触发单位",sourceUnit:"来源单位",value:"吸魔值",percent:"吸魔百分比"}):void
+---@param whichUnit userdata
+---@param callFunc onBeSiphon | "function(evtData) end"
+---@return any
+hevent.onBeSiphon = function(whichUnit, callFunc)
+    return hevent.registerEvent(whichUnit, CONST_EVENT.beSiphon, callFunc)
+end
+
+--- 技能吸魔时
+---@alias onSkillSiphon fun(evtData: {triggerUnit:"触发单位",targetUnit:"目标单位",value:"吸魔值",percent:"吸魔百分比"}):void
+---@param whichUnit userdata
+---@param callFunc onSkillSiphon | "function(evtData) end"
+---@return any
+hevent.onSkillSiphon = function(whichUnit, callFunc)
+    return hevent.registerEvent(whichUnit, CONST_EVENT.skillSiphon, callFunc)
+end
+
+
+--- 被技能吸魔时
+---@alias onBeSkillSiphon fun(evtData: {triggerUnit:"触发单位",sourceUnit:"来源单位",value:"吸魔值",percent:"吸魔百分比"}):void
+---@param whichUnit userdata
+---@param callFunc onBeSkillSiphon | "function(evtData) end"
+---@return any
+hevent.onBeSkillSiphon = function(whichUnit, callFunc)
+    return hevent.registerEvent(whichUnit, CONST_EVENT.beSkillSiphon, callFunc)
+end
+
 --- 硬直时
 ---@alias onPunish fun(evtData: {triggerUnit:"触发单位",sourceUnit:"来源单位",during:"持续时间",percent:"硬直程度百分比"}):void
 ---@param whichUnit userdata

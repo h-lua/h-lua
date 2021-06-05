@@ -33,6 +33,8 @@ CONST_ATTR = {
     punish_current = "当前僵直",
     hemophagia = "吸血", --(%)
     hemophagia_skill = "技能吸血", --(%)
+    siphon = "吸魔", --(%)
+    siphon_skill = "技能吸魔", --(%)
     invincible = "无敌", --(%)
     weight = "负重",
     weight_current = "当前负重",
@@ -48,6 +50,8 @@ CONST_ATTR = {
     knocking_oppose = "暴击抵抗",
     hemophagia_oppose = "吸血抵抗",
     hemophagia_skill_oppose = "技能吸血抵抗",
+    siphon_oppose = "吸魔抵抗",
+    siphon_skill_oppose = "技能吸魔抵抗",
     buff_oppose = "强化阻碍",
     debuff_oppose = "负面抵抗",
     split_oppose = "分裂抵抗",
@@ -146,6 +150,8 @@ local otherKeys = {
     "punish_current",
     "hemophagia",
     "hemophagia_skill",
+    "siphon",
+    "siphon_skill",
     "invincible",
     "weight",
     "weight_current",
@@ -160,6 +166,8 @@ local otherKeys = {
     "knocking_oppose",
     "hemophagia_oppose",
     "hemophagia_skill_oppose",
+    "siphon_oppose",
+    "siphon_skill_oppose",
     "split_oppose",
     "punish_oppose",
     "swim_oppose",

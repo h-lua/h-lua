@@ -63,6 +63,7 @@ CONST_UBERTIP_IS_PERCENT = function(key)
     if (table.includes({
         "attack_speed", "avoid", "aim",
         "hemophagia", "hemophagia_skill",
+        "siphon","siphon_skill",
         "invincible",
         "knocking_odds", "knocking_extent",
         "damage_extent", "damage_decrease", "damage_rebound",
