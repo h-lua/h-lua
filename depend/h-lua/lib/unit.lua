@@ -49,7 +49,7 @@ end
 ---@param u userdata
 ---@return number
 hunit.getMaxLife = function(u)
-    return cj.GetUnitState(u, UNIT_STATE_MAX_LIFE)
+    return cj.GetUnitState(u, UNIT_STATE_MAX_LIFE) or 0
 end
 --- 获取单位的当前生命
 ---@param u userdata
@@ -62,7 +62,6 @@ end
 ---@param val number
 hunit.setCurLife = function(u, val)
     cj.SetUnitState(u, UNIT_STATE_LIFE, val)
-    hmonitor.listen(CONST_MONITOR.LIFE_BACK, u)
 end
 --- 增加单位的当前生命
 ---@param u userdata
@@ -84,7 +83,7 @@ end
 ---@param u userdata
 ---@return number
 hunit.getMaxMana = function(u)
-    return cj.GetUnitState(u, UNIT_STATE_MAX_MANA)
+    return cj.GetUnitState(u, UNIT_STATE_MAX_MANA) or 0
 end
 --- 获取单位的当前魔法
 ---@param u userdata
@@ -97,7 +96,6 @@ end
 ---@param val number
 hunit.setCurMana = function(u, val)
     cj.SetUnitState(u, UNIT_STATE_MANA, val)
-    hmonitor.listen(CONST_MONITOR.MANA_BACK, u)
 end
 --- 增加单位的当前魔法
 ---@param u userdata
@@ -397,7 +395,7 @@ hunit.portal = function(whichUnit, x, y, facing)
     end
     cj.SetUnitPosition(whichUnit, x, y)
     if (facing ~= nil) then
-        cj.SetUnitFacing(whichUnit,facing)
+        cj.SetUnitFacing(whichUnit, facing)
     end
 end
 

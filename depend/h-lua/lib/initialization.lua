@@ -102,11 +102,11 @@ hmonitor.create(CONST_MONITOR.LIFE_BACK, 0.5,
         hunit.addCurLife(object, val * 0.5)
     end,
     function(object)
-        if (his.dead(object) or his.deleted(object)) then
+        if (his.deleted(object) or his.dead(object)) then
             return true
         end
         local val = hattribute.get(object, "life_back")
-        if (val > 0 and hunit.getCurLifePercent(object) >= 100) then
+        if (hunit.getMaxLife(object) <= 0 or val == 0) then
             return true
         end
         return false
@@ -120,12 +120,11 @@ hmonitor.create(CONST_MONITOR.MANA_BACK, 0.7,
         hunit.addCurMana(object, val * 0.7)
     end,
     function(object)
-        if (his.dead(object) or his.deleted(object)) then
+        if (his.deleted(object) or his.dead(object)) then
             return true
         end
-        local maxMana = hunit.getMaxMana(object)
         local val = hattribute.get(object, "mana_back")
-        if (maxMana <= 0 or val > 0 and hunit.getCurManaPercent(object) >= 100) then
+        if (hunit.getMaxMana(object) <= 0 or val == 0) then
             return true
         end
         return false
