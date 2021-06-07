@@ -1,11 +1,12 @@
 -- 伤害漂浮字
 local _damageTtgQty = 0
-local _damageTtg = function(targetUnit, damage, fix, rgb)
+local _damageTtg = function(targetUnit, damage, fix, rgb,sd)
     _damageTtgQty = _damageTtgQty + 1
     local during = 1.0
     local x = hunit.x(targetUnit) - 0.05 - _damageTtgQty * 0.013
     local y = hunit.y(targetUnit)
-    htextTag.model({ msg = fix .. math.floor(damage), x = x, y = y, red = rgb[1], green = rgb[2], blue = rgb[3], speed = CONST_MODEL_TTG_SPD_DMG })
+    local speed = sd or "ordinary"
+    htextTag.model({ msg = fix .. math.floor(damage), x = x, y = y, red = rgb[1], green = rgb[2], blue = rgb[3], speed = CONST_MODEL_TTG_SPD_DMG[speed] })
     htime.setTimeout(during, function(t)
         htime.delTimer(t)
         _damageTtgQty = _damageTtgQty - 1
@@ -73,6 +74,7 @@ hskill.damage = function(options)
     local damageString = options.damageString or ""
     local damageRGB = options.damageRGB or { 255, 255, 255 }
     local effect = options.effect
+    local speed = "ordinary"
     -- 判断伤害方式
     if (damageSrc == CONST_DAMAGE_SRC.attack) then
         if (his.unarm(sourceUnit) == true) then
@@ -100,6 +102,7 @@ hskill.damage = function(options)
                     damageString = damageString .. CONST_BREAK_ARMOR_TYPE[ig].label
                     damageRGB = CONST_BREAK_ARMOR_TYPE[ig].rgb
                     ignore[ig] = true
+                    speed = "ignore"
                 end
             end
             -- @触发无视防御事件
@@ -197,6 +200,7 @@ hskill.damage = function(options)
             damageRGB = { 255, 0, 0 }
             lastDamagePercent = lastDamagePercent + knockingExtent * 0.01
             ignore.avoid = true
+            speed = "Knocking"
         end
     end
     -- 计算回避 X 命中
@@ -241,6 +245,7 @@ hskill.damage = function(options)
                     end
                     damageString = damageString .. enchant.label
                     damageRGB = enchant.rgb
+                    speed = "enchant"
                 end
             end
         end
@@ -377,7 +382,7 @@ hskill.damage = function(options)
             )
         end
         -- 造成伤害及漂浮字
-        _damageTtg(targetUnit, lastDamage, damageString, damageRGB)
+        _damageTtg(targetUnit, lastDamage, damageString, damageRGB,speed)
         --
         hunit.subCurLife(targetUnit, lastDamage)
         if (type(effect) == "string" and string.len(effect) > 0) then
