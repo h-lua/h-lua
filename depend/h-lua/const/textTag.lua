@@ -1,7 +1,12 @@
 --- 全局漂浮字默认速率
 CONST_MODEL_TTG_SPD = 1.0
 --- 全局伤害系统漂浮字默认速率
-CONST_MODEL_TTG_SPD_DMG = 1.0
+CONST_MODEL_TTG_SPD_DMG = {
+    ordinary = 1.0, --普通
+    ignore = 1.2, --无视
+    Knocking = 1.5, --暴击
+    enchant = 1.8 --附魔
+}
 
 --- 模型贴图型特效
 CONST_MODEL_TTG = {
