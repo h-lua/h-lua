@@ -203,7 +203,7 @@ hevent_default_actions = {
                 learnedSkill = cj.GetLearnedSkill(),
             }
             hevent.triggerEvent(evtData.triggerUnit, CONST_EVENT.skillStudy, evtData)
-            local lv = cj.GetUnitAbilityLevel(evtData.triggerUnit, evtData.learnedSkill)
+            local lv = cj.GetUnitAbilityLevel(evtData.triggerUnit, string.char2id(evtData.learnedSkill))
             if (lv == 1) then
                 hskill.addProperty(evtData.triggerUnit, evtData.learnedSkill, lv)
             elseif (lv > 1) then
