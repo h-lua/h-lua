@@ -266,7 +266,7 @@ hevent.onBeSkill = function(whichUnit, callFunc)
 end
 
 --- 学习技能
----@alias onSkillStudy fun(evtData: {triggerUnit:"学习单位",triggerSkill:"学习技能ID字符串"}):void
+---@alias onSkillStudy fun(evtData: {triggerUnit:"学习单位",learnedSkill:"学习技能ID字符串"}):void
 ---@param whichUnit userdata
 ---@param callFunc onSkillStudy | "function(evtData) end"
 ---@return any
