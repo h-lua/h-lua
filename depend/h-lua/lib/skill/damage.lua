@@ -200,7 +200,7 @@ hskill.damage = function(options)
             damageRGB = { 255, 0, 0 }
             lastDamagePercent = lastDamagePercent + knockingExtent * 0.01
             ignore.avoid = true
-            speed = "Knocking"
+            speed = "knocking"
         end
     end
     -- 计算回避 X 命中

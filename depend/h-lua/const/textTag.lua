@@ -4,7 +4,7 @@ CONST_MODEL_TTG_SPD = 1.0
 CONST_MODEL_TTG_SPD_DMG = {
     ordinary = 1.0, -- 普通
     ignores = 1.2, -- 无视
-    Knocking = 1.4, -- 暴击
+    knocking = 1.4, -- 暴击
     enchant = 1.6, -- 附魔
 }
 --- 模型贴图型特效
