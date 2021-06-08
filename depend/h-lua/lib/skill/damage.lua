@@ -1,12 +1,11 @@
 -- 伤害漂浮字
 local _damageTtgQty = 0
-local _damageTtg = function(targetUnit, damage, fix, rgb, sp)
+local _damageTtg = function(targetUnit, damage, fix, rgb, speed)
     _damageTtgQty = _damageTtgQty + 1
     local during = 1.0
     local x = hunit.x(targetUnit) - 0.05 - _damageTtgQty * 0.013
     local y = hunit.y(targetUnit)
-    local speed = sp or "ordinary"
-    htextTag.model({ msg = fix .. math.floor(damage), x = x, y = y, red = rgb[1], green = rgb[2], blue = rgb[3], speed = CONST_MODEL_TTG_SPD_DMG[speed] })
+    htextTag.model({ msg = fix .. math.floor(damage), x = x, y = y, red = rgb[1], green = rgb[2], blue = rgb[3], speed = speed })
     htime.setTimeout(during, function(t)
         htime.delTimer(t)
         _damageTtgQty = _damageTtgQty - 1
@@ -74,7 +73,7 @@ hskill.damage = function(options)
     local damageString = options.damageString or ""
     local damageRGB = options.damageRGB or { 255, 255, 255 }
     local effect = options.effect
-    local speed = "ordinary"
+    local speed
     -- 判断伤害方式
     if (damageSrc == CONST_DAMAGE_SRC.attack) then
         if (his.unarm(sourceUnit) == true) then
@@ -102,7 +101,7 @@ hskill.damage = function(options)
                     damageString = damageString .. CONST_BREAK_ARMOR_TYPE[ig].label
                     damageRGB = CONST_BREAK_ARMOR_TYPE[ig].rgb
                     ignore[ig] = true
-                    speed = "ignores"
+                    speed = CONST_MODEL_TTG_SPD.ignores
                 end
             end
             -- @触发无视防御事件
@@ -200,7 +199,7 @@ hskill.damage = function(options)
             damageRGB = { 255, 0, 0 }
             lastDamagePercent = lastDamagePercent + knockingExtent * 0.01
             ignore.avoid = true
-            speed = "knocking"
+            speed = CONST_MODEL_TTG_SPD.knocking
         end
     end
     -- 计算回避 X 命中
@@ -245,7 +244,7 @@ hskill.damage = function(options)
                     end
                     damageString = damageString .. enchant.label
                     damageRGB = enchant.rgb
-                    speed = "enchant"
+                    speed = CONST_MODEL_TTG_SPD.enchant
                 end
             end
         end
