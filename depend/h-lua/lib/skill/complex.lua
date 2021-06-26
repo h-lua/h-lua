@@ -674,6 +674,9 @@ hskill.bomb = function(options)
         if (his.deleted(options.targetUnit)) then
             return
         end
+        if (options.effect ~= nil and type(options.effect) == "string") then
+            heffect.toXY(options.effect,hunit.x(options.targetUnit),hunit.y(options.targetUnit),0)
+        end
         whichGroup = hgroup.createByUnit(
             options.targetUnit,
             radius,
