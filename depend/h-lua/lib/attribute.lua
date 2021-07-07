@@ -182,8 +182,8 @@ hattribute.setHandle = function(whichUnit, attr, opr, val, during)
         attr = hattributeSetter.smart[attr]
     end
     local buffKey
+    local diff = 0
     if (valType == "number") then
-        local diff = 0
         if (opr == "+") then
             diff = val
         elseif (opr == "-") then
@@ -222,7 +222,7 @@ hattribute.setHandle = function(whichUnit, attr, opr, val, during)
                 if (diff < 0) then
                     groupKey = 'attr.' .. attr .. '-'
                 end
-                buffKey = hbuff.create(during, whichUnit, groupKey,
+                buffKey = hbuff.create(during, whichUnit, groupKey, diff,
                     function()
                         params[attr] = futureVal
                     end,
@@ -314,7 +314,7 @@ hattribute.setHandle = function(whichUnit, attr, opr, val, during)
         if (opr == "+") then
             local _k = string.attrBuffKey(val)
             if (during > 0) then
-                buffKey = hbuff.create(during, whichUnit, 'attr.' .. attr .. '+',
+                buffKey = hbuff.create(during, whichUnit, 'attr.' .. attr .. '+', diff,
                     function()
                         table.insert(params[attr], { _k = _k, _t = val })
                     end,
@@ -337,7 +337,7 @@ hattribute.setHandle = function(whichUnit, attr, opr, val, during)
             end
             if (hasKey == true) then
                 if (during > 0) then
-                    buffKey = hbuff.create(during, whichUnit, 'attr.' .. attr .. '-',
+                    buffKey = hbuff.create(during, whichUnit, 'attr.' .. attr .. '-', diff,
                         function()
                         end,
                         function()
@@ -353,7 +353,7 @@ hattribute.setHandle = function(whichUnit, attr, opr, val, during)
             local valArr = string.explode(",", val)
             if (during > 0) then
                 buffKey = hbuff.create(
-                    during, whichUnit, 'attr.' .. attr .. '+',
+                    during, whichUnit, 'attr.' .. attr .. '+', diff,
                     function()
                         params[attr] = table.merge(params[attr], valArr)
                     end,
@@ -368,7 +368,7 @@ hattribute.setHandle = function(whichUnit, attr, opr, val, during)
             local valArr = string.explode(",", val)
             if (during > 0) then
                 buffKey = hbuff.create(
-                    during, whichUnit, 'attr.' .. attr .. '-',
+                    during, whichUnit, 'attr.' .. attr .. '-', diff,
                     function()
                         for _, v in ipairs(valArr) do
                             if (table.includes(params[attr], v)) then
@@ -391,7 +391,7 @@ hattribute.setHandle = function(whichUnit, attr, opr, val, during)
             local old = table.clone(params[attr])
             if (during > 0) then
                 buffKey = hbuff.create(
-                    during, whichUnit, 'attr.' .. attr .. '=',
+                    during, whichUnit, 'attr.' .. attr .. '=', diff,
                     function()
                         params[attr] = string.explode(",", val)
                     end,

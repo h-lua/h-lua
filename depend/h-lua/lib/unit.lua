@@ -342,23 +342,23 @@ hunit.setRGBA = function(whichUnit, red, green, blue, opacity, during)
     green = math.floor(math.max(0, math.min(255, green or rgba[2])))
     blue = math.floor(math.max(0, math.min(255, blue or rgba[3])))
     opacity = math.floor(255 * math.max(0, math.min(1, opacity or rgba[4])))
-    return hbuff.create(during, whichUnit, CONST_CACHE.BUFF_RGBA,
-        function()
-            cj.SetUnitVertexColor(whichUnit, red, green, blue, opacity)
-            hcache.set(whichUnit, CONST_CACHE.UNIT_RGBA, { red, green, blue, opacity })
-        end,
-        function()
-            local buffHandle = hcache.get(whichUnit, CONST_CACHE.BUFF, {})
-            local colorHandle = buffHandle[CONST_CACHE.BUFF_RGBA]
-            if (colorHandle ~= nil) then
-                if (colorHandle._idx and #colorHandle._idx > 1) then
-                    local uk = colorHandle._idx[#colorHandle._idx - 1]
-                    hbuff.purpose(whichUnit, string.implode("|", { CONST_CACHE.BUFF_RGBA, uk }))
-                else
-                    cj.SetUnitVertexColor(whichUnit, math.floor(uSlk.red), math.floor(uSlk.green), math.floor(uSlk.blue), 255)
+    return hbuff.create(during, whichUnit, CONST_CACHE.BUFF_RGBA,nil,
+            function()
+                cj.SetUnitVertexColor(whichUnit, red, green, blue, opacity)
+                hcache.set(whichUnit, CONST_CACHE.UNIT_RGBA, { red, green, blue, opacity })
+            end,
+            function()
+                local buffHandle = hcache.get(whichUnit, CONST_CACHE.BUFF, {})
+                local colorHandle = buffHandle[CONST_CACHE.BUFF_RGBA]
+                if (colorHandle ~= nil) then
+                    if (colorHandle._idx and #colorHandle._idx > 1) then
+                        local uk = colorHandle._idx[#colorHandle._idx - 1]
+                        hbuff.purpose(whichUnit, string.implode("|", { CONST_CACHE.BUFF_RGBA, uk }))
+                    else
+                        cj.SetUnitVertexColor(whichUnit, math.floor(uSlk.red), math.floor(uSlk.green), math.floor(uSlk.blue), 255)
+                    end
                 end
             end
-        end
     )
 end
 

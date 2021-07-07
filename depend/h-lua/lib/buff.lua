@@ -40,10 +40,11 @@ end
 ---@param during number > 0
 ---@param handleUnit userdata
 ---@param groupKey string|'global' buff集合key，用于自主分类和搜索
+---@param diff number 差额值
 ---@param purpose function 目的期望的操作
 ---@param rollback function 回到原来状态的操作
 ---@return string|nil
-hbuff.create = function(during, handleUnit, groupKey, purpose, rollback)
+hbuff.create = function(during, handleUnit, groupKey, diff, purpose, rollback)
     if (handleUnit == nil or purpose == nil or rollback == nil) then
         return
     end
@@ -71,10 +72,10 @@ hbuff.create = function(during, handleUnit, groupKey, purpose, rollback)
         buffHandle[groupKey]._idx = {}
     end
     local uk = hbuff.uniqueKey()
-    buffHandle[groupKey][uk] = { purpose = purpose, rollback = rollback }
+    buffHandle[groupKey][uk] = { purpose = purpose, rollback = rollback, difference = diff, times = nil }
     table.insert(buffHandle[groupKey]._idx, uk)
     if (during > 0) then
-        htime.setTimeout(during, function(curTimer)
+        buffHandle[groupKey][uk].times = htime.setTimeout(during, function(curTimer)
             htime.delTimer(curTimer)
             if (his.deleted(handleUnit)) then
                 return
