@@ -293,6 +293,7 @@ hskill.swim = function(options)
             hcache.set(u, CONST_CACHE.SKILL_SWIM_TIMER, nil)
             cj.UnitRemoveAbility(u, HL_ID.buff_swim)
             damageRGB = { 100, 227, 242 }
+            swimTimer = nil
         end
     end
     local cu = hunit.create({
@@ -326,6 +327,7 @@ hskill.swim = function(options)
             u, CONST_CACHE.SKILL_SWIM_TIMER,
             htime.setTimeout(during, function(t)
                 htime.delTimer(t)
+                hcache.set(u, CONST_CACHE.SKILL_SWIM_TIMER, nil)
                 cj.UnitRemoveAbility(u, HL_ID.buff_swim)
                 hcache.set(u, CONST_CACHE.SKILL_SWIM, false)
             end)
@@ -675,7 +677,7 @@ hskill.bomb = function(options)
             return
         end
         if (options.effect ~= nil and type(options.effect) == "string") then
-            heffect.toXY(options.effect,hunit.x(options.targetUnit),hunit.y(options.targetUnit),0)
+            heffect.toXY(options.effect, hunit.x(options.targetUnit), hunit.y(options.targetUnit), 0)
         end
         whichGroup = hgroup.createByUnit(
             options.targetUnit,

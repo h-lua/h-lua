@@ -20,6 +20,7 @@ sub_print_r(tt, indent)
 ```
 ydRuntime.error_handle(msg)
 print(...)
+handleDisplay()
 rem(key1, key2)
 print_stack(...)
 print_mb(...)
@@ -207,7 +208,7 @@ haward.forPlayerLumber(lumber)
 ```
 hbuff.uniqueKey()
 hbuff.count(handleUnit, groupKey)
-hbuff.create(during, handleUnit, groupKey, purpose, rollback)
+hbuff.create(during, handleUnit, groupKey, diff, purpose, rollback)
 hbuff.purpose(handleUnit, buffKey)
 hbuff.delete(handleUnit, buffKey)
 ```
@@ -272,8 +273,8 @@ hdzui.loadToc(tocFilePath)
 hdzui.frame(fdfName, parent, id)
 hdzui.frameTag(fdfType, fdfName, parent, tag, id)
 hdzui.framePoint(frameId, relation, align, alignRelation, x, y)
-hdzui.miniMapTrack(options)
 hdzui.onMouse(frameId, mouseOrder, vjFunc, whichPlayer)
+hdzui.miniMapTrack(options)
 ```
  * [L]**lib\effect.lua**
 ```
@@ -316,6 +317,8 @@ hevent.getUnitLastDamageSource(whichUnit)
 hevent.getUnitLastDamageTarget(whichUnit)
 hevent.getPlayerLastDamageTarget(whichPlayer)
 hevent.registerEvent(handle, key, callFunc)
+hevent.triggerData(triggerData)
+hevent.hslk(key, triggerData)
 hevent.triggerEvent(handle, key, triggerData)
 hevent.deleteEvent(handle, key, eventId)
 hevent.onAttackDetect(whichUnit, callFunc)
@@ -377,6 +380,10 @@ hevent.onHemophagia(whichUnit, callFunc)
 hevent.onBeHemophagia(whichUnit, callFunc)
 hevent.onSkillHemophagia(whichUnit, callFunc)
 hevent.onBeSkillHemophagia(whichUnit, callFunc)
+hevent.onSiphon(whichUnit, callFunc)
+hevent.onBeSiphon(whichUnit, callFunc)
+hevent.onSkillSiphon(whichUnit, callFunc)
+hevent.onBeSkillSiphon(whichUnit, callFunc)
 hevent.onPunish(whichUnit, callFunc)
 hevent.onDead(whichUnit, callFunc)
 hevent.onKill(whichUnit, callFunc)
@@ -514,6 +521,9 @@ his.hasItem(whichUnit, whichItemId)
 ```
  * [L]**lib\item.lua**
 ```
+hitem.x(it)
+hitem.y(it)
+hitem.z(it)
 hitem.embed(u)
 hitem.free(whichItem)
 hitem.setHolder(whichItem, holder)
@@ -1114,7 +1124,7 @@ hskill.rectangleStrike(options)
 ```
  * [L]**lib\skill\damage.lua**
 ```
-local _damageTtg(targetUnit, damage, fix, rgb)
+local _damageTtg(targetUnit, damage, fix, rgb, speed)
 hskill.damage(options)
 hskill.damageStep(options)
 hskill.damageRange(options)
@@ -1262,6 +1272,7 @@ hunit.del(targetUnit, delay)
 hunit.kill(targetUnit, delay)
 hunit.exploded(targetUnit, delay)
 hunit.setCanFly(u)
+hunit.getFlyHeight(u)
 hunit.setFlyHeight(u, height, speed)
 ```
  * [L]**lib\weather.lua**
