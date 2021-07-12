@@ -1511,7 +1511,7 @@ hskill.leap = function(options)
                 end
             )
             if (hgroup.count(g) > 0) then
-                if (oneHitOnly == true and options.tokenUnit ~= nil) then
+                if (oneHitOnly == true and leapType ~= "unit") then
                     hunit.kill(arrowUnit, 0)
                 end
                 hgroup.forEach(g, function(eu)
