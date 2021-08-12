@@ -235,28 +235,7 @@ HL_ID_INIT = function()
             add = {},
             sub = {}
         },
-        attack_white = {
-            add = {},
-            sub = {}
-        },
-        item_attack_white = {
-            add = {},
-            sub = {},
-            items = {},
-        },
-        attack_speed = {
-            add = {},
-            sub = {}
-        },
         defend = {
-            add = {},
-            sub = {}
-        },
-        life = {
-            add = {},
-            sub = {}
-        },
-        mana = {
             add = {},
             sub = {}
         },
@@ -289,20 +268,8 @@ HL_ID_INIT = function()
         HL_ID.int_green.sub[v] = string.char2id(hslk.n2i("H_LUA_A_INT_G_SUB_" .. v))
         HL_ID.attack_green.add[v] = string.char2id(hslk.n2i("H_LUA_A_ACK_G_ADD_" .. v))
         HL_ID.attack_green.sub[v] = string.char2id(hslk.n2i("H_LUA_A_ACK_G_SUB_" .. v))
-        HL_ID.attack_white.add[v] = string.char2id(hslk.n2i("H_LUA_A_ACK_W_ADD_" .. v))
-        HL_ID.attack_white.sub[v] = string.char2id(hslk.n2i("H_LUA_A_ACK_W_SUB_" .. v))
-        HL_ID.item_attack_white.add[v] = string.char2id(hslk.n2i("H_LUA_A_ACK_IT_W_ADD_" .. v))
-        HL_ID.item_attack_white.sub[v] = string.char2id(hslk.n2i("H_LUA_A_ACK_IT_W_SUB_" .. v))
-        table.insert(HL_ID.item_attack_white.items, HL_ID.item_attack_white.add[v])
-        table.insert(HL_ID.item_attack_white.items, HL_ID.item_attack_white.sub[v])
-        HL_ID.attack_speed.add[v] = string.char2id(hslk.n2i("H_LUA_A_ACK_SPD_ADD_" .. v))
-        HL_ID.attack_speed.sub[v] = string.char2id(hslk.n2i("H_LUA_A_ACK_SPD_SUB_" .. v))
         HL_ID.defend.add[v] = string.char2id(hslk.n2i("H_LUA_A_DEF_ADD_" .. v))
         HL_ID.defend.sub[v] = string.char2id(hslk.n2i("H_LUA_A_DEF_SUB_" .. v))
-        HL_ID.life.add[v] = string.char2id(hslk.n2i("H_LUA_A_LIFE_ADD_" .. v))
-        HL_ID.life.sub[v] = string.char2id(hslk.n2i("H_LUA_A_LIFE_SUB_" .. v))
-        HL_ID.mana.add[v] = string.char2id(hslk.n2i("H_LUA_A_MANA_ADD_" .. v))
-        HL_ID.mana.sub[v] = string.char2id(hslk.n2i("H_LUA_A_MANA_SUB_" .. v))
     end
     -- 属性系统 回避
     HL_ID.avoid.add = string.char2id(hslk.n2i("H_LUA_A_AVOID_ADD"))

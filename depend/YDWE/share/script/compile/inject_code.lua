@@ -85,7 +85,6 @@ function inject_code:do_inject(op, tbl)
 			log.error(e)
 		end
 	end
-
 	return result
 end
 

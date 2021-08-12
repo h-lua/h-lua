@@ -1,6 +1,6 @@
 [WorldEditStrings]
 
-WESTRING_APPNAME=WorldEdit
+WESTRING_APPNAME=SDK马仔
 //=======DWE
 WESTRING_TRIGCAT_DEBUG=侦错
 WESTRING_TRIGCAT_OBSOLETE=废弃的
@@ -1631,21 +1631,21 @@ WESTRING_OLTYPE_PLAYERUNIT=玩家单位
 WESTRING_OLTYPE_PLAYERBUILDING=玩家建筑
 WESTRING_OLTYPE_ITEM=物品
 
-WESTRING_ABOUTTITLE=关于魔兽争霸III地图编辑器
+WESTRING_ABOUTTITLE=关于《SDK马仔工具》
 WESTRING_ABOUT_VERSION=版本
-WESTRING_ABOUT_COPYRIGHT=Copyright (c) 2002 - 2003 Blizzard Entertainment. All Rights Reserved.
-WESTRING_ABOUT_LINK=Blizzard Entertainment
+WESTRING_ABOUT_COPYRIGHT=PS:此乃无用软件 请尽快删除！
+WESTRING_ABOUT_LINK=google
 
-WESTRING_LICENSETITLE=魔兽争霸III地图编辑器 - 最终用户协议
+WESTRING_LICENSETITLE=《SDK马仔工具》 - 用户无条件服从协议
 WESTRING_LICENSE_AGREE=同意
 WESTRING_LICENSE_DISAGREE=拒绝
-WESTRING_LICENSE_DOYOUAGREE=你同意以上用户协议吗?
+WESTRING_LICENSE_DOYOUAGREE=您是否同意以上用户无条件服从协议
 
-WESTRING_WELCOMETITLE=欢迎使用魔兽争霸III地图编辑器
-WESTRING_WELCOME_LARGETEXT=欢迎使用魔兽争霸III地图编辑器
-WESTRING_WELCOME_SMALLTEXT1="这个编辑器是个威力强大的工具，可以让使用者调整魔兽争霸Ⅲ游戏中几乎各方面的功能，为了熟悉编辑器中的诸项功能，我们强烈的建议你加载预先制作的地图，做为参考。"
-WESTRING_WELCOME_SMALLTEXT2="请注意: Blizzard Entertainment不会对编辑器提供任何直接的帮助。我们的技术支持小组不会回答关于编辑器功能的问题或者帮助你解决在使用编辑器时遇到的困难。"
-WESTRING_WELCOME_LEGALTEXT="在使用这个程序时，你同意受到最终用户协议中的各项条款约束，这份合约可以在魔兽争霸Ⅲ安装目录中的「license.txt」文件档中找到。"
+WESTRING_WELCOMETITLE=欢迎使用SDK马仔工具
+WESTRING_WELCOME_LARGETEXT=SDK MaZai
+WESTRING_WELCOME_SMALLTEXT1="这是一个私改编辑器，也称为SDK马仔工具。它除了做地形以外，基本没任何用。至于方便你的功能完全不存在"
+WESTRING_WELCOME_SMALLTEXT2="此工具私人定制，如果你不幸地下载了，又或者脑子进水用了出问题，请立即删除此工具!"
+WESTRING_WELCOME_LEGALTEXT="万一您使用这个编辑器无法打开别的UI所做的地图。请赶紧并彻底删掉此马仔工具，谢谢合作"
 
 // Colors
 WESTRING_COLOR_CUSTOM=自定义

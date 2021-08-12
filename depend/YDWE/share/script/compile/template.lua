@@ -75,11 +75,11 @@ function template:do_compile(op)
 		log.error("Template read " .. op.input:string() .. ". Error: " .. err)
 		return false, err
 	end
-	
+	--code='//endglobals\r\n'..code:gsub('%s*call%s+DoNothing%s*%(%s*%)%s*\r\n','')
 	local lua_codes = {''}
 	table.insert(lua_codes, "local __jass_result__ = {''}")
 	table.insert(lua_codes, "local function __jass_output__(str) table.insert(__jass_result__, str) end")
-	local r, err = pcall(precompile, code, '__jass_output__', lua_codes)
+	local r, err = pcall(precompile, code, '__jass_output__', lua_codes) --原封不动返回jass 相当于 <?=xx ?>
 	if not r then
 		return r, err
 	end
@@ -93,17 +93,22 @@ function template:do_compile(op)
 		ability2order = require 'computed.ability2order',
 	}
 	setmetatable(env, {__index = _G})
-	table.insert(lua_codes, "return table.concat(__jass_result__)")	
+	table.insert(lua_codes, "return table.concat(__jass_result__)")
+   -- for i=1,#lua_codes do
+   --     log.trace(lua_codes[i]:len())
+   -- end
+   -- log.trace("lua load")
 	local f, err = load(table.concat(lua_codes, '\n'), nil, 't', env)
 	if not f then
 		return f, err
 	end
-	
+
 	local suc, content = xpcall(f, function(msg) return debug.traceback(msg) end)
 	if not suc then
     	return false, content
     end
-    if package.loaded['slk'] then
+    --XG：先刷新handle不报错
+	if package.loaded['slk'] then
         package.loaded['slk']:refresh(__map_handle__.handle)
     end
     return true, content

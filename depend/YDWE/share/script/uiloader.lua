@@ -77,7 +77,6 @@ end
 function loader:worldeditstrings()
 	log.trace("virtual_mpq 'worldeditstrings'")
 	local t = ini(io.load(root / 'units' / 'ui' / 'WorldEditStrings.txt'), 'WorldEditStrings')
-	--t.WorldEditStrings.WESTRING_APPNAME = 'YD WorldEdit [ ' .. tostring(ydwe_version) .. ' ]'
 	local str = {}
 	str[#str+1] = "[WorldEditStrings]"
 	for k, v in pairs(t.WorldEditStrings) do

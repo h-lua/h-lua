@@ -1,5 +1,5 @@
 [YDWECustomScriptCode]
-title = "自定义代码"
+title = "Jass代码"
 description = "${Jass 代码}"
 comment = "可以在任何有返回值的地方输入一行代码. 比如: 杀死(自定义代码：GetTriggerUnit())。"
 category = TC_YDBF

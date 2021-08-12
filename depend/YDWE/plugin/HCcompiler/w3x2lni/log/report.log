@@ -1,0 +1,24 @@
+输入路径：f:/program files (x86)/dzclient-full/game/warcraft iii frozen throne/Maps/Test/WorldEditTestMap.w3x
+输出路径：f:/program files (x86)/dzclient-full/game/warcraft iii frozen throne/Maps/Test/WorldEditTestMap.w3x
+输入格式：Mpq
+输出模式：slk
+结果：0 个错误，1 条警告
+用时：0.995 秒
+==========================
+警告 (1)
+==========================
+魔法书 'Aspb' [魔法书] 会被合并 - 基础命令ID 'spellbook' 不存在
+
+==========================
+公式计算失败 (10)
+==========================
+技能 ANhs 医疗气雾 - Ubertip: <ANhs,DataF2阵医疗迷雾。每阵迷雾能医治<ANhs,DataA2>
+技能 Awrh 战争践踏 - Ubertip: <Awrh,DataA1点的伤害并使其在<Awrh,Dur1>
+技能 ANcr 化学风暴 - Ubertip: <ANcr,DataE2的移动速度和<ANcr,DataF2,%>
+技能 ANso 灵魂燃烧 - Ubertip: <<ANso,DataA2>
+技能 ANab 酸性炸弹 - Ubertip: <ANab,DataC2点护甲; 具有每秒<ANab,DataD2>
+物品 wcyc 飓风权杖 - Ubertip: <Alcy,Dur1>
+物品 gomn 全知浮雕 - Ubertip: <Alrv,Dur1>
+物品 rman 魔法神符 - Ubertip: <Apmr,DataA1>
+物品 shdt 死亡领主护盾 - Ubertip: <AIpi,DataA1>
+物品 pomn 全知药水 - Ubertip: <Alrv,Dur1>

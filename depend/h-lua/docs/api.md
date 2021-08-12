@@ -41,6 +41,7 @@ print_mbr(t)
  * [B]const\hero.lua
  * [B]const\hotKey.lua
  * [B]const\item.lua
+ * [B]const\keyboard.lua
  * [B]const\monitor.lua
  * [B]const\target.lua
  * [B]const\textTag.lua
@@ -156,8 +157,6 @@ table.obj2arr(obj, keyMap)
 hattributeSetter.getDecimalTemporaryStorage(whichUnit, attr)
 hattributeSetter.setDecimalTemporaryStorage(whichUnit, attr, value)
 hattributeSetter.relyRegister(whichUnit)
-hattributeSetter.relyLifeMana(u, abilityId, qty)
-hattributeSetter.relyAttackWhite(u, itemId, qty)
 hattributeSetter.setUnitMaxLife(whichUnit, currentVal, futureVal, diff)
 hattributeSetter.setUnitMaxMana(whichUnit, currentVal, futureVal, diff)
 hattributeSetter.setUnitAttackWhite(whichUnit, futureVal, diff)
@@ -273,7 +272,7 @@ hdzui.loadToc(tocFilePath)
 hdzui.frame(fdfName, parent, id)
 hdzui.frameTag(fdfType, fdfName, parent, tag, id)
 hdzui.framePoint(frameId, relation, align, alignRelation, x, y)
-hdzui.onMouse(frameId, mouseOrder, vjFunc, whichPlayer)
+hdzui.onMouse(frameId, mouseOrder, callFunc)
 hdzui.miniMapTrack(options)
 ```
  * [L]**lib\effect.lua**
@@ -595,8 +594,8 @@ hjapi.echo(msg)
 hjapi.has(method)
 hjapi.formatter(method, params)
 hjapi.triumph(method, params, result)
-hjapi.jass(method, params)
 hjapi.exec(method, params)
+does not exist, please check the WE environment! You should make friends with 5382557(QQ)")
 hjapi.DzAPI_CommonFunc_GetARGBColorValue(...)
 hjapi.DzAPI_CommonFunc_GetARGBColorValuePercent(...)
 hjapi.DzAPI_CommonFunc_SetARGBColorValue(...)
@@ -947,8 +946,6 @@ hjapi.RequestExtraIntegerData(dataType, whichPlayer, param1, param2, param3, par
 hjapi.RequestExtraRealData(dataType, whichPlayer, param1, param2, param3, param4, param5, param6)
 hjapi.RequestExtraStringData(dataType, whichPlayer, param1, param2, param3, param4, param5, param6)
 hjapi.SetUnitState(whichUnit, state, value)
-hjapi.HSync(syncDataStr)
-hjapi.HFrameSetScript(frame, eventId, syncDataStr)
 ```
  * [L]**lib\leaderBoard.lua**
 ```
@@ -1178,7 +1175,6 @@ hsync.call(key, callback, array)
 hsync.init()
 hsync.send(key, array)
 hsync.onSend(key, callback)
-hsync.onFrameMouse(frameId, mouseOrder, callback)
 ```
  * [L]**lib\textTag.lua**
 ```
@@ -1207,7 +1203,7 @@ htexture.alertCircle(diameter, x, y, during, token, color)
 htime.clock()
 htime.his()
 htime.timerInPool()
-htime.timerInKernel(time, yourFunc, isInterval)
+htime.timerInKernel(period, yourFunc, isInterval)
 htime.kernelInfo(t)
 htime.getSetTime(t)
 htime.getRemainTime(t)

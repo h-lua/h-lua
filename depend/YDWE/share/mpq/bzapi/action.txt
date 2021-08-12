@@ -410,6 +410,50 @@ type = frame
 type = boolean
 default = "false"
 
+[DzFrameSetPriority]
+title = "设置优先级 [NEW]"
+description = "设置 ${frame} 优先级:${int}"
+comment = ""
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = integer
+
+[DzFrameSetParent]
+title = "设置父窗口 [NEW]"
+description = "设置 ${frame} 的父窗口为 ${frame2}"
+comment = ""
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = frame
+
+[DzFrameSetFont]
+title = "设置字体 [NEW]"
+description = "设置 ${frame} 的字体为 ${font}, 大小 ${height}, flag ${flag}"
+comment = "支持EditBox、SimpleFontString、SimpleMessageFrame以及非SimpleFrame类型的例如TEXT，flag作用未知"
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = string
+[[.args]]
+type = real
+[[.args]]
+type = integer
+
+[DzFrameSetTextAlignment]
+title = "设置对齐方式 [NEW]"
+description = "设置 ${frame} 的对齐方式为 ${align}"
+comment = "支持TextFrame、SimpleFontString、SimpleMessageFrame"
+category = BZ_GUI
+[[.args]]
+type = frame
+[[.args]]
+type = integer
+
 [DzDestroyFrame]
 title = "销毁"
 description = "销毁 ${frame}"
@@ -496,8 +540,8 @@ default = Player00
 type = gamekeyaction
 default = "GameKeyAction_Press"
 [[.args]]
-type = mousekey
-default = "MouseKey_Mouse_Left"
+type = gamekey
+default = "GameKey_Mouse_Left"
 
 [DzTriggerRegisterMouseWheelEventMultiple]
 title = "注册 - 异步注册玩家鼠标滚轮事件"

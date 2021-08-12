@@ -1,0 +1,53 @@
+[OperatorCompareDamtype]
+title="伤害类型"
+description="${伤害类型} ${运算符} ${伤害类型}"
+comment=""
+category=TC_CONDITION
+[[.args]]
+type = damagetype
+[[.args]]
+type = EqualNotEqualOperator
+default = "OperatorEqualENE"
+[[.args]]
+type = damagetype
+
+[OperatorCompareAtktype]
+title="攻击类型"
+description="${攻击类型} ${运算符} ${攻击类型}"
+comment=""
+category=TC_CONDITION
+[[.args]]
+type = attacktype
+[[.args]]
+type = EqualNotEqualOperator
+default = "OperatorEqualENE"
+[[.args]]
+type = attacktype
+
+[OperatorCompareWeatype]
+title="武器类型"
+description="${武器类型} ${运算符} ${武器类型}"
+comment=""
+category=TC_CONDITION
+[[.args]]
+type = weapontype
+[[.args]]
+type = EqualNotEqualOperator
+default = "OperatorEqualENE"
+[[.args]]
+type = weapontype
+
+[OperatorCompareherostat]
+title="英雄属性"
+description="${A} ${运算符} ${B}"
+comment=""
+category=TC_CONDITION
+[[.args]]
+type = herostat
+default = "HeroStatStr"
+[[.args]]
+type = EqualNotEqualOperator
+default = "OperatorEqualENE"
+[[.args]]
+type = herostat
+default = "HeroStatStr"

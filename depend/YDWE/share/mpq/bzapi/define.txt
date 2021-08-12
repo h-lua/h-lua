@@ -81,7 +81,7 @@ GameKey_7=0,gamekey,55,7
 GameKey_8=0,gamekey,56,8
 GameKey_9=0,gamekey,57,9
 
-GameKey_Tab=0,gamekey,515,Tab
+GameKey_Tab=0,gamekey,9,Tab
 GameKey_Space=0,gamekey,32,空格
 GameKey_Enter=0,gamekey,513,回车
 GameKey_Backspace=0,gamekey,514,退格

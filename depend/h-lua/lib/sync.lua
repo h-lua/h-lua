@@ -55,7 +55,7 @@ hsync.send = function(key, array)
     if (key == nil) then
         return
     end
-    hjapi.HSync(hsync.mix(key, array))
+    hjapi.DzSyncData("hsync", hsync.mix(key, array))
 end
 
 --- [事件]注册一般消息同步操作
@@ -66,26 +66,4 @@ end
 hsync.onSend = function(key, callback)
     key = key or hsync.key()
     hsync.call(key, callback)
-end
-
---- [事件]注册frame鼠标操作
---- ! 此事件由UI点击触发，不需要手动send
----@alias onFrameMouseSync fun(syncData: {triggerPlayer:"触发玩家",syncPlayer:"同步的玩家",triggerKey:"触发索引",triggerFrameId:"触发Frame",triggerMouseOrder:"触发鼠标事件ID"}):void
----@param frameId number
----@param mouseOrder number integer 参考blizzard:^MOUSE_ORDER
----@param callback onFrameMouseSync | "function(syncData) end" 同步响应回调
-hsync.onFrameMouse = function(frameId, mouseOrder, callback)
-    if (mouseOrder == nil and type(callback) ~= "function") then
-        return
-    end
-    local callback2 = function(callbackData)
-        local newData = {}
-        newData.syncPlayer = callbackData.triggerPlayer
-        newData.triggerKey = callbackData.triggerKey
-        newData.triggerFrameId = math.floor(callbackData.triggerData[1])
-        newData.triggerMouseOrder = math.floor(callbackData.triggerData[2])
-        newData.triggerPlayer = cj.Player(math.floor(callbackData.triggerData[3]))
-        callback(newData)
-    end
-    hjapi.HFrameSetScript(frameId, mouseOrder, hsync.call(hsync.key(), callback2, { frameId, mouseOrder }))
 end

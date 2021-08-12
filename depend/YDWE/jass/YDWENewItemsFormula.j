@@ -1,6 +1,6 @@
 #ifndef YDWENewItemsFormulaIncluded
 #define YDWENewItemsFormulaIncluded
-
+//—©‘¬÷ÿ–¥
 #include "YDWEBase.j"
 
 
@@ -101,7 +101,7 @@ endfunction
 ////////////////////////////////////////////////////////////
 //////////////////// __ItemId Matrix__ /////////////////////
 
-    private struct ItemIdMatrix extends array [MAX_INSTANCES]
+    private struct ItemIdMatrix extends array 
     
         static StringTable Data
         static integer Total = 1
@@ -168,7 +168,7 @@ endfunction
         private FormulaMatrix FormulaData = 0
     endglobals
     
-    private struct FormulaMatrix extends array [MAX_INSTANCES]
+    private struct FormulaMatrix extends array
         
         static StringTable Data
         static integer Total = 1

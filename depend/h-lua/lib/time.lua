@@ -78,20 +78,14 @@ htime.timerInPool = function()
 end
 --- 从内核中获取一个计时器（实际上这里获得的是timer key）
 ---@private
-htime.timerInKernel = function(time, yourFunc, isInterval)
-    local space = 0
-    if (time >= 500) then
-        space = 1
-    elseif (time >= 100) then
-        space = 0.5
-    elseif (time >= 10) then
+htime.timerInKernel = function(period, yourFunc, isInterval)
+    local space = 0.01
+    if (period >= 30) then
         space = 0.2
-    elseif (time >= 1) then
+    elseif (period >= 10) then
         space = 0.1
-    elseif (time >= 0.1) then
+    elseif (period >= 0.5) then
         space = 0.05
-    else
-        space = 0.01
     end
     if (type(isInterval) ~= "boolean") then
         isInterval = false
@@ -109,7 +103,7 @@ htime.timerInKernel = function(time, yourFunc, isInterval)
                         if (v.abort ~= true) then
                             v.remain = v.remain - space
                         end
-                        if (v.remain <= 0) then
+                        if (v.remain < 0.001) then
                             local status, sErr = xpcall(v.yourFunc, debug.traceback, string.implode("_", { space, k }))
                             if (status == true) then
                                 if (v.isInterval == true) then
@@ -140,8 +134,8 @@ htime.timerInKernel = function(time, yourFunc, isInterval)
         table.insert(htime.kernel[space], {
             running = true,
             isInterval = isInterval,
-            set = time,
-            remain = time,
+            set = period,
+            remain = period,
             yourFunc = yourFunc,
         })
         kernelClock = #htime.kernel[space]
@@ -149,8 +143,8 @@ htime.timerInKernel = function(time, yourFunc, isInterval)
         htime.kernel[space][kernelClock] = {
             running = true,
             isInterval = isInterval,
-            set = time,
-            remain = time,
+            set = period,
+            remain = period,
             yourFunc = yourFunc
         }
     end

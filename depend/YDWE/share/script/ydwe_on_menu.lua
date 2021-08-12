@@ -1,5 +1,3 @@
-
-
 -- 主窗口句柄
 local main_window_handle = nil
 
@@ -38,14 +36,12 @@ local function show_cjass_version()
 	sys.spawn(command_line, fs.ydwe_path())
 end
 
--- 打开平台官网
 local function open_platform_site()
-	os.execute('explorer "https://github.com/hunzsig-warcraft3/h-lua"')
+	os.execute('explorer "https://www.google.com"')
 end
 
--- 打开作者之家
 local function open_authors_home_site()
-	os.execute('explorer "http://wenku.hunzsig.org/"')
+	os.execute('explorer "https://github.com/google/"')
 end
 
 -- Lua测试
@@ -100,10 +96,6 @@ function event.EVENT_INIT_MENU(event_data)
 	menu:add(_("Show J&assHelper version"), show_jasshelper_version)
 	menu:add(_("Show c&Jass version"), show_cjass_version)
 	menu:add(_("&Lua Test"), lua_test)
-	local menu2 = gui.menu(event_data.main_menu_handle, _("&Platform"))
-	menu2:add(_("Launch Platform &official website"), open_platform_site)
-	menu2:add(_("Launch Author's &Home"), open_authors_home_site)
-	menu2:add(_("Cre&dits"), show_credit)
 
 	main_window_handle = event_data.main_window_handle
 

@@ -22,7 +22,21 @@ function cjass.do_compile(self, map_path, option)
 		parameter,
 		map_path:string()
 	)
+    --[==[
+require "util"
+require "mpq_util"
+local storm = require 'ffi.storm'
+local stormlib = require 'ffi.stormlib'
+    stormlib.create(fs.ydwe_path() / 'logs' / 'temp.xj',2)
+    mpq_util:update_file(map_path, "war3map.j",
+			-- 解压缩地图脚本，处理然后写回
+			function (map_handle, in_script_path)
+				-- 开始处理
 
+				return compile_t.output
+			
+		end)
+    ]==]
 	return sys.spawn(command_line, self.path, true)
 end
 

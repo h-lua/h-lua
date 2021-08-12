@@ -9,7 +9,7 @@ library_once TimerUtils
 //*  To copy from a map to another, copy the trigger holding this
 //* library to your map.
 //*
-//* (requires vJass)   More scripts: http://www.wc3c.net/
+//* (requires vJass)   More scripts: https://www.google.com/
 //*
 //* For your timer needs:
 //*  * Attaching

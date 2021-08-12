@@ -1,0 +1,87 @@
+﻿
+[DzAPI_Map_Global_StoreString]
+title = "保存全局存档 [NEW]"
+description = "保存全局存档 名称 ${key} 值 ${value}"
+comment = "保存时受作者之家设定的规则限制"
+category = TC_DZAPI
+[[.args]]
+type = string
+default = "key"
+[[.args]]
+type = string
+default = "value"
+
+[DzAPI_Map_SaveServerArchive]
+title = "【废弃】保存服务器存档（区分大小写）"
+description = "保存服务器存档（区分大小写） 玩家 ${player} 名称 ${key} 值 ${value}"
+comment = "用于作者之家设置的防刷分存档，与普通存档共用KEY，目前该功能被反馈有bug，慎用。"
+category = TC_DZAPI
+[[.args]]
+type = player
+default = GetTriggerPlayer
+[[.args]]
+type = string
+default = "Key"
+[[.args]]
+type = string
+default = "value"
+
+[DzAPI_Map_StoreIntegerEX]
+title = "【废弃】服务器存储整数（区分大小写） [NEW]"
+description = "服务器存储整数（区分大小写） 玩家 ${player} 名称 ${key} 值 ${value}"
+comment = "这是经过封装的接口，实际Key会在原Key前面加”I”，用于作者之家设置的防刷分存档，与普通存档共用KEY"
+category = TC_DZAPI
+[[.args]]
+type = player
+default = GetTriggerPlayer
+[[.args]]
+type = string
+default = "IKey"
+[[.args]]
+type = integer
+default = "0"
+
+[DzAPI_Map_StoreStringEX]
+title = "【废弃】服务器存储字符串（区分大小写） [NEW]"
+description = "服务器存储字符串（区分大小写） 玩家 ${player} 名称 ${key} 值 ${value}"
+comment = "这是经过封装的接口，实际Key会在原Key前面加”S”，用于作者之家设置的防刷分存档，与普通存档共用KEY"
+category = TC_DZAPI
+[[.args]]
+type = player
+default = GetTriggerPlayer
+[[.args]]
+type = string
+default = "SKey"
+[[.args]]
+type = string
+default = "value"
+
+[DzAPI_Map_ConsumeMallItem]
+title = "使用商城道具（次数型） [NEW]"
+description = "使用 ${player} 名称 ${key} 的商城道具 ${value} 次"
+comment = "仅对次数消耗型商品有效，只能使用不能恢复，请谨慎使用"
+category = TC_DZAPI
+[[.args]]
+type = player
+default = GetTriggerPlayer
+[[.args]]
+type = string
+default = "Key"
+[[.args]]
+type = integer
+default = 1
+
+[DzAPI_Map_EnablePlatformSettings]
+title = "修改平台功能设置 [NEW]"
+description = "设置 ${player} 的 ${option} 号平台功能为 ${enable}"
+comment = "1号功能为锁定镜头距离，2号功能为显示血、蓝条"
+category = TC_DZAPI
+[[.args]]
+type = player
+default = GetTriggerPlayer
+[[.args]]
+type = platformFunction
+default = platformFunction_1
+[[.args]]
+type = optionEnable
+default = optionEnable_Disable

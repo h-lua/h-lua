@@ -64,21 +64,9 @@
 *required ~optional
 ./h-lua-sdk> sdk.exe help
 ./h-lua-sdk> sdk.exe new [:PROJECT_NAME] - new a project
-./h-lua-sdk> sdk.exe ydwe [:PROJECT_NAME] - open map by YDWE
+./h-lua-sdk> sdk.exe we [:PROJECT_NAME] - open map by YDWE
 ./h-lua-sdk> sdk.exe model [*PROJECT_NAME] [~CURRENT_PAGE:0] - view models in YDWE, one page support 289 models
 ./h-lua-sdk> sdk.exe clear [:PROJECT_NAME] - clear temp
 ./h-lua-sdk> sdk.exe test [:PROJECT_NAME] - test a project
 ./h-lua-sdk> sdk.exe build [:PROJECT_NAME] - build a project for launch
-```
-
-## CMD(Short for)
-```
-*required ~optional
-./h-lua-sdk> sdk.exe -h
-./h-lua-sdk> sdk.exe -n [:PROJECT_NAME] - new a project
-./h-lua-sdk> sdk.exe -we|-yd [:PROJECT_NAME] - open map by YDWE
-./h-lua-sdk> sdk.exe model [*PROJECT_NAME] [~CURRENT_PAGE:0] - view models in YDWE, one page support 289 models
-./h-lua-sdk> sdk.exe -c [:PROJECT_NAME] - clear temp
-./h-lua-sdk> sdk.exe -t [:PROJECT_NAME] - test a project
-./h-lua-sdk> sdk.exe -b [:PROJECT_NAME] - build a project for launch
 ```

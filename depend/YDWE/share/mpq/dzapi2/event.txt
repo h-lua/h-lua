@@ -1,0 +1,6 @@
+
+[DzAPI_Map_Global_ChangeMsg]
+title = "全局存档变化事件"
+description = "全局存档发生变化"
+comment = "本局游戏或其他游戏保存的全局存档都会触发这个事件，请使用[同步]分类下的获取同步数据来获得发生变化的全局存档KEY值"
+category = TC_DZAPI

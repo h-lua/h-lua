@@ -3,7 +3,15 @@
 
 #include "YDWEBase.j"
 
-library MeatHook requires YDWEBase
+#ifdef XGDamPlus_ON
+	library MeatHook requires YDWEBase,XGDamPlus
+#else
+	#ifdef XGJapiDam_ON
+		library MeatHook requires YDWEBase,XGJapiDam
+	#else
+		library MeatHook requires YDWEBase
+	#endif
+#endif
 //****************************//
 //* 技能-钩子 Fetrix_sai修正 *//
 //****************************//
@@ -39,7 +47,16 @@ library MeatHook requires YDWEBase
                     call YDWESaveUnitByString(key, "Target", f)
                     if IsUnitEnemy(f, GetOwningPlayer(pudge))then
                         call DestroyEffect(AddSpecialEffectTarget("Objects\\Spawnmodels\\Human\\HumanBlood\\BloodElfSpellThiefBlood.mdl", f, "origin"))
-                        call UnitDamageTarget(pudge, f, damage, true, false, bj_lastSetAttackType, bj_lastSetDamageType, bj_lastSetWeaponType)
+						#ifndef XGDamPlus_ON
+							#ifdef XGJapiDam_ON
+								call XG_JapiDam_DamTar(pudge, f, damage, true, false, bj_lastSetAttackType, bj_lastSetDamageType, bj_lastSetWeaponType)
+							#else
+								call UnitDamageTarget(pudge, f, damage, true, false, bj_lastSetAttackType, bj_lastSetDamageType, bj_lastSetWeaponType)
+							#endif
+						#else
+							call XG_UnitDamTarPlus(pudge, f, damage, true, false, bj_lastSetAttackType, bj_lastSetDamageType, bj_lastSetWeaponType)
+						#endif
+                        
                     endif
                     call IssueImmediateOrderById(f, 851972)
                     call GroupAddUnit(Except, f)

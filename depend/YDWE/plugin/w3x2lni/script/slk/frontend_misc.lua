@@ -69,7 +69,7 @@ end
 
 local function convert(misc, metadata, miscnames, slk)
     local chunk = {}
-    for _, name in ipairs(miscnames.misc_names) do
+    for __, name in ipairs(miscnames.misc_names) do
         local meta = metadata[name]
         add_obj(name, meta, misc, chunk, slk)
     end
@@ -91,7 +91,7 @@ local function merge_misc_data(misc, map_misc, meta, slk)
 end
 
 local function merge_misc(misc, txt, map_misc, metadata, miscnames, slk)
-    for _, name in ipairs(miscnames.misc_names) do
+    for __, name in ipairs(miscnames.misc_names) do
         local lname = name:lower()
         local v = map_misc[lname]
         if v then
@@ -107,7 +107,7 @@ return function (w2l_, archive, slk)
     local metadata = w2l:metadata()
     local miscnames = w2l:miscnames()
     local misc = {}
-    for _, name in ipairs {"UI\\MiscData.txt", "Units\\MiscData.txt", "Units\\MiscGame.txt"} do
+    for __, name in ipairs {"UI\\MiscData.txt", "Units\\MiscData.txt", "Units\\MiscGame.txt"} do
         local buf = io.load(w2l.mpq / name)
         w2l:parse_txt(buf, name, misc)
     end

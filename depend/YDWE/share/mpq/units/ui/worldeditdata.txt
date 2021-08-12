@@ -653,7 +653,7 @@ HelpFile_V1_Mac=ReadMe/Layout/(Mac)WEHIndex.html
 HelpFile_CampaignEditor=support\Layout\(PC)WEHIndex.html
 HelpFile_CampaignEditor_Mac=ReadMe/Layout/(Mac)WEHIndex.html
 
-BlizzardLink=http://www.blizzard.com/
+BlizzardLink=https://www.google.com/
 
 // Terrain height smoothing brush weights
 // New terrain height will be computed as:
@@ -884,8 +884,8 @@ ToolBarIcon_CE_EditMap=ReplaceableTextures\WorldEditUI\Editor-Toolbar-EditMap
 ToolBarIcon_CE_ExportMap=ReplaceableTextures\WorldEditUI\Editor-Toolbar-ExportMap
 
 // Misc art
-War3Logo=UI\WarcraftIIIFTLogo.blp
-War3XLogo=UI\WarcraftIIIFTLogo.blp
+War3Logo=UI\Loading-yuexie.blp
+War3XLogo=UI\Loading-yuexie.blp
 BlizzardLogo=ReplaceableTextures\WorldEditUI\BlizzardLogo
 
 [WorldEditSounds]

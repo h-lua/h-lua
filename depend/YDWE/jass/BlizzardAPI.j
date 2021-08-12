@@ -41,6 +41,8 @@ library BzAPI
     native DzSetUnitID takes unit whichUnit, integer id returns nothing
     native DzSetUnitModel takes unit whichUnit, string path returns nothing
     native DzSetWar3MapMap takes string map returns nothing
+    native DzGetLocale takes nothing returns string
+    native DzGetUnitNeededXP takes unit whichUnit, integer level returns integer
     //sync
     native DzTriggerRegisterSyncData takes trigger trig, string prefix, boolean server returns nothing
     native DzSyncData takes string prefix, string data returns nothing
@@ -111,11 +113,14 @@ library BzAPI
     native DzFrameSetSize takes integer frame, real w, real h returns nothing
     native DzCreateFrameByTagName takes string frameType, string name, integer parent, string template, integer id returns integer
     native DzFrameSetVertexColor takes integer frame, integer color returns nothing
-
-    globals
-        private trigger array DamageEventQueue
-        private integer DamageEventNumber = 0
-    endglobals
+    native DzOriginalUIAutoResetPoint takes boolean enable returns nothing
+    native DzFrameSetPriority takes integer frame, integer priority returns nothing
+    native DzFrameSetParent takes integer frame, integer parent returns nothing
+    native DzFrameGetHeight takes integer frame returns real
+    native DzFrameSetFont takes integer frame, string fileName, real height, integer flag returns nothing
+    native DzFrameGetParent takes integer frame returns integer
+    native DzFrameSetTextAlignment takes integer frame, integer align returns nothing
+    native DzFrameGetName takes integer frame returns string
 
     function DzTriggerRegisterMouseEventTrg takes trigger trg, integer status, integer btn returns nothing
         if trg == null then
@@ -168,6 +173,17 @@ library BzAPI
         return i
     endfunction
 
+	function DzTriggerRegisterMallItemSyncData takes trigger trig returns nothing
+		call DzTriggerRegisterSyncData(trig, "DZMIA", true)
+	endfunction
+
+ 	function DzGetTriggerMallItemPlayer takes nothing returns player
+		return DzGetTriggerSyncPlayer()
+	endfunction
+
+ 	function DzGetTriggerMallItem takes nothing returns string
+		return DzGetTriggerSyncData()
+	endfunction
 endlibrary
 
 #endif /// YDWEAddAIOrderIncluded

@@ -74,21 +74,6 @@ end
 ---@private
 ---@param method string
 ---@param params table|nil
----@return string
-hjapi.jass = function(method, params)
-    hjapi.formatter(method, params)
-    if (type(params) == "table" and #params > 0) then
-        for i, v in ipairs(params) do
-            cg["hjapi_params_" .. i] = tostring(v)
-        end
-    end
-    cj.ExecuteFunc("hjapi_" .. method)
-    return hjapi.triumph(method, params, cg.hjapi_result)
-end
-
----@private
----@param method string
----@param params table|nil
 ---@return any
 hjapi.exec = function(method, params)
     local api = hjapi.lib()
@@ -99,11 +84,10 @@ hjapi.exec = function(method, params)
         return false
     end
     if (type(api[method]) ~= "function") then
-        hjapi.echo(method .. " is not a function")
+        hjapi.echo(method .. " function does not exist, please check the WE environment! You should make friends with 5382557(QQ)")
         return false
     end
     hjapi.formatter(method, params)
-    local res
     if (params == nil) then
         res = api[method]()
     else
@@ -786,7 +770,7 @@ end
 ---@param id number integer
 ---@return number integer
 hjapi.DzCreateFrameByTagName = function(frameType, name, parent, template, id)
-    return hjapi.jass("DzCreateFrameByTagName", { frameType, name, parent, template, id })
+    return hjapi.exec("DzCreateFrameByTagName", { frameType, name, parent, template, id })
 end
 
 ---@param frame string
@@ -1154,7 +1138,7 @@ end
 --- 设置动画进度
 --- 自动播放为false时可用
 ---@param frame number integer
----@param offset number float(3) 进度
+---@param offset number float(5) 进度
 hjapi.DzFrameSetAnimateOffset = function(frame, offset)
     return hjapi.exec("DzFrameSetAnimateOffset", { frame, offset })
 end
@@ -1823,7 +1807,7 @@ end
 --- effect 绕X轴旋转 angle 度
 --- 多次调用，效果会叠加，不想叠加需要先重置为初始状态
 ---@param effect userdata
----@param angle number float(3)
+---@param angle number float(5)
 hjapi.EXEffectMatRotateX = function(effect, angle)
     return hjapi.exec("EXEffectMatRotateX", { effect, angle })
 end
@@ -1832,7 +1816,7 @@ end
 --- effect 绕Y轴旋转 angle 度
 --- 多次调用，效果会叠加，不想叠加需要先重置为初始状态
 ---@param effect userdata
----@param angle number float(3)
+---@param angle number float(5)
 hjapi.EXEffectMatRotateY = function(effect, angle)
     return hjapi.exec("EXEffectMatRotateY", { effect, angle })
 end
@@ -1841,7 +1825,7 @@ end
 --- effect 绕Z轴旋转 angle 度
 --- 多次调用，效果会叠加，不想叠加需要先重置为初始状态
 ---@param effect userdata
----@param angle number float(3)
+---@param angle number float(5)
 hjapi.EXEffectMatRotateZ = function(effect, angle)
     return hjapi.exec("EXEffectMatRotateZ", { effect, angle })
 end
@@ -1850,9 +1834,9 @@ end
 --- 设置 effect 的X轴缩放，Y轴缩放，Z轴缩放
 --- 多次调用，效果会叠加，不想叠加需要先重置为初始状态。设置为2,2,2时相当于大小变为2倍。设置为负数时，就是镜像翻转
 ---@param effect userdata
----@param x number float(3)
----@param y number float(3)
----@param z number float(3)
+---@param x number float(5)
+---@param y number float(5)
+---@param z number float(5)
 hjapi.EXEffectMatScale = function(effect, x, y, z)
     return hjapi.exec("EXEffectMatScale", { effect, x, y, z })
 end
@@ -2231,19 +2215,4 @@ end
 ---@param value number
 hjapi.SetUnitState = function(whichUnit, state, value)
     hjapi.exec('SetUnitState', { whichUnit, state, value })
-end
-
---- H-Lua同步
----@param syncDataStr string
-hjapi.HSync = function(syncDataStr)
-    return hjapi.jass("HSync", { syncDataStr })
-end
-
---- 注册UI事件回调(func name)
---- 注册 frame 的 eventId 事件 运行:funcName
----@param frame number integer
----@param eventId number integer
----@param syncDataStr string
-hjapi.HFrameSetScript = function(frame, eventId, syncDataStr)
-    return hjapi.jass("HFrameSetScript", { frame, eventId, syncDataStr })
 end

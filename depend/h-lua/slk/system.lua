@@ -292,34 +292,6 @@ for _ = 1, 9 do
         _parent = "AItg",
         _type = "system",
     })
-    -- #攻击力白+
-    hslk_item({
-        _parent = "manh",
-        _type = "system",
-        abilList = hslk_ability({
-            _parent = "AIaa",
-            _type = "system",
-        })._id
-    })
-    -- #攻击力白-
-    hslk_item({
-        _parent = "manh",
-        _type = "system",
-        abilList = hslk_ability({
-            _parent = "AIaa",
-            _type = "system",
-        })._id
-    })
-    -- #攻击速度+
-    hslk_ability({
-        _parent = "AIsx",
-        _type = "system",
-    })
-    -- #攻击速度-
-    hslk_ability({
-        _parent = "AIsx",
-        _type = "system",
-    })
     -- #护甲绿+
     hslk_ability({
         _parent = "AId1",
@@ -328,26 +300,6 @@ for _ = 1, 9 do
     -- #护甲绿-
     hslk_ability({
         _parent = "AId1",
-        _type = "system",
-    })
-    -- #生命+
-    hslk_ability({
-        _parent = "AIlf",
-        _type = "system",
-    })
-    -- #生命-
-    hslk_ability({
-        _parent = "AIlf",
-        _type = "system",
-    })
-    -- #魔法+
-    hslk_ability({
-        _parent = "AImv",
-        _type = "system",
-    })
-    -- #魔法-
-    hslk_ability({
-        _parent = "AImv",
         _type = "system",
     })
 end

@@ -1,0 +1,4 @@
+[TriggerTypes]
+attacktype=0,1,1,攻击类型
+damagetype=0,1,1,伤害类型
+weapontype=0,1,1,武器类型

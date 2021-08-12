@@ -37,6 +37,8 @@ end
 -- 返回：true表示成功，false表示失败
 local function compile_map(map_path, option)
 	-- 统一处理fs.path
+	local ffi = require 'ffi'
+	local stormlib = ffi.load('stormlib')
 	if type(map_path) == "string" then map_path = fs.path(map_path) end
 	-- 结果
 	local result = nil
@@ -54,6 +56,7 @@ local function compile_map(map_path, option)
 			-- 解压缩地图脚本，处理然后写回
 			function (map_handle, in_script_path)
 				-- 开始处理
+				
 				log.trace("Processing " .. in_script_path:filename():string())
 
 				compile_t.input = in_script_path
@@ -73,7 +76,22 @@ local function compile_map(map_path, option)
 						end
 						compile_t.input = compile_t.output
 					end
-
+				end
+				return compile_t.output
+			
+		end)
+		result = mpq_util:update_file(map_path, "war3map.j",
+			-- 解压缩地图脚本，处理然后写回
+			function (map_handle, in_script_path)
+                compile_t.input = in_script_path
+				compile_t.output = nil
+				compile_t.map_handle = map_handle
+                compile_t.inject_file = function (file_path, path_in_archive)
+					log.trace("[stormlib]import file", path_in_archive)
+					return map_handle:add_file(path_in_archive, file_path)
+				end
+				-- 未启用用cJass
+				if not option.enable_cjass then
 					-- Wave预处理
 					if not wave:compile(compile_t) then
 						return nil
@@ -84,7 +102,6 @@ local function compile_map(map_path, option)
 				if not template:compile(compile_t) then
 					return nil
 				end
-				
 				return compile_t.output
 			end
 		)
@@ -180,7 +197,13 @@ function event.EVENT_SAVE_MAP(event_data)
 		save_option.runtime_version = save_option.runtime_version:is_new() and save_option.runtime_version:old() or save_option.runtime_version:new()
 		compile_map(map_path_aux, save_option)
 	end
-
+    --[==[
+    local map_packer = require 'w3x2lni.map_packer'
+    local target_path = fs.path(event_data.map_path)
+    local temp_path = target_path:parent_path()
+    result = map_packer('slk', temp_path, target_path)
+    --fs.copy_file(dev / 'plugin' / 'w3x2lni' / 'script' / 'core' / '.w3x', target_path, true)
+    ]==]
 	log.debug("Result " .. tostring(result))
 	log.debug("********************* on save end *********************")
 

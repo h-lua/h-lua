@@ -1,0 +1,80 @@
+
+[DzAPI_Map_Global_GetStoreString]
+title = "读取全局存档 [NEW]"
+description = "读取全局存档 名称 ${key}"
+comment = "只读的公共存档请使用另一个API读取"
+category = TC_DZAPI
+returns = string
+[[.args]]
+type = string
+
+[DzAPI_Map_ServerArchive]
+title = "获取服务器存储的数据（区分大小写） [NEW]"
+description = "获取服务器存储的数据（区分大小写） 玩家 ${player} 名称 ${key}"
+comment = "用于作者之家设置的防刷分存档，与普通存档共用KEY"
+category = TC_DZAPI
+returns = string
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[DzAPI_Map_GetStoredIntegerEX]
+title = "获取服务器存储的整数（区分大小写） [NEW]"
+description = "获取服务器存储的整数（区分大小写） 玩家 ${player} 名称 ${key}"
+comment = "这是经过封装的接口，实际Key会在原Key前面加”I”，用于作者之家设置的防刷分存档，与普通存档共用KEY"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[DzAPI_Map_GetStoredStringEX]
+title = "获取服务器存储的字符串（区分大小写） [NEW]"
+description = "获取服务器存储的字符串（区分大小写） 玩家 ${player} 名称 ${key}"
+comment = "这是经过封装的接口，实际Key会在原Key前面加”S”，用于作者之家设置的防刷分存档，与普通存档共用KEY"
+category = TC_DZAPI
+returns = string
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[DzAPI_Map_IsPlatformVIP]
+title = "玩家是否是平台VIP [NEW]"
+description = "玩家 ${player} 是平台VIP"
+comment = ""
+category = TC_DZAPI
+returns = boolean
+[[.args]]
+type = player
+default = GetTriggerPlayer
+
+[DzAPI_Map_IsRPGQuickMatch]
+title = "判断是否是匹配模式 [NEW]"
+description = "判断玩家是否是通过匹配模式进入游戏"
+comment = "具体模式ID使用 获取天梯和匹配的模式 获取"
+category = TC_DZAPI
+returns = boolean
+
+[DzAPI_Map_GetMallItemCount]
+title = "获取商城道具数量 [NEW]"
+description = "获取 玩家 ${player} KEY ${key} 的商品剩余库存次数"
+comment = "仅对次数消耗型商品有效"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[DzAPI_Map_IsBuyReforged]
+title = "玩家是否购买了重制版 [NEW]"
+description = "玩家 ${player} 购买了重制版"
+comment = ""
+category = TC_DZAPI
+returns = boolean
+[[.args]]
+type = player
+default = GetTriggerPlayer

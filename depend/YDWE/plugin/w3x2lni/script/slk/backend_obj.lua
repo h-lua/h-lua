@@ -241,7 +241,7 @@ return function (w2l_, type, data, wts_)
     local origin_id, user_id = sort_chunk(data, w2l.config.remove_unuse_object)
     local max = #origin_id + #user_id
     if max == 0 then
-        return
+        return '' --XG: 返回空字符串！
     end
     hexs = {}
     write_head()

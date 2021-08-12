@@ -2,8 +2,16 @@
 #define YDWETimerPatternIncluded
 
 #include "YDWEBase.j"
+#ifdef XGDamPlus_ON
+	library_once YDWETimerPattern initializer Init requires YDWEBase,XGDamPlus
+#else
+	#ifdef XGJapiDam_ON
+		library_once YDWETimerPattern initializer Init requires YDWEBase,XGJapiDam
+	#else
+		library_once YDWETimerPattern initializer Init requires YDWEBase
+	#endif
+#endif
 
-library_once YDWETimerPattern initializer Init requires YDWEBase
 
 //***************************************************
 //* ∑ - Matrix 万能模板函数
@@ -73,7 +81,15 @@ library_once YDWETimerPattern initializer Init requires YDWEBase
         local unit   u = GetFilterUnit()
         local Thread d = tmp_data
         if not(IsUnitInGroup(u, d.g)) and d.switch != 0 and EnemyFilter(u, d.caster) then
-            call UnitDamageTarget(d.caster, u, d.amount, true, true, bj_lastSetAttackType, bj_lastSetDamageType, bj_lastSetWeaponType)
+			#ifndef XGDamPlus_ON
+				#ifdef XGJapiDam_ON
+					call XG_JapiDam_DamTar(d.caster, u, d.amount, false, false, bj_lastSetAttackType, bj_lastSetDamageType, bj_lastSetWeaponType)
+				#else
+					call UnitDamageTarget(d.caster, u, d.amount, false, false, bj_lastSetAttackType, bj_lastSetDamageType, bj_lastSetWeaponType)
+				#endif
+			#else
+				call XG_UnitDamTarPlus(d.caster, u, d.amount, false, false, bj_lastSetAttackType, bj_lastSetDamageType, bj_lastSetWeaponType)
+			#endif
             call DestroyEffect(AddSpecialEffectTarget(d.dsfx, u, d.part))
             if d.skills > '0000' and d.skills != null and d.order > 0 and d.order != null then
                 call SingleMagic(d.caster, u, d.pos.x, d.pos.y, GetUnitFlyHeight(d.obj), d.unitid, d.skills, d.level, d.order)

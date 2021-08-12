@@ -159,6 +159,24 @@ comment = ""
 category = BZ_HW
 returns = unit
 
+[DzGetLocale]
+title = "获取客户端语言 [NEW]"
+description = "获取客户端语言"
+comment = "对不同语言客户端返回不同"
+category = BZ_HW
+returns = string
+
+[DzGetUnitNeededXP]
+title = "获取升级所需经验 [NEW]"
+description = "获取单位 ${unit} 的 ${level}级 升级所需经验"
+comment = ""
+category = TC_UNIT
+returns = integer
+[[.args]]
+type = string
+[[.args]]
+type = integer
+
 [DzCreateFrame]
 title = "新建Frame"
 description = "新建Frame 名字:${frame} 父节点:${parent} ID:${Id}"
@@ -411,6 +429,33 @@ description = "获取 ${frame} 的字数限制"
 comment = "（支持EditBox）"
 category = BZ_GUI
 returns = integer
+[[.args]]
+type = frame
+
+[DzFrameGetHeight]
+title = "获取 Frame 的 高度 [NEW]"
+description = "获取 ${frame} 的高度"
+comment = ""
+category = BZ_GUI
+returns = real
+[[.args]]
+type = frame
+
+[DzFrameGetParent]
+title = "获取 Frame 的 Parent [NEW]"
+description = "获取 ${frame} 的 Parent"
+comment = ""
+category = BZ_GUI
+returns = frame
+[[.args]]
+type = frame
+
+[DzFrameGetName]
+title = "获取 Frame 的 名称 [NEW]"
+description = "获取 ${frame} 的 名称"
+comment = ""
+category = BZ_GUI
+returns = string
 [[.args]]
 type = frame
 

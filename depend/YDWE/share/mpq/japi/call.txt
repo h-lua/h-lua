@@ -1,3 +1,10 @@
+[YDWEPlatformIsInPlatform]
+title = "地图在11平台上 [JAPI]"
+description = "目前地图正在11平台上运行"
+comment = "判断地图是否在11平台上；此功能可以根据地图所在平台做出差异化操作。特别注意：此操作内含有等待。"
+category = TC_NOTHING
+returns = boolean
+
 [YDWEIsEventPhysicalDamage]
 title = "是物理伤害 [JAPI]"
 description = "单位所受伤害是物理伤害"
@@ -100,6 +107,80 @@ default = "AHhb"
 type = string
 default = "\"Name\""
 
+[YDWERecordGetI]
+title = "11RPG存档 - 获取 [JAPI]"
+description = "11RPG存档 - 读取${玩家}中的〖${数据名}〗"
+comment = "从玩家11RPG存档上获取数据，需要填入正确的数据名。"
+category = TC_YDSL
+returns = integer
+[[.args]]
+type = player
+default = "Player00"
+[[.args]]
+type = string
+default = "EverguoIsHandsome"
+
+[YDWERPGGetKey]
+title = "11RPG积分 - 读取 [JAPI]"
+description = "11RPG积分 - 读取${玩家}中的〖${数据名}〗"
+comment = "从11RPG积分上获取数据，需要填入正确的数据名。"
+category = TC_YDSL
+returns = integer
+[[.args]]
+type = player
+default = "Player00"
+[[.args]]
+type = string
+default = "EverguoIsHandsome"
+
+[YDWERPGBillingGetStatus]
+title = "11RPG计费 - 读取状态 [JAPI]"
+description = "11RPG计费 - 读取${玩家}中的状态〖${状态名}〗"
+category = TC_YDSL
+returns = integer
+[[.args]]
+type = player
+default = "Player00"
+[[.args]]
+type = string
+default = "EverguoIsHandsome"
+
+[YDWERPGBillingGetItem]
+title = "11RPG计费 - 读取道具 [JAPI]"
+description = "11RPG计费 - 读取${玩家}中的道具〖${道具名}〗"
+category = TC_YDSL
+returns = integer
+[[.args]]
+type = player
+default = "Player00"
+[[.args]]
+type = string
+default = "EverguoIsHandsome"
+
+[YDWERPGBillingHasStatus]
+title = "11RPG计费 - 存在状态 [JAPI]"
+description = "11RPG计费 - ${玩家}中存在状态〖${状态名}〗"
+category = TC_YDSL
+returns = boolean
+[[.args]]
+type = player
+default = "Player00"
+[[.args]]
+type = string
+default = "EverguoIsHandsome"
+
+[YDWERPGBillingHasItem]
+title = "11RPG计费 - 存在道具 [JAPI]"
+description = "11RPG计费 - ${玩家}中存在道具〖${道具名}〗"
+category = TC_YDSL
+returns = boolean
+[[.args]]
+type = player
+default = "Player00"
+[[.args]]
+type = string
+default = "EverguoIsHandsome"
+
 [YDWEGetUnitAbilityState]
 title = "技能属性 [JAPI]"
 description = "${单位} 的 ${技能} 的 ${状态}"
@@ -191,7 +272,7 @@ type = ItemDataString
 default = "ITEM_DATA_TIP"
 
 [EXGetEffectX]
-title = "X轴坐标 [JAPI] [New!]"
+title = "X轴坐标 [JAPI]"
 description = "${特效} 的X轴坐标"
 comment = ""
 category = TC_SPECIALEFFECT
@@ -202,7 +283,7 @@ type = effect
 default = "bj_lastCreatedEffect"
 
 [EXGetEffectY]
-title = "Y轴坐标 [JAPI] [New!]"
+title = "Y轴坐标 [JAPI]"
 description = "${特效} 的Y轴坐标"
 comment = ""
 category = TC_SPECIALEFFECT
@@ -213,7 +294,7 @@ type = effect
 default = "bj_lastCreatedEffect"
 
 [EXGetEffectZ]
-title = "高度 [JAPI] [New!]"
+title = "高度 [JAPI]"
 description = "${特效} 的高度"
 comment = ""
 category = TC_SPECIALEFFECT
@@ -224,7 +305,7 @@ type = effect
 default = "bj_lastCreatedEffect"
 
 [EXGetEffectSize]
-title = "大小 [JAPI] [New!]"
+title = "大小 [JAPI]"
 description = "${特效} 的大小"
 comment = ""
 category = TC_SPECIALEFFECT

@@ -113,36 +113,43 @@ local function parse_num_val(str, pos)
 end
 
 -- Public values and functions.
-
 function json.stringify(obj, as_key)
-    local s = {} -- We'll build the string as an array of strings to be concatenated.
+    local sss = {}
+    local ss = {}
     local kind = kind_of(obj) -- This is 'array' if it's an array or type(obj) otherwise.
+    local into = function(str)
+        ss[#ss + 1] = str
+        if (#ss >= 100) then
+            table.insert(sss, ss)
+            ss = {}
+        end
+    end
     if kind == "array" then
         if as_key then
             error("Can't encode array as key.")
         end
-        s[#s + 1] = "["
+        into("[")
         for i, val in ipairs(obj) do
-            if i > 1 then
-                s[#s + 1] = ", "
+            if #sss > 0 or i > 1 then
+                into(", ")
             end
-            s[#s + 1] = json.stringify(val)
+            into(json.stringify(val))
         end
-        s[#s + 1] = "]"
+        into("]")
     elseif kind == "table" then
         if as_key then
             error("Can't encode table as key.")
         end
-        s[#s + 1] = "{"
+        into("{")
         for k, v in pairs(obj) do
-            if #s > 1 then
-                s[#s + 1] = ", "
+            if #sss > 0 or #ss > 1 then
+                into(", ")
             end
-            s[#s + 1] = json.stringify(k, true)
-            s[#s + 1] = ":"
-            s[#s + 1] = json.stringify(v)
+            into(json.stringify(k, true))
+            into(":")
+            into(json.stringify(v))
         end
-        s[#s + 1] = "}"
+        into("}")
     elseif kind == "string" then
         return '"' .. escape_str(obj) .. '"'
     elseif kind == "number" then
@@ -157,7 +164,15 @@ function json.stringify(obj, as_key)
     else
         error("Unjsonifiable type: " .. kind .. ".")
     end
-    return table.concat(s)
+    if (#ss > 0) then
+        table.insert(sss, ss)
+    end
+    ss = nil
+    local concat = ""
+    for _, s in ipairs(sss) do
+        concat = concat .. table.concat(s)
+    end
+    return concat
 end
 
 json.null = {} -- This is a one-off table to represent the null value.

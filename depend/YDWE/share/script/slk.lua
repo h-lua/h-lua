@@ -461,7 +461,7 @@ function slk_proxy:refresh(mappath)
     create_report()
     local archive = require 'archive'
     local ar = archive(mappath, 'w')
-    for _, name in ipairs {'ability', 'buff', 'unit', 'item', 'upgrade', 'doodad', 'destructable'} do
+    for __, name in ipairs {'ability', 'buff', 'unit', 'item', 'upgrade', 'doodad', 'destructable'} do
         if used[name] then
             local buf = w2l:backend_obj(name, obj[name])
             log.debug('refresh object: ' .. w2l.info.obj[name])
@@ -486,7 +486,7 @@ local function initialize(mappath)
     local ar = archive(mappath)
     set_config()
     w2l:frontend(ar, slk)
-    for _, name in ipairs {'ability', 'buff', 'unit', 'item', 'upgrade', 'doodad', 'destructable', 'misc'} do
+    for __, name in ipairs {'ability', 'buff', 'unit', 'item', 'upgrade', 'doodad', 'destructable', 'misc'} do
         slk_proxy[name] = create_proxy(slk, name)
         dynamics[name] = {}
         obj[name] = slk['copyed_'..name]

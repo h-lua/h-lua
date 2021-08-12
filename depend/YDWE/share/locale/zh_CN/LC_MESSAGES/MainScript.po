@@ -96,6 +96,10 @@ msgstr "配置(&C)"
 msgid "YDWE &Config"
 msgstr "配置(&C)"
 
+#: share/script/ydwe_on_menu.lua:137
+msgid "&XJass Config"
+msgstr "xJass配置(&X)"
+
 #: share/script/ydwe_on_menu.lua:126
 msgid "Launch &Warcraft3"
 msgstr "启动魔兽(&W)"
@@ -119,22 +123,6 @@ msgstr "导出WE文件(&E)"
 #: share/script/ydwe_on_menu.lua:132
 msgid "&Lua Test"
 msgstr "执行Lua代码(&L)"
-
-#: share/script/ydwe_on_menu.lua:133
-msgid "Cre&dits"
-msgstr "致谢(&D)"
-
-#: share/script/ydwe_on_menu.lua:134
-msgid "&Platform"
-msgstr "作者之家(&P)"
-
-#: share/script/ydwe_on_menu.lua:135
-msgid "Launch Platform &official website"
-msgstr "打开官网(&O)"
-
-#: share/script/ydwe_on_menu.lua:136
-msgid "Launch Author's &Home"
-msgstr "打开作者之家(&H)"
 
 #: share/script/ydwe_on_new_object_id.lua:81
 msgid "New Object Id"

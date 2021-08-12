@@ -64,21 +64,9 @@
 * 必填 ~ 選填
 ./h-lua-sdk> sdk.exe help  //提示cmd工具命令
 ./h-lua-sdk> sdk.exe new [*PROJECT_NAME]  //新建一個地圖項目
-./h-lua-sdk> sdk.exe ydwe [*PROJECT_NAME]  //以YDWE打開地圖項目
+./h-lua-sdk> sdk.exe we [*PROJECT_NAME]  //以YDWE打開地圖項目
 ./h-lua-sdk> sdk.exe model [*PROJECT_NAME] [~CURRENT_PAGE:0]  //以YDWE瀏覽項目模型，一頁最大289個，可翻頁
 ./h-lua-sdk> sdk.exe clear [*PROJECT_NAME]  //清理構建的臨時文件
 ./h-lua-sdk> sdk.exe test [*PROJECT_NAME]  //構建測試版本並開啓遊戲進行調試
 ./h-lua-sdk> sdk.exe build [*PROJECT_NAME]  //構建上線版本並開啓遊戲進行調試
-```
-
-### 命令行的縮寫版
-```
-* 必填 ~ 選填
-./h-lua-sdk> sdk.exe -h  //提示cmd工具命令
-./h-lua-sdk> sdk.exe -n [*PROJECT_NAME]  //新建一個地圖項目
-./h-lua-sdk> sdk.exe -we|-yd [*PROJECT_NAME]  //以YDWE打開地圖項目
-./h-lua-sdk> sdk.exe model [*PROJECT_NAME] [~CURRENT_PAGE:0]  //以YDWE瀏覽項目模型，一頁最大289個，可翻頁
-./h-lua-sdk> sdk.exe -c [*PROJECT_NAME]  //清理構建的臨時文件
-./h-lua-sdk> sdk.exe -t [*PROJECT_NAME]  //構建測試版本並開啓遊戲進行調試
-./h-lua-sdk> sdk.exe -b [*PROJECT_NAME]  //構建上線版本並開啓遊戲進行調試
 ```

@@ -562,7 +562,7 @@ hevent_default_actions = {
         pickup = cj.Condition(function()
             local it = cj.GetManipulatedItem()
             local itId = cj.GetItemTypeId(it)
-            if (itId == 0 or table.includes(HL_ID.item_attack_white.items, itId)) then
+            if (itId == 0) then
                 --过滤无效物品
                 return
             end
@@ -658,7 +658,7 @@ hevent_default_actions = {
         drop = cj.Condition(function()
             local it = cj.GetManipulatedItem()
             local itId = cj.GetItemTypeId(it)
-            if (itId == 0 or table.includes(HL_ID.item_attack_white.items, itId)) then
+            if (itId == 0) then
                 --过滤无效物品
                 return
             end

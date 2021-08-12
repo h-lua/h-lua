@@ -200,7 +200,7 @@ local formatter = {
     end,
     DzFrameSetAnimateOffset = function(params)
         params[1] = toInt(params[1])
-        params[2] = math.round(params[2], 3)
+        params[2] = math.round(params[2], 5)
     end,
     DzFrameSetEnable = function(params)
         params[1] = toInt(params[1])
@@ -421,18 +421,18 @@ local formatter = {
         params[2] = toBool(params[2])
     end,
     EXEffectMatRotateX = function(params)
-        params[2] = math.round(params[2], 3)
+        params[2] = math.round(params[2], 5)
     end,
     EXEffectMatRotateY = function(params)
-        params[2] = math.round(params[2], 3)
+        params[2] = math.round(params[2], 5)
     end,
     EXEffectMatRotateZ = function(params)
-        params[2] = math.round(params[2], 3)
+        params[2] = math.round(params[2], 5)
     end,
     EXEffectMatScale = function(params)
-        params[2] = math.round(params[2], 3)
-        params[3] = math.round(params[3], 3)
-        params[4] = math.round(params[4], 3)
+        params[2] = math.round(params[2], 5)
+        params[3] = math.round(params[3], 5)
+        params[4] = math.round(params[4], 5)
     end,
     EXExecuteScript = function(params)
         params[1] = tostring(params[1])
