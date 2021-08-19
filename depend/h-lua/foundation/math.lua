@@ -162,7 +162,7 @@ math.getMaxDistanceInRect = function(w, h, deg)
         return
     end
     local distance = 0
-    local lockDegA = (180 * math.atan(h / w)) / math_pi
+    local lockDegA = (180 * math.atan(h, w)) / math_pi
     local lockDegB = 90 - lockDegA
     if (deg == 0 or deg == 180 or deg == -180) then
         -- 横

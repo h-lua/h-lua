@@ -15,11 +15,11 @@ htexture = {
 
 ---@private
 htexture.cinematicFilterGeneric = function(duration, bmode, tex, red0, green0, blue0, trans0, red1, green1, blue1, trans1)
-    if cg.bj_cineFadeContinueTimer ~= nil then
-        cj.DestroyTimer(cg.bj_cineFadeContinueTimer)
+    if JassGlobals.bj_cineFadeContinueTimer ~= nil then
+        cj.DestroyTimer(JassGlobals.bj_cineFadeContinueTimer)
     end
-    if cg.bj_cineFadeFinishTimer ~= nil then
-        cj.DestroyTimer(cg.bj_cineFadeFinishTimer)
+    if JassGlobals.bj_cineFadeFinishTimer ~= nil then
+        cj.DestroyTimer(JassGlobals.bj_cineFadeFinishTimer)
     end
     cj.SetCineFilterTexture(tex)
     cj.SetCineFilterBlendMode(bmode)

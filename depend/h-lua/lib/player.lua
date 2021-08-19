@@ -269,7 +269,7 @@ hplayer.victory = function(whichPlayer, tips)
         cj.DisplayTimedTextFromPlayer(whichPlayer, 0, 0, 60, cj.GetLocalizedString("PLAYER_VICTORIOUS"))
     end
     if (cj.GetPlayerController(whichPlayer) == MAP_CONTROL_USER) then
-        cg.bj_changeLevelShowScores = true
+        JassGlobals.bj_changeLevelShowScores = true
         hdialog.create(whichPlayer, {
             title = tips,
             buttons = { { value = "Q", cj.GetLocalizedString("GAMEOVER_QUIT_MISSION") } }
