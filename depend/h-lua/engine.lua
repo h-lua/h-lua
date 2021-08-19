@@ -1,3 +1,8 @@
+JassCommon = require "jass.common"
+JassGlobals = require "jass.globals"
+JassSlk = require "jass.slk"
+JassJapi = require "jass.japi"
+
 cj = {}
 cj.AbilityId = JassCommon["AbilityId"]
 cj.AbilityId2String = JassCommon["AbilityId2String"]

@@ -1,5 +1,4 @@
 --- cli 构造的数据
-local jass_slk = nil
 local hslk_cli_ids = {}
 local hslk_cli_synthesis = {}
 HSLK_CLI_H_IDI = 1
@@ -19,34 +18,31 @@ HSLK_SYNTHESIS = {
 HSLK_MISC = {}
 
 hslk_init = function()
-    if (jass_slk == nil) then
-        jass_slk = require "jass.slk"
-    end
     -- 载入平衡常数数据
-    HSLK_MISC = jass_slk.misc
+    HSLK_MISC = JassSlk.misc
     -- 处理物编数据
     if (#hslk_cli_ids > 0) then
         for _, id in ipairs(hslk_cli_ids) do
             HSLK_I2V[id] = HSLK_CLI_DATA[id] or {}
             HSLK_I2V[id]._type = HSLK_I2V[id]._type or "slk"
-            if (jass_slk.item[id] ~= nil) then
+            if (JassSlk.item[id] ~= nil) then
                 HSLK_I2V[id]._class = HSLK_I2V[id]._class or "item"
-                HSLK_I2V[id].slk = jass_slk.item[id]
+                HSLK_I2V[id].slk = JassSlk.item[id]
                 if (HSLK_I2V[id].slk.cooldownID) then
                     HSLK_ICD[HSLK_I2V[id].slk.cooldownID] = HSLK_I2V[id]._id
                 end
-            elseif (jass_slk.unit[id] ~= nil) then
+            elseif (JassSlk.unit[id] ~= nil) then
                 HSLK_I2V[id]._class = HSLK_I2V[id]._class or "unit"
-                HSLK_I2V[id].slk = jass_slk.unit[id]
-            elseif (jass_slk.ability[id] ~= nil) then
+                HSLK_I2V[id].slk = JassSlk.unit[id]
+            elseif (JassSlk.ability[id] ~= nil) then
                 HSLK_I2V[id]._class = HSLK_I2V[id]._class or "ability"
-                HSLK_I2V[id].slk = jass_slk.ability[id]
-            elseif (jass_slk.buff[id] ~= nil) then
+                HSLK_I2V[id].slk = JassSlk.ability[id]
+            elseif (JassSlk.buff[id] ~= nil) then
                 HSLK_I2V[id]._class = HSLK_I2V[id]._class or "buff"
-                HSLK_I2V[id].slk = jass_slk.buff[id]
-            elseif (jass_slk.upgrade[id] ~= nil) then
+                HSLK_I2V[id].slk = JassSlk.buff[id]
+            elseif (JassSlk.upgrade[id] ~= nil) then
                 HSLK_I2V[id]._class = HSLK_I2V[id]._class or "upgrade"
-                HSLK_I2V[id].slk = jass_slk.upgrade[id]
+                HSLK_I2V[id].slk = JassSlk.upgrade[id]
             end
             -- 处理_class
             if (HSLK_I2V[id]._class) then

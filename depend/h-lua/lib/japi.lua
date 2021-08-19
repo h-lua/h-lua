@@ -2,26 +2,9 @@
 hjapi = {
     _lib = nil,
     _tips = {},
-    _formatter = {},
-    _triumph = {},
+    _formatter = require "lib.japi.formatter",
+    _triumph = require "lib.japi.triumph",
 }
-
----@private
-hjapi.lib = function()
-    if (hjapi._lib == -9394) then
-        return false
-    end
-    if (hjapi._lib == nil) then
-        hjapi._lib = require "jass.japi"
-        if (hjapi._lib == nil) then
-            hjapi._lib = -9394
-            return false
-        end
-        hjapi._formatter = require "lib.japi.formatter"
-        hjapi._triumph = require "lib.japi.triumph"
-    end
-    return hjapi._lib
-end
 
 ---@private
 hjapi.echo = function(msg)
@@ -39,14 +22,10 @@ end
 ---@param method string
 ---@return boolean
 hjapi.has = function(method)
-    local api = hjapi.lib()
-    if (false == api) then
-        return false
-    end
     if (type(method) ~= 'string') then
         return false
     end
-    if (type(api[method]) == "function") then
+    if (type(JassJapi[method]) == "function") then
         return true
     end
     return false
@@ -76,22 +55,18 @@ end
 ---@param params table|nil
 ---@return any
 hjapi.exec = function(method, params)
-    local api = hjapi.lib()
-    if (false == api) then
-        return false
-    end
     if (type(method) ~= 'string') then
         return false
     end
-    if (type(api[method]) ~= "function") then
+    if (type(JassJapi[method]) ~= "function") then
         hjapi.echo(method .. " function does not exist, please check the WE environment! You should make friends with 5382557(QQ)")
         return false
     end
     hjapi.formatter(method, params)
     if (params == nil) then
-        res = api[method]()
+        res = JassJapi[method]()
     else
-        res = api[method](table.unpack(params))
+        res = JassJapi[method](table.unpack(params))
     end
     return hjapi.triumph(method, params, res)
 end

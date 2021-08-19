@@ -18,7 +18,7 @@ sub_print_r(tt, indent)
 ```
  * [L]**console\test.lua**
 ```
-ydRuntime.error_handle(msg)
+JassRuntime.error_handle(msg)
 print(...)
 handleDisplay()
 rem(key1, key2)
@@ -62,6 +62,7 @@ CONST_RESEARCH_UBERTIP_RING_ABILITY(data)
 ```
 echo(msg, whichPlayer, duration, x, y)
 ```
+ * [B]engine.lua
  * [L]**foundation\Mapping.lua**
 ```
 Mapping:new()
@@ -589,7 +590,6 @@ local toInt(value, def)
 ```
  * [L]**lib\japi.lua**
 ```
-hjapi.lib()
 hjapi.echo(msg)
 hjapi.has(method)
 hjapi.formatter(method, params)

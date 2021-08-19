@@ -1,7 +1,3 @@
--- 加载YDWE库
-JassCommon = require "jass.common"
-JassGlobals = require "jass.globals"
-
 require "engine"
 require "blizzard"
 require "echo"

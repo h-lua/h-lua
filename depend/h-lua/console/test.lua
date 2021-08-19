@@ -1,17 +1,17 @@
 --- 自启动调试
 DEBUGGING = true
-ydRuntime = require "jass.runtime"
-ydRuntime.console = true
-ydRuntime.sleep = false
-ydRuntime.debugger = 4279
-ydRuntime.error_handle = function(msg)
+JassRuntime = require "jass.runtime"
+JassRuntime.console = true
+JassRuntime.sleep = false
+JassRuntime.debugger = 4279
+JassRuntime.error_handle = function(msg)
     print("========lua-err========")
     print(tostring(msg))
     print_stack()
     print("=========================")
 end
-ydDebug = require "jass.debug"
-ydConsole = require "jass.console"
+JassDebug = require "jass.debug"
+JassConsole = require "jass.console"
 
 local hPrint = print
 print = function(...)
@@ -42,10 +42,10 @@ local typesLabel = {
 }
 
 handleDisplay = function()
-    local count = { all = 0, max = ydDebug.handlemax() }
+    local count = { all = 0, max = JassDebug.handlemax() }
     for i = 1, count.max do
         local h = 0x100000 + i
-        local info = ydDebug.handledef(h)
+        local info = JassDebug.handledef(h)
         if (info and info.type) then
             if (not table.includes(types, info.type)) then
                 table.insert(types, info.type)
@@ -105,7 +105,7 @@ end
 
 --- 打印utf8->ansi编码,此方法可以打印出中文
 print_mb = function(...)
-    ydConsole.write(...)
+    JassConsole.write(...)
 end
 
 --- 错误调试

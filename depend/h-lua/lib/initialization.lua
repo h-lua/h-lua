@@ -19,25 +19,8 @@ hunit.del(preReadUnit)
 -- 同步
 hsync.init()
 
----default handle and protect
-local def = { "global" }
-for i = 0, bj_MAX_PLAYERS - 1, 1 do
-    table.insert(def, cj.Player(i))
-end
-for _, d in ipairs(def) do
-    hcache.alloc(d)
-    hcache.protect(d)
-end
-def = nil
-
--- register APM
-hevent.pool("global", hevent_default_actions.player.apm, function(tgr)
-    for i = 1, bj_MAX_PLAYERS, 1 do
-        cj.TriggerRegisterPlayerUnitEvent(tgr, cj.Player(i - 1), EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER, nil)
-        cj.TriggerRegisterPlayerUnitEvent(tgr, cj.Player(i - 1), EVENT_PLAYER_UNIT_ISSUED_POINT_ORDER, nil)
-        cj.TriggerRegisterPlayerUnitEvent(tgr, cj.Player(i - 1), EVENT_PLAYER_UNIT_ISSUED_ORDER, nil)
-    end
-end)
+hcache.alloc("global")
+hcache.protect("global")
 
 for i = 1, bj_MAX_PLAYERS, 1 do
     -- init
@@ -48,6 +31,8 @@ for i = 1, bj_MAX_PLAYERS, 1 do
 
     cj.SetPlayerHandicapXP(hplayer.players[i], 0) -- 经验置0
 
+    hcache.alloc(hplayer.players[i])
+    hcache.protect(hplayer.players[i])
     hcache.set(hplayer.players[i], CONST_CACHE.PLAYER_GOLD_PREV, 0)
     hcache.set(hplayer.players[i], CONST_CACHE.PLAYER_GOLD_TOTAL, 0)
     hcache.set(hplayer.players[i], CONST_CACHE.PLAYER_GOLD_COST, 0)
@@ -94,6 +79,15 @@ for i = 1, bj_MAX_PLAYERS, 1 do
         hcache.set(hplayer.players[i], CONST_CACHE.PLAYER_STATUS, hplayer.player_status.none)
     end
 end
+
+-- register APM
+hevent.pool("global", hevent_default_actions.player.apm, function(tgr)
+    hplayer.forEach(function(enumPlayer)
+        cj.TriggerRegisterPlayerUnitEvent(tgr, enumPlayer, EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER, nil)
+        cj.TriggerRegisterPlayerUnitEvent(tgr, enumPlayer, EVENT_PLAYER_UNIT_ISSUED_POINT_ORDER, nil)
+        cj.TriggerRegisterPlayerUnitEvent(tgr, enumPlayer, EVENT_PLAYER_UNIT_ISSUED_ORDER, nil)
+    end)
+end)
 
 -- 恢复生命监听器
 hmonitor.create(CONST_MONITOR.LIFE_BACK, 0.5,
