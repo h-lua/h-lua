@@ -80,6 +80,81 @@ for i = 1, bj_MAX_PLAYERS, 1 do
     end
 end
 
+--- debug
+if (DEBUGGING) then
+    local debugUI = hjapi.DzCreateFrameByTagName("TEXT", "StandardSmallTextTemplate", hdzui.origin.game(), "DEBUG-UI", 0)
+    hjapi.DzFrameSetPoint(debugUI, FRAME_ALIGN_LEFT, hdzui.origin.game(), FRAME_ALIGN_LEFT, 0.001, 0.06)
+    hjapi.DzFrameSetTextAlignment(debugUI, TEXT_ALIGN_LEFT)
+    hjapi.DzFrameSetFont(debugUI, 'fonts.ttf', 8 * 0.001, 0)
+    hjapi.DzFrameSetAlpha(debugUI, 210)
+    local types = { "all", "max" }
+    local typesLabel = {
+        all = "总共",
+        max = "最大值",
+        ["+tmr"] = "计时器",
+        ["+ply"] = "玩家",
+        ["+frc"] = "玩家势力",
+        ["+flt"] = "过滤器",
+        ["+w3u"] = "单位",
+        ["+w3d"] = "可破坏物",
+        ["+grp"] = "单位组",
+        ["+rct"] = "区域",
+        ["+snd"] = "声音",
+        ["+que"] = "任务",
+        ["+trg"] = "触发器",
+        ["+tac"] = "触发器动作",
+        ["+EIP"] = "对点特效",
+        ["+EIm"] = "附着特效",
+        ["+loc"] = "点",
+        ["pcvt"] = "玩家聊天事件",
+        ["pevt"] = "玩家事件",
+        ["uevt"] = "单位事件",
+        ["tcnd"] = "触发器条件",
+        ["wdvt"] = "可破坏物事件",
+    }
+    collectgarbage("collect")
+    local rem0 = collectgarbage("count")
+    local timeKernel = { 0.01, 0.05, 0.1, 0.2 }
+    local debugData = function()
+        local count = { all = 0, max = JassDebug.handlemax() }
+        for c = 1, count.max do
+            local h = 0x100000 + c
+            local info = JassDebug.handledef(h)
+            if (info and info.type) then
+                if (not table.includes(types, info.type)) then
+                    table.insert(types, info.type)
+                end
+                if (count[info.type] == nil) then
+                    count[info.type] = 0
+                end
+                count.all = count.all + 1
+                count[info.type] = count[info.type] + 1
+            end
+        end
+        local txts = {
+            " --------------"
+        }
+        for _, t in ipairs(types) do
+            table.insert(txts, "  " .. (typesLabel[t] or t) .. " : " .. (count[t] or 0))
+        end
+        table.insert(txts, " --------------")
+        for _, tk in ipairs(timeKernel) do
+            local tl = 0
+            if (htime.kernel[tk]) then
+                tl = #htime.kernel[tk]
+            end
+            table.insert(txts, hcolor.sky("  计时内核(" .. tk .. ") : " .. tl))
+        end
+        table.insert(txts, " --------------")
+        table.insert(txts, hcolor.gold("  内存消耗 : " .. math.round((collectgarbage("count") - rem0) / 1024, 2) .. ' MB'))
+        table.insert(txts, " --------------")
+        return txts
+    end
+    htime.setInterval(1, function(_)
+        hjapi.DzFrameSetText(debugUI, string.implode('|n', debugData()))
+    end)
+end
+
 -- register APM
 hevent.pool("global", hevent_default_actions.player.apm, function(tgr)
     hplayer.forEach(function(enumPlayer)

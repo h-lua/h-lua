@@ -93,35 +93,29 @@ htime.timerInKernel = function(period, yourFunc, isInterval)
     if (htime.kernel[space] == nil) then
         htime.kernel[space] = {}
         local t = cj.CreateTimer()
-        cj.TimerStart(
-            t,
-            space,
-            true,
-            function()
-                for k, v in ipairs(htime.kernel[space]) do
-                    if (v.running == true) then
-                        if (v.abort ~= true) then
-                            v.remain = v.remain - space
-                        end
-                        if (v.remain < 0.001) then
-                            local status, sErr = xpcall(v.yourFunc, debug.traceback, string.implode("_", { space, k }))
-                            if (status == true) then
-                                if (v.isInterval == true) then
-                                    v.remain = v.set
-                                else
-                                    --修改标志保留数据，可复用
-                                    v.running = false
-                                end
-                            else
-                                --执行出错时直接停跑，打印错误
-                                v.running = false
-                                print(sErr)
+        cj.TimerStart(t, space, true, function()
+            for k, v in ipairs(htime.kernel[space]) do
+                if (v.running == true) then
+                    if (v.abort ~= true) then
+                        v.remain = v.remain - space
+                    end
+                    if (v.remain < -space) then
+                        v.running = false --修改标志保留数据，可复用
+                    elseif (v.remain < 0.001) then
+                        local status, sErr = xpcall(v.yourFunc, debug.traceback, string.implode("_", { space, k }))
+                        if (status == true) then
+                            if (v.isInterval == true) then
+                                v.remain = v.set
                             end
+                        else
+                            --执行出错时直接停跑，打印错误
+                            v.running = false
+                            print(sErr)
                         end
                     end
                 end
             end
-        )
+        end)
     end
     local kernelClock = -1
     for k, v in ipairs(htime.kernel[space]) do

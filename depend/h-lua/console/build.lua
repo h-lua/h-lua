@@ -1,8 +1,6 @@
 DEBUGGING = false
 print = function(...)
 end
-rem = function(key1, key2)
-end
 print_stack = function(...)
 end
 print_mb = function(...)
