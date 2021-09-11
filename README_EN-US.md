@@ -10,6 +10,7 @@
 ![image](https://img.shields.io/badge/Email-mzyhaohaoren@qq.com-yellow.svg)
 
 ## Structure
+
 ```
     ├── depend
     │   ├── h-lua - h-lua framework(v:latest)
@@ -19,19 +20,18 @@
     └── sdk.exe
 ```
 
- * [docs]http://wenku.hunzsig.org/?_=_6_34
- * [demo]HelloWorld https://github.com/hunzsig-warcraft3/h-lua-sdk-helloworld
- * [demo]MysteriousLand https://github.com/hunzsig-warcraft3/h-lua-sdk-mysterious-land
- * [test]Crash https://github.com/hunzsig-warcraft3/h-lua-sdk-crash
+* [docs]http://wenku.hunzsig.org/?_=_6_34
+* [demo]HelloWorld https://github.com/hunzsig-warcraft3/h-lua-sdk-helloworld
+* [demo]MysteriousLand https://github.com/hunzsig-warcraft3/h-lua-sdk-mysterious-land
+* [test]Crash https://github.com/hunzsig-warcraft3/h-lua-sdk-crash
 
 ### The projects directory is used to place map projects
+
 > A formal project should include the following structure.
+
 ```
     └── project_demo - root dir
-        ├── hslk
-        ├── jass - your custom jass(not real jass,just for defind. * look default example）
-        │   ├── globals.jass
-        │   └── function.jass
+        ├── hslk[Writing business code is not recommended]
         ├── map
         │   ├── resource - F12
         │   │   ├── hLua -  h-lua required! Don't remove!
@@ -54,19 +54,31 @@
         ├── scripts - lua scripts(It's just a suggestion)
         └── main.lua - Enter
 ```
+
 > If you are not sure about the accuracy of the project structure, use the new command to create a new project for reference.
+
 ```
 ./h-lua-sdk> sdk.exe new [:PROJECT_NAME]
 ```
 
 ## CMD
+
 ```
 *required ~optional
 ./h-lua-sdk> sdk.exe help
 ./h-lua-sdk> sdk.exe new [:PROJECT_NAME] - new a project
 ./h-lua-sdk> sdk.exe we [:PROJECT_NAME] - open map by YDWE
-./h-lua-sdk> sdk.exe model [*PROJECT_NAME] [~CURRENT_PAGE:0] - view models in YDWE, one page support 289 models
+./h-lua-sdk> sdk.exe model [*PROJECT_NAME] [~PAGE:0|~search:''] - view models in WE, one page support 289 models
 ./h-lua-sdk> sdk.exe clear [:PROJECT_NAME] - clear temp
 ./h-lua-sdk> sdk.exe test [:PROJECT_NAME] - test a project
 ./h-lua-sdk> sdk.exe build [:PROJECT_NAME] - build a project for launch
+```
+
+### Model command extension
+
+```
+./h-lua-sdk> sdk.exe model demo
+./h-lua-sdk> sdk.exe model demo 2
+./h-lua-sdk> sdk.exe model demo ttg
+./h-lua-sdk> sdk.exe model demo abc 1
 ```

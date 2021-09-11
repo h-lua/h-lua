@@ -28,10 +28,7 @@
 > 一個正規的項目應該包括以下結構
 ```
     └── project_demo - 項目目錄
-        ├── hslk - 用來編寫 hslk lua 物編配置
-        ├── jass - 自定義jass（不是完整的jass，僅供有限的片段定義，請看參考文件示例）
-        │   ├── globals.jass
-        │   └── function.jass
+        ├── hslk - 用來編寫 hslk lua 物編配置[不建議編寫業務代碼]
         ├── map - 地圖文件
         │   ├── resource - F12導入
         │   │   ├── hLua - h-lua需要的資源文件，請不要亂刪除
@@ -65,8 +62,17 @@
 ./h-lua-sdk> sdk.exe help  //提示cmd工具命令
 ./h-lua-sdk> sdk.exe new [*PROJECT_NAME]  //新建一個地圖項目
 ./h-lua-sdk> sdk.exe we [*PROJECT_NAME]  //以YDWE打開地圖項目
-./h-lua-sdk> sdk.exe model [*PROJECT_NAME] [~CURRENT_PAGE:0]  //以YDWE瀏覽項目模型，一頁最大289個，可翻頁
+./h-lua-sdk> sdk.exe model [*PROJECT_NAME] [~PAGE:0|~search:'']  //以WE瀏覽項目模型，一頁最大289個，可翻頁可檢索
 ./h-lua-sdk> sdk.exe clear [*PROJECT_NAME]  //清理構建的臨時文件
 ./h-lua-sdk> sdk.exe test [*PROJECT_NAME]  //構建測試版本並開啓遊戲進行調試
 ./h-lua-sdk> sdk.exe build [*PROJECT_NAME]  //構建上線版本並開啓遊戲進行調試
+```
+
+### 模型命令拓展
+
+```
+./h-lua-sdk> sdk.exe model demo //查看項目demo的模型，默認第0頁
+./h-lua-sdk> sdk.exe model demo 2 //查看項目demo的模型，第2頁
+./h-lua-sdk> sdk.exe model demo ttg //查看項目demo的模型，隻要路徑帶有ttg的
+./h-lua-sdk> sdk.exe model demo abc 1  //查看項目demo的模型，第1頁且隻要路徑帶有abc的
 ```

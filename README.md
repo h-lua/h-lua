@@ -10,6 +10,7 @@
 [![image](https://img.shields.io/badge/QQ-325338043-green.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=NYlOpKUo9vEUQ3gN_UBvRUci9avq0tqB&jump_from=webapi)
 
 ### 结构
+
 ```
     ├── depend - 依赖的开发工具
     │   ├── h-lua - h-lua(v:latest，随sdk更新的最新版)
@@ -19,19 +20,18 @@
     └── sdk.exe - 编译好的开发命令工具
 ```
 
- * [docs]http://wenku.hunzsig.org/?_=_6_34
- * [demo]你好世界 https://github.com/hunzsig-warcraft3/h-lua-sdk-helloworld
- * [demo]秘地探奇 https://github.com/hunzsig-warcraft3/h-lua-sdk-mysterious-land
- * [test]崩溃压力 https://github.com/hunzsig-warcraft3/h-lua-sdk-crash
+* [docs]http://wenku.hunzsig.org/?_=_6_34
+* [demo]你好世界 https://github.com/hunzsig-warcraft3/h-lua-sdk-helloworld
+* [demo]秘地探奇 https://github.com/hunzsig-warcraft3/h-lua-sdk-mysterious-land
+* [test]崩溃压力 https://github.com/hunzsig-warcraft3/h-lua-sdk-crash
 
 ### 项目目录用来放置地图项目
+
 > 一个正规的项目应该包括以下结构
+
 ```
     └── project_demo - 项目目录
-        ├── hslk - 用来编写 hslk lua 物编配置
-        ├── jass - 自定义jass（不是完整的jass，仅供有限的片段定义，请看参考文件示例）
-        │   ├── globals.jass
-        │   └── function.jass
+        ├── hslk - 用来编写 hslk lua 物编配置[不建议编写业务代码]
         ├── map - 地图文件
         │   ├── resource - F12导入
         │   │   ├── hLua - h-lua需要的资源文件，请不要乱删除
@@ -54,19 +54,31 @@
         ├── scripts - lua脚本（*此乃建议，实际上你的lua只要在项目目录内，都能按路径访问）
         └── main.lua - 项目代码入口
 ```
+
 > 如果你不确定项目结构的准确性，可使用new命令新建一个项目来参考
+
 ```
 ./h-lua-sdk> sdk.exe new [:PROJECT_NAME]
 ```
 
 ### 命令行
+
 ```
 * 必填 ~ 选填
 ./h-lua-sdk> sdk.exe help  //提示cmd工具命令
 ./h-lua-sdk> sdk.exe new [*PROJECT_NAME]  //新建一个地图项目
 ./h-lua-sdk> sdk.exe we [*PROJECT_NAME]  //以YDWE打开地图项目
-./h-lua-sdk> sdk.exe model [*PROJECT_NAME] [~CURRENT_PAGE:0]  //以YDWE浏览项目模型，一页最大289个，可翻页
+./h-lua-sdk> sdk.exe model [*PROJECT_NAME] [~PAGE:0|~search:'']  //以WE浏览项目模型，一页最大289个，可翻页可搜索
 ./h-lua-sdk> sdk.exe clear [*PROJECT_NAME]  //清理构建的临时文件
 ./h-lua-sdk> sdk.exe test [*PROJECT_NAME]  //构建测试版本并开启游戏进行调试
 ./h-lua-sdk> sdk.exe build [*PROJECT_NAME]  //构建上线版本并开启游戏进行调试
+```
+
+### 模型命令拓展
+
+```
+./h-lua-sdk> sdk.exe model demo //查看项目demo的模型，默认第0页
+./h-lua-sdk> sdk.exe model demo 2 //查看项目demo的模型，第2页
+./h-lua-sdk> sdk.exe model demo ttg //查看项目demo的模型，只要路径带有ttg的
+./h-lua-sdk> sdk.exe model demo abc 1  //查看项目demo的模型，第1页且只要路径带有abc的
 ```
