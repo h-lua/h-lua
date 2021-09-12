@@ -132,12 +132,12 @@ if (DEBUGGING) then
             end
         end
         local txts = {
-            " --------------"
+            " ————————————————"
         }
         for _, t in ipairs(types) do
             table.insert(txts, "  " .. (typesLabel[t] or t) .. " : " .. (count[t] or 0))
         end
-        table.insert(txts, " --------------")
+        table.insert(txts, " ————————————————")
         for _, tk in ipairs(timeKernel) do
             local tl = 0
             if (htime.kernel[tk]) then
@@ -145,12 +145,12 @@ if (DEBUGGING) then
             end
             table.insert(txts, hcolor.sky("  计时内核(" .. tk .. ") : " .. tl))
         end
-        table.insert(txts, " --------------")
+        table.insert(txts, " ————————————————")
         table.insert(txts, hcolor.gold("  内存消耗 : " .. math.round((collectgarbage("count") - rem0) / 1024, 2) .. ' MB'))
-        table.insert(txts, " --------------")
+        table.insert(txts, " ————————————————")
         return txts
     end
-    htime.setInterval(1, function(_)
+    htime.setInterval(2, function(_)
         hjapi.DzFrameSetText(debugUI, string.implode('|n', debugData()))
     end)
 end

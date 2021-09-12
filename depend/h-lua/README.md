@@ -5,7 +5,6 @@
 [![image](https://img.shields.io/badge/doc-技术文档-blue.svg)](http://wenku.hunzsig.org/?_=_6_34)
 ![image](https://img.shields.io/badge/version-2-blue.svg)
 [![image](https://img.shields.io/badge/author-hunzsig-red.svg)](https://www.hunzsig.com)
-[![image](https://img.shields.io/badge/QQ-325338043-green.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=NYlOpKUo9vEUQ3gN_UBvRUci9avq0tqB&jump_from=webapi)
 
 [![image](https://img.shields.io/badge/demo-你好世界-orange.svg)](https://github.com/hunzsig-warcraft3/h-lua-sdk-helloworld)
 [![image](https://img.shields.io/badge/demo-秘地探奇-orange.svg)](https://github.com/hunzsig-warcraft3/h-lua-sdk-mysterious-land)
