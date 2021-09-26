@@ -1,10 +1,7 @@
-# h-lua 魔兽地图 开发集成环境
-
-[![image](https://img.shields.io/badge/English-EN_US-blue.svg)](https://github.com/hunzsig-warcraft3/h-lua-sdk/blob/main/README_EN-US.md)
-[![image](https://img.shields.io/badge/繁体中文-ZH_TW-blue.svg)](https://github.com/hunzsig-warcraft3/h-lua-sdk/blob/main/README_ZH-TW.md)
+# H-Lua 魔兽地图 开发集成环境
 
 ![image](https://img.shields.io/badge/license-MIT-blue.svg)
-[![image](https://img.shields.io/badge/doc-技术文档-blue.svg)](http://wenku.hunzsig.org/?_=_6_34)
+[![image](https://img.shields.io/badge/doc-技术文档-blue.svg)](https://h-lua.hunzsig.org)
 [![image](https://img.shields.io/badge/hLua-v2.alpha-orange.svg)](https://github.com/hunzsig-warcraft3/h-lua)
 [![image](https://img.shields.io/badge/Author-hunzsig-red.svg)](https://www.hunzsig.com)
 
@@ -19,7 +16,7 @@
     └── sdk.exe - 编译好的开发命令工具
 ```
 
-* [docs]http://wenku.hunzsig.org/?_=_6_34
+* [docs]技术文档 https://h-lua.hunzsig.org
 * [demo]你好世界 https://github.com/hunzsig-warcraft3/h-lua-sdk-helloworld
 * [demo]秘地探奇 https://github.com/hunzsig-warcraft3/h-lua-sdk-mysterious-land
 * [test]崩溃压力 https://github.com/hunzsig-warcraft3/h-lua-sdk-crash
