@@ -11,8 +11,9 @@
     ├── depend - 依赖的开发工具
     │   ├── h-lua - h-lua(v:latest，随sdk更新的最新版)
     │   ├── w3x2lni - w3x2lni工具(v:2.7.2)
-    │   └── YDWE - YDWE,附带japi及部分dzapi
-    ├── projects - 用来放置你的地图项目目录，如 h-lua-sdk-helloworld
+    │   └── YDWE - 马仔工具
+    ├── projects - 用来放置你的地图项目目录，如 helloworld
+    |   └── helloworld
     └── sdk.exe - 编译好的开发命令工具
 ```
 
@@ -67,7 +68,8 @@
 ./h-lua-sdk> sdk.exe model [*PROJECT_NAME] [~PAGE:0|~search:'']  //以WE浏览项目模型，一页最大289个，可翻页可搜索
 ./h-lua-sdk> sdk.exe clear [*PROJECT_NAME]  //清理构建的临时文件
 ./h-lua-sdk> sdk.exe test [*PROJECT_NAME]  //构建测试版本并开启游戏进行调试
-./h-lua-sdk> sdk.exe build [*PROJECT_NAME]  //构建上线版本并开启游戏进行调试
+./h-lua-sdk> sdk.exe build [*PROJECT_NAME]  //打包预上线测试版本并开启游戏进行调试
+./h-lua-sdk> sdk.exe dist [*PROJECT_NAME]  //打包上线版本并开启游戏进行调试(自动slk优化)
 ```
 
 ### 模型命令拓展
