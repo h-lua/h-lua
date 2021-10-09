@@ -68,6 +68,7 @@
 ./h-lua-sdk> sdk.exe model [*PROJECT_NAME] [~PAGE:0|~search:'']  //以WE浏览项目模型，一页最大289个，可翻页可搜索
 ./h-lua-sdk> sdk.exe clear [*PROJECT_NAME]  //清理构建的临时文件
 ./h-lua-sdk> sdk.exe multi [*QUANTITY]  //打开N个魔兽客户端，方便多人测试
+./h-lua-sdk> sdk.exe kill  //关闭所有魔兽客户端
 ./h-lua-sdk> sdk.exe test [*PROJECT_NAME]  //构建测试版本并开启游戏进行调试
 ./h-lua-sdk> sdk.exe build [*PROJECT_NAME]  //打包预上线测试版本并开启游戏进行调试
 ./h-lua-sdk> sdk.exe dist [*PROJECT_NAME]  //打包上线版本并开启游戏进行调试(自动slk优化)
