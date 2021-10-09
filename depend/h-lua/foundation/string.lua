@@ -301,6 +301,30 @@ string.strpos = function(str, pattern)
     end
 end
 
+--- 找出某个子串出现的所有位置
+---@param str string
+---@param pattern string
+---@return table
+string.findAllPos = function(str, pattern)
+    if (str == nil or pattern == nil) then
+        return
+    end
+    local s
+    local e = 0
+    local res = {}
+    while (true) do
+        s, e = string.find(str, pattern, e + 1)
+        if (s == nil) then
+            break
+        end
+        table.insert(res, { s, e })
+        if (e == nil) then
+            break
+        end
+    end
+    return res
+end
+
 --- 统计某个子串出现的次数
 ---@param str string
 ---@param pattern string
