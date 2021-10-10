@@ -17,6 +17,12 @@ HSLK_SYNTHESIS = {
 }
 HSLK_MISC = {}
 
+-- 用于反向补充slk优化造成的数据丢失问题
+-- 如你遇到slk优化后（dist后）地图忽然报错问题，则有可能是优化丢失
+HSLK_FIX = {
+    unit = { "sight", "nsight" } -- 视野设“0”会被w2l优化干掉
+}
+
 hslk_init = function()
     -- 载入平衡常数数据
     HSLK_MISC = JassSlk.misc
@@ -33,7 +39,12 @@ hslk_init = function()
                 end
             elseif (JassSlk.unit[id] ~= nil) then
                 HSLK_I2V[id]._class = HSLK_I2V[id]._class or "unit"
-                HSLK_I2V[id].slk = JassSlk.unit[id]
+                HSLK_I2V[id].slk = setmetatable({}, { __index = JassSlk.unit[id] })
+                for _, f in ipairs(HSLK_FIX.unit) do
+                    if (HSLK_I2V[id].slk[f] == nil) then
+                        HSLK_I2V[id].slk[f] = HSLK_I2V[id][f] or 0
+                    end
+                end
             elseif (JassSlk.ability[id] ~= nil) then
                 HSLK_I2V[id]._class = HSLK_I2V[id]._class or "ability"
                 HSLK_I2V[id].slk = JassSlk.ability[id]
