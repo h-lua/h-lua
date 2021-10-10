@@ -24,12 +24,8 @@ end
 ---@param it userdata
 ---@return number
 hitem.z = function(it)
-    local loc = cj.GetItemLoc(it)
-    local z = cj.GetLocationZ(loc)
-    cj.RemoveLocation(loc)
-    return z
+    return hjapi.GetZ(cj.GetItemX(u), cj.GetItemY(u))
 end
-
 
 -- 单位嵌入到物品到框架系统
 ---@protected

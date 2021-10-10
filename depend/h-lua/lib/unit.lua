@@ -260,10 +260,7 @@ end
 ---@param u userdata
 ---@return number
 hunit.z = function(u)
-    local loc = cj.GetUnitLoc(u)
-    local z = cj.GetLocationZ(loc)
-    cj.RemoveLocation(loc)
-    return z
+    return hjapi.GetZ(cj.GetUnitX(u), cj.GetUnitY(u))
 end
 
 --- 单位启用硬直（启用后硬直属性才有效）

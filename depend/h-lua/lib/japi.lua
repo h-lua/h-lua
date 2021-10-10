@@ -6,6 +6,12 @@ hjapi = {
     _triumph = require "lib.japi.triumph",
 }
 
+---@type table<string,any>
+hjapi._cache = hjapi._cache or {
+    ["DzLoadToc"] = {},
+    ["GetZ"] = {},
+}
+
 ---@private
 hjapi.echo = function(msg)
     if (hjapi._tips[msg] == nil) then
@@ -1532,6 +1538,10 @@ end
 --- 载入自己的fdf列表文件
 ---@return boolean
 hjapi.DzLoadToc = function(tocFilePath)
+    if (hjapi._cache["DzLoadToc"][tocFilePath] == true) then
+        return true
+    end
+    hjapi._cache["DzLoadToc"][tocFilePath] = true
     return hjapi.exec("DzLoadToc", { tocFilePath })
 end
 
@@ -2190,4 +2200,77 @@ end
 ---@param value number
 hjapi.SetUnitState = function(whichUnit, state, value)
     hjapi.exec('SetUnitState', { whichUnit, state, value })
+end
+
+--- 获取某个坐标的Z轴高度
+---@type fun(x:number,y:number):number
+hjapi.GetZ = function(x, y)
+    if (type(x) == "number" and type(y) == "number") then
+        x = math.floor(x)
+        y = math.floor(y)
+        local k = x .. '_' .. y
+        if (hjapi._cache["GetZ"][k] == nil) then
+            local loc = cj.Location(x, y)
+            local z = cj.GetLocationZ(loc)
+            cj.RemoveLocation(loc)
+            hjapi._cache["GetZ"][k] = z
+        end
+        return hjapi._cache["GetZ"][k]
+    end
+    return 0
+end
+
+--- X比例 转 像素
+---@type fun(x:number):number
+hjapi.PX = function(x)
+    return hjapi.DzGetWindowWidth() * x / 0.8
+end
+--- Y比例 转 像素
+---@type fun(y:number):number
+hjapi.PY = function(y)
+    return hjapi.DzGetWindowHeight() * y / 0.6
+end
+
+--- X像素 转 比例
+---@type fun(x:number):number
+hjapi.RX = function(x)
+    return x / hjapi.DzGetWindowWidth() * 0.8
+end
+--- Y像素 转 比例
+---@type fun(y:number):number
+hjapi.RY = function(y)
+    return y / hjapi.DzGetWindowHeight() * 0.6
+end
+
+--- 鼠标窗口内X像素
+---@type fun():number
+hjapi.MousePX = function()
+    return hjapi.DzGetMouseX() - hjapi.DzGetWindowX()
+end
+--- 鼠标窗口内Y像素
+---@type fun():number
+hjapi.MousePY = function()
+    return hjapi.DzGetWindowHeight() - (hjapi.DzGetMouseY() - hjapi.DzGetWindowY())
+end
+
+--- 鼠标X像素 转 比例
+---@type fun():number
+hjapi.MouseRX = function()
+    return hjapi.RX(hjapi.MousePX())
+end
+--- 鼠标Y像素 转 比例
+---@type fun():number
+hjapi.MouseRY = function()
+    return hjapi.RY(hjapi.MousePY())
+end
+
+--- 判断XY是否在窗口内
+---@type fun(rx:number,ry:number):boolean
+hjapi.InWindow = function(rx, ry)
+    return rx > 0 and rx < 0.8 and ry > 0 and ry < 0.6
+end
+--- 判断鼠标是否在窗口内
+---@type fun():boolean
+hjapi.InWindowMouse = function()
+    return hjapi.InWindow(hjapi.MouseRX(), hjapi.MouseRY())
 end
