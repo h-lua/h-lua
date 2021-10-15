@@ -1027,7 +1027,7 @@ hskill.crackFly = function(options)
             hcache.set(options.targetUnit, CONST_CACHE.SKILL_CRACK_FLY, false)
             -- 默认是地面，创建沙尘
             local tempEff = "Objects\\Spawnmodels\\Undead\\ImpaleTargetDust\\ImpaleTargetDust.mdl"
-            if (his.water(options.targetUnit) == true) then
+            if (hterrain.isWater(hunit.x(options.targetUnit), hunit.y(options.targetUnit))) then
                 -- 如果是水面，创建水花
                 tempEff = "Abilities\\Spells\\Other\\CrushingWave\\CrushingWaveDamage.mdl"
             end

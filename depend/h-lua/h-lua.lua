@@ -48,5 +48,6 @@ require "lib.leaderBoard"
 require "lib.multiBoard"
 require "lib.quest"
 require "lib.shop"
+require "lib.terrain"
 
 require "lib.initialization"
