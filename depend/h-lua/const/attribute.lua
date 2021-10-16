@@ -103,11 +103,6 @@ CONST_ATTR_KEYS = {}
 --- KV属性
 CONST_ATTR = {}
 
-for _, v in ipairs(CONST_ATTR_CONF) do
-    table.insert(CONST_ATTR_KEYS, v[1])
-    CONST_ATTR[v[1]] = v[2]
-end
-
 -- 附魔文本和key
 for _, v in ipairs(CONST_ENCHANT) do
     table.insert(CONST_ATTR_CONF, { "e_" .. v.value, v.label .. '强化', 0 })
@@ -120,9 +115,7 @@ for _, v in ipairs(CONST_ENCHANT) do
     CONST_ATTR["e_" .. v.value .. '_append'] = v.label .. '附魔状态' -- e_fire_append = "火附魔状态"
 end
 
-for _, v in ipairs(CONST_ENCHANT) do
-    table.insert(CONST_ATTR_KEYS, "e_" .. v.value)
-    table.insert(CONST_ATTR_KEYS, "e_" .. v.value .. '_attack')
-    table.insert(CONST_ATTR_KEYS, "e_" .. v.value .. '_append')
-    table.insert(CONST_ATTR_KEYS, "e_" .. v.value .. '_oppose')
+for _, v in ipairs(CONST_ATTR_CONF) do
+    table.insert(CONST_ATTR_KEYS, v[1])
+    CONST_ATTR[v[1]] = v[2]
 end
