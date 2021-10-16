@@ -107,7 +107,7 @@ CONST_UBERTIP_ATTR_XTRAS = function(data, indent)
             local target = CONST_EVENT_TARGET_LABELS[on][actions[1]]
             local actionType = actions[2]
             local actionField = actions[3]
-            local actionFieldLabel = CONST_ATTR[actionField]
+            local actionFieldLabel = CONST_ATTR_LABEL[actionField]
             local odds = vv["odds"] or 0
             local during = vv["during"] or 0
             local val = vv["val"] or 0
@@ -168,7 +168,7 @@ CONST_UBERTIP_ATTR_XTRAS = function(data, indent)
                             elseif (aa == 'lumber') then
                                 valLabel = percent .. unitLabel .. au .. "当前木头量"
                             else
-                                valLabel = percent .. unitLabel .. au .. (CONST_ATTR[aa] or '不明属性') .. ""
+                                valLabel = percent .. unitLabel .. au .. (CONST_ATTR_LABEL[aa] or '不明属性') .. ""
                             end
                         end
                     end
@@ -259,7 +259,7 @@ CONST_UBERTIP_ATTR = function(attr, sep, indent)
         end
         --
         if (k == "xtras") then
-            table.insert(strTable, (CONST_ATTR[k] or "") .. "：")
+            table.insert(strTable, (CONST_ATTR_LABEL[k] or "") .. "：")
             local xu = CONST_UBERTIP_ATTR_XTRAS(v)
             if (#xu > 0) then
                 for xi, xv in ipairs(xu) do
@@ -268,7 +268,7 @@ CONST_UBERTIP_ATTR = function(attr, sep, indent)
             end
             table.insert(strTable, string.implode(sep, xu))
         else
-            table.insert(str, indent .. (CONST_ATTR[k] or "") .. "：" .. v)
+            table.insert(str, indent .. (CONST_ATTR_LABEL[k] or "") .. "：" .. v)
         end
     end
     return string.implode(sep, table.merge(str, strTable))
@@ -330,7 +330,7 @@ CONST_RESEARCH_UBERTIP_ATTR = function(attr)
             end
             table.insert(strTable, string.implode(",", xu))
         else
-            table.insert(str, v .. (CONST_ATTR[k] or ""))
+            table.insert(str, v .. (CONST_ATTR_LABEL[k] or ""))
         end
     end
     return string.implode(",", table.merge(str, strTable))

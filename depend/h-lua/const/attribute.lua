@@ -2,7 +2,31 @@
 -- fmt key,label,init
 -- 格式 键值,名字,初始值
 -- primary,life,mana,move,defend_white,attack_range,attack_range_acquire这些值会在初始化时强行覆盖为slk数据，初始值写了没用
-CONST_ATTR_CONF = {
+CONST_ATTR_CONF = {}
+
+--- 键值归档
+CONST_ATTR_KEYS = {}
+
+--- key=>label
+CONST_ATTR_LABEL = {}
+
+--- key=>defaultValue
+CONST_ATTR_VALUE = {}
+
+---@type fun(conf:table[])
+ATTR_CONFIGURATOR = function(conf)
+    for _, v in ipairs(conf) do
+        if (CONST_ATTR_LABEL[v[1]] == nil) then
+            table.insert(CONST_ATTR_CONF, v)
+            table.insert(CONST_ATTR_KEYS, v[1])
+        end
+        CONST_ATTR_LABEL[v[1]] = v[2]
+        CONST_ATTR_VALUE[v[1]] = v[3]
+    end
+end
+
+--- 属性配置器
+ATTR_CONFIGURATOR({
     { "life", "生命", 0 },
     { "mana", "魔法", 0 },
     { "move", "移动", 0 },
@@ -95,27 +119,14 @@ CONST_ATTR_CONF = {
     { "lumber_ratio", "木头获得率", 0 },
     { "exp_ratio", "经验获得率", 0 },
     { "sell_ratio", "售卖比率", 0 },
-}
-
---- 键值归档
-CONST_ATTR_KEYS = {}
-
---- KV属性
-CONST_ATTR = {}
+})
 
 -- 附魔文本和key
 for _, v in ipairs(CONST_ENCHANT) do
-    table.insert(CONST_ATTR_CONF, { "e_" .. v.value, v.label .. '强化', 0 })
-    table.insert(CONST_ATTR_CONF, { "e_" .. v.value .. '_oppose', v.label .. '抗性', 0 })
-    table.insert(CONST_ATTR_CONF, { "e_" .. v.value .. '_attack', v.label .. '攻击附魔', 0 })
-    table.insert(CONST_ATTR_CONF, { "e_" .. v.value .. '_append', v.label .. '附魔状态', 0 })
-    CONST_ATTR["e_" .. v.value] = v.label .. '强化' -- e_fire = "火强化"
-    CONST_ATTR["e_" .. v.value .. '_oppose'] = v.label .. '抗性' -- e_fire_oppose = "火抗性"
-    CONST_ATTR["e_" .. v.value .. '_attack'] = v.label .. '攻击附魔' -- e_fire_attack = "火攻击附魔"
-    CONST_ATTR["e_" .. v.value .. '_append'] = v.label .. '附魔状态' -- e_fire_append = "火附魔状态"
-end
-
-for _, v in ipairs(CONST_ATTR_CONF) do
-    table.insert(CONST_ATTR_KEYS, v[1])
-    CONST_ATTR[v[1]] = v[2]
+    ATTR_CONFIGURATOR({
+        { "e_" .. v.value, v.label .. '强化', 0 },
+        { "e_" .. v.value .. '_oppose', v.label .. '抗性', 0 },
+        { "e_" .. v.value .. '_attack', v.label .. '攻击附魔', 0 },
+        { "e_" .. v.value .. '_append', v.label .. '附魔状态', 0 },
+    })
 end

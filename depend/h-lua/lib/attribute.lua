@@ -377,45 +377,46 @@ hattribute.set = function(whichUnit, during, data)
         local attr = arr.key
         local v = arr.value
         local buffKey
-        if (attribute[attr] ~= nil) then
-            if (type(v) == "string") then
-                local opr = string.sub(v, 1, 1)
-                v = string.sub(v, 2, string.len(v))
-                local val = tonumber(v)
-                if (val == nil) then
-                    val = v
+        if (attribute[attr] == nil) then
+            attribute[attr] = CONST_ATTR_VALUE[attr] or 0
+        end
+        if (type(v) == "string") then
+            local opr = string.sub(v, 1, 1)
+            v = string.sub(v, 2, string.len(v))
+            local val = tonumber(v)
+            if (val == nil) then
+                val = v
+            end
+            buffKey = hattribute.setHandle(whichUnit, attr, opr, val, during)
+        elseif (type(v) == "table") then
+            -- table型，如 xtras
+            if (v.add ~= nil and type(v.add) == "table") then
+                for _, set in ipairs(v.add) do
+                    if (set == nil) then
+                        print_err("table effect loss[set]!")
+                        print_stack()
+                        break
+                    end
+                    if (type(set) ~= "table") then
+                        print_err("add type(set) must be a table!")
+                        print_stack()
+                        break
+                    end
+                    buffKey = hattribute.setHandle(whichUnit, attr, "+", set, during)
                 end
-                buffKey = hattribute.setHandle(whichUnit, attr, opr, val, during)
-            elseif (type(v) == "table") then
-                -- table型，如 xtras
-                if (v.add ~= nil and type(v.add) == "table") then
-                    for _, set in ipairs(v.add) do
-                        if (set == nil) then
-                            print_err("table effect loss[set]!")
-                            print_stack()
-                            break
-                        end
-                        if (type(set) ~= "table") then
-                            print_err("add type(set) must be a table!")
-                            print_stack()
-                            break
-                        end
-                        buffKey = hattribute.setHandle(whichUnit, attr, "+", set, during)
+            elseif (v.sub ~= nil and type(v.sub) == "table") then
+                for _, set in ipairs(v.sub) do
+                    if (set == nil) then
+                        print_err("table effect loss[set]!")
+                        print_stack()
+                        break
                     end
-                elseif (v.sub ~= nil and type(v.sub) == "table") then
-                    for _, set in ipairs(v.sub) do
-                        if (set == nil) then
-                            print_err("table effect loss[set]!")
-                            print_stack()
-                            break
-                        end
-                        if (type(set) ~= "table") then
-                            print_err("sub type(set) must be a table!")
-                            print_stack()
-                            break
-                        end
-                        buffKey = hattribute.setHandle(whichUnit, attr, "-", set, during)
+                    if (type(set) ~= "table") then
+                        print_err("sub type(set) must be a table!")
+                        print_stack()
+                        break
                     end
+                    buffKey = hattribute.setHandle(whichUnit, attr, "-", set, during)
                 end
             end
         end
@@ -437,7 +438,7 @@ hattribute.get = function(whichUnit, attr, default)
     if (attr == nil) then
         default = default or {}
     else
-        default = default or 0
+        default = default or CONST_ATTR_VALUE[attr] or 0
     end
     if (whichUnit == nil) then
         return default

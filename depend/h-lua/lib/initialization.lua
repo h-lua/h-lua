@@ -111,6 +111,7 @@ if (DEBUGGING) then
         ["uevt"] = "单位事件",
         ["tcnd"] = "触发器条件",
         ["wdvt"] = "可破坏物事件",
+        ["item"] = "物品",
     }
     collectgarbage("collect")
     local rem0 = collectgarbage("count")
