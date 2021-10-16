@@ -68,70 +68,9 @@ hattribute.init = function(whichUnit)
         mana = cj.GetUnitState(whichUnit, UNIT_STATE_MAX_MANA),
         move = cj.GetUnitDefaultMoveSpeed(whichUnit),
         defend_white = hjapi.GetUnitState(whichUnit, UNIT_STATE_DEFEND_WHITE),
-        defend_green = 0,
-        attack_speed = 0.0,
-        attack_white = 0.0,
-        attack_green = 0.0,
         attack_range = 100,
         attack_range_acquire = 100,
-        attack_space_origin = 0,
-        sight = 0,
-        str_green = 0.0,
-        agi_green = 0.0,
-        int_green = 0.0,
-        str_white = 0,
-        agi_white = 0,
-        int_white = 0,
-        life_back = 0.0,
-        mana_back = 0.0,
-        avoid = 0.0,
-        aim = 0.0,
-        punish = 0.0,
-        punish_current = 0.0,
-        hemophagia = 0.0,
-        hemophagia_skill = 0.0,
-        siphon = 0.0,
-        siphon_skill = 0.0,
-        invincible = 0.0,
-        weight = 0.0,
-        weight_current = 0.0,
-        damage_extent = 0.0,
-        damage_reduction = 0.0,
-        damage_decrease = 0.0,
-        damage_rebound = 0.0,
-        cure = 0.0,
-        reborn = -999,
-        knocking_odds = 0.0,
-        knocking_extent = 0.0,
-        knocking_oppose = 0.0,
-        hemophagia_oppose = 0.0,
-        hemophagia_skill_oppose = 0.0,
-        siphon_oppose = 0.0,
-        siphon_skill_oppose = 0.0,
-        buff_oppose = 0.0,
-        debuff_oppose = 0.0,
-        split_oppose = 0.0,
-        punish_oppose = 0.0,
-        damage_rebound_oppose = 0.0,
-        swim_oppose = 0.0,
-        heavy_oppose = 0.0,
-        broken_oppose = 0.0,
-        unluck_oppose = 0.0,
-        silent_oppose = 0.0,
-        unarm_oppose = 0.0,
-        fetter_oppose = 0.0,
-        bomb_oppose = 0.0,
-        lightning_chain_oppose = 0.0,
-        crack_fly_oppose = 0.0,
-        --
-        xtras = {},
     }
-    for _, v in ipairs(CONST_ENCHANT) do
-        attribute["e_" .. v.value] = 0.0
-        attribute["e_" .. v.value .. "_oppose"] = 0.0
-        attribute["e_" .. v.value .. "_attack"] = 0
-        attribute["e_" .. v.value .. "_append"] = 0
-    end
     if (uSlk.dmgplus1) then
         attribute.attack_white = math.floor(uSlk.dmgplus1)
     end
@@ -145,6 +84,11 @@ hattribute.init = function(whichUnit)
         attribute.attack_space_origin = math.round(uSlk.cool1)
     elseif ((uSlk.weapsOn == "2") and uSlk.cool2) then
         attribute.attack_space_origin = math.round(uSlk.cool2)
+    end
+    for _, v in ipairs(CONST_ATTR_CONF) do
+        if (attribute[v[1]] == nil) then
+            attribute[v[1]] = v[3] or 0
+        end
     end
     -- 初始化数据
     hcache.set(whichUnit, CONST_CACHE.ATTR, attribute)
