@@ -1,6 +1,9 @@
 --- 监听器是一种工具，用于管理周期性操作
 ---@class hmonitor 监听器
-hmonitor = { monitors = {} }
+hmonitor = {
+    ---@type table<string,{arr:Array,timer:table}}>
+    _monitors = {}
+}
 
 --- 创建一个监听器
 ---@alias monAction fun(object: any):void
@@ -16,28 +19,28 @@ hmonitor.create = function(key, frequency, action, ignoreFilter)
     if (ignoreFilter ~= nil and type(ignoreFilter) ~= "function") then
         return
     end
-    if (hmonitor.monitors[key] ~= nil) then
+    if (hmonitor._monitors[key] ~= nil) then
         return
     end
-    local obj = Mapping:new()
+    local arr = Array()
     local timer = htime.setInterval(frequency, function(_)
-        obj:forEach(function(o, _)
+        arr.forEach(function(o, _)
             if (ignoreFilter == nil or ignoreFilter(o) ~= true) then
                 action(o)
             else
-                obj:del(o)
+                arr.splice(o)
             end
         end)
     end)
-    hmonitor.monitors[key] = { object = obj, timer = timer }
+    hmonitor._monitors[key] = { arr = arr, timer = timer }
 end
 
 --- 毁灭一个监听器
 ---@param key string 唯一key
 hmonitor.destroy = function(key)
-    if (hmonitor.monitors[key] ~= nil) then
-        htime.delTimer(hmonitor.monitors[key].timer)
-        hmonitor.monitors[key] = nil
+    if (hmonitor._monitors[key] ~= nil) then
+        htime.delTimer(hmonitor._monitors[key].timer)
+        hmonitor._monitors[key] = nil
     end
 end
 
@@ -46,8 +49,8 @@ end
 ---@param obj any 监听对象
 ---@return boolean
 hmonitor.isListening = function(key, obj)
-    if (hmonitor.monitors[key] ~= nil) then
-        return 9527 == hmonitor.monitors[key].object:get(obj)
+    if (hmonitor._monitors[key] ~= nil) then
+        return hmonitor._monitors[key].arr.keyExists(obj)
     end
     return false
 end
@@ -56,9 +59,9 @@ end
 ---@param key string 唯一key
 ---@param obj any 监听对象
 hmonitor.listen = function(key, obj)
-    local monitor = hmonitor.monitors[key]
+    local monitor = hmonitor._monitors[key]
     if (monitor ~= nil) then
-        monitor.object:set(obj, 9527)
+        monitor.arr.set(obj, 1)
     end
 end
 
@@ -69,8 +72,8 @@ end
 ---@param key string 唯一key
 ---@param obj any 监听对象
 hmonitor.ignore = function(key, obj)
-    local monitor = hmonitor.monitors[key]
+    local monitor = hmonitor._monitors[key]
     if (monitor ~= nil) then
-        monitor.object:del(obj)
+        monitor.arr.splice(obj)
     end
 end

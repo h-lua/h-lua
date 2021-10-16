@@ -41,10 +41,10 @@ hevent.pool = function(handle, conditionAction, regEvent)
     -- 如果这个handle已经注册过此动作，则不重复注册
     local poolRegister = hcache.get(handle, CONST_CACHE.EVENT_POOL)
     if (poolRegister == nil) then
-        poolRegister = Mapping:new()
+        poolRegister = Array()
         hcache.set(handle, CONST_CACHE.EVENT_POOL, poolRegister)
     end
-    if (poolRegister:get(key) ~= nil) then
+    if (poolRegister.get(key) ~= nil) then
         return
     end
     if (hevent.POOL[key] == nil) then
@@ -57,7 +57,7 @@ hevent.pool = function(handle, conditionAction, regEvent)
         cj.TriggerAddCondition(tgr, conditionAction)
         poolIndex = #hevent.POOL[key]
     end
-    poolRegister:set(key, poolIndex)
+    poolRegister.set(key, poolIndex)
     hevent.POOL[key][poolIndex].count = hevent.POOL[key][poolIndex].count + 1
     hevent.POOL[key][poolIndex].stock = hevent.POOL[key][poolIndex].stock + 1
     regEvent(hevent.POOL[key][poolIndex].trigger)
@@ -777,7 +777,6 @@ end
 hevent.onSkillSiphon = function(whichUnit, callFunc)
     return hevent.registerEvent(whichUnit, CONST_EVENT.skillSiphon, callFunc)
 end
-
 
 --- 被技能吸魔时
 ---@alias onBeSkillSiphon fun(evtData: {triggerUnit:"触发单位",sourceUnit:"来源单位",value:"吸魔值",percent:"吸魔百分比"}):void

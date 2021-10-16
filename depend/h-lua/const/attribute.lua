@@ -110,6 +110,10 @@ end
 
 -- 附魔文本和key
 for _, v in ipairs(CONST_ENCHANT) do
+    table.insert(CONST_ATTR_CONF, { "e_" .. v.value, v.label .. '强化', 0 })
+    table.insert(CONST_ATTR_CONF, { "e_" .. v.value .. '_oppose', v.label .. '抗性', 0 })
+    table.insert(CONST_ATTR_CONF, { "e_" .. v.value .. '_attack', v.label .. '攻击附魔', 0 })
+    table.insert(CONST_ATTR_CONF, { "e_" .. v.value .. '_append', v.label .. '附魔状态', 0 })
     CONST_ATTR["e_" .. v.value] = v.label .. '强化' -- e_fire = "火强化"
     CONST_ATTR["e_" .. v.value .. '_oppose'] = v.label .. '抗性' -- e_fire_oppose = "火抗性"
     CONST_ATTR["e_" .. v.value .. '_attack'] = v.label .. '攻击附魔' -- e_fire_attack = "火攻击附魔"
@@ -117,12 +121,8 @@ for _, v in ipairs(CONST_ENCHANT) do
 end
 
 for _, v in ipairs(CONST_ENCHANT) do
-    table.insert(CONST_ATTR_KEYS, "e_" .. v.value .. '_attack')
-end
-for _, v in ipairs(CONST_ENCHANT) do
-    table.insert(CONST_ATTR_KEYS, "e_" .. v.value .. '_append')
-end
-for _, v in ipairs(CONST_ENCHANT) do
     table.insert(CONST_ATTR_KEYS, "e_" .. v.value)
+    table.insert(CONST_ATTR_KEYS, "e_" .. v.value .. '_attack')
+    table.insert(CONST_ATTR_KEYS, "e_" .. v.value .. '_append')
     table.insert(CONST_ATTR_KEYS, "e_" .. v.value .. '_oppose')
 end

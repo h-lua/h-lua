@@ -36,7 +36,7 @@ git clone https://github.com/hunzsig-warcraft3/h-lua-sdk.git
     │── foundation - 基础文件
     │   ├── color.lua - 颜色
     │   ├── json.lua - json库
-    │   ├── Mapping.lua - 值对库
+    │   ├── array.lua - 数组库
     │   ├── math.lua - 计算库
     │   ├── string.lua - 字符串库
     │   └── table.lua - 表库
