@@ -90,7 +90,7 @@ hattribute.init = function(whichUnit)
             if (type(v[3]) == "table") then
                 attribute[v[1]] = table.clone(v[3])
             else
-                attribute[v[1]] = 0
+                attribute[v[1]] = v[3] or 0
             end
         end
     end
