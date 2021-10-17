@@ -87,7 +87,11 @@ hattribute.init = function(whichUnit)
     end
     for _, v in ipairs(CONST_ATTR_CONF) do
         if (attribute[v[1]] == nil) then
-            attribute[v[1]] = v[3] or 0
+            if (type(v[3]) == "table") then
+                attribute[v[1]] = table.clone(v[3])
+            else
+                attribute[v[1]] = 0
+            end
         end
     end
     -- 初始化数据
