@@ -50,7 +50,7 @@ hskill.missile = function(options)
         options.startY = pp.y
     end
     if (options.targetX ~= nil and options.targetY ~= nil) then
-        targetH = hover + japi.GetZ(options.targetX, options.targetY)
+        targetH = hover + hjapi.GetZ(options.targetX, options.targetY)
         fac0 = math.getDegBetweenXY(hunit.x(options.sourceUnit), hunit.y(options.sourceUnit), options.targetX, options.targetY)
         dct0 = math.getDistanceBetweenXY(hunit.x(options.sourceUnit), hunit.y(options.sourceUnit), options.targetX, options.targetY)
     else
