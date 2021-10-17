@@ -33,41 +33,73 @@ hskill.missile = function(options)
         end
     end
     local frequency = 0.02
-    local speed = options.speed or 500
-    speed = frequency * math.min(10000, math.max(50, speed))
+    local speed = math.min(10000, math.max(50, options.speed or 500))
     local acceleration = options.acceleration or 0
     local height = options.height or 0
+    local hover = options.hover or 0
     options.animateScale = options.animateScale or 1.00
     options.scale = options.scale or 1.00
-    options.hover = options.hover or 0
-    local dtcOri
-    local facOri = 0
+    local fac0 = 0
+    local dct0 = 0
+    local sourceH = hover + hunit.z(options.sourceUnit)
+    local targetH = 0
     if (options.startX == nil or options.startY == nil) then
-        local pp = math.polarProjection(hunit.x(options.sourceUnit), hunit.y(options.sourceUnit), 70, facOri)
+        local collision = tonumber(hslk.i2v(hunit.getId(options.sourceUnit), "slk", "collision")) or 30
+        local pp = math.polarProjection(hunit.x(options.sourceUnit), hunit.y(options.sourceUnit), collision, fac0)
         options.startX = pp.x
         options.startY = pp.y
     end
     if (options.targetX ~= nil and options.targetY ~= nil) then
-        facOri = math.getDegBetweenXY(hunit.x(options.sourceUnit), hunit.y(options.sourceUnit), options.targetX, options.targetY)
-        dtcOri = math.getDistanceBetweenXY(hunit.x(options.sourceUnit), hunit.y(options.sourceUnit), options.targetX, options.targetY)
+        targetH = hover + japi.GetZ(options.targetX, options.targetY)
+        fac0 = math.getDegBetweenXY(hunit.x(options.sourceUnit), hunit.y(options.sourceUnit), options.targetX, options.targetY)
+        dct0 = math.getDistanceBetweenXY(hunit.x(options.sourceUnit), hunit.y(options.sourceUnit), options.targetX, options.targetY)
     else
-        facOri = math.getDegBetweenXY(hunit.x(options.sourceUnit), hunit.y(options.sourceUnit), hunit.x(options.targetUnit), hunit.y(options.targetUnit))
-        dtcOri = math.getDistanceBetweenXY(hunit.x(options.sourceUnit), hunit.y(options.sourceUnit), hunit.x(options.targetUnit), hunit.y(options.targetUnit))
+        targetH = hover + hunit.z(options.targetUnit) + hunit.getFlyHeight(options.targetUnit)
+        fac0 = math.getDegBetweenXY(hunit.x(options.sourceUnit), hunit.y(options.sourceUnit), hunit.x(options.targetUnit), hunit.y(options.targetUnit))
+        dct0 = math.getDistanceBetweenXY(hunit.x(options.sourceUnit), hunit.y(options.sourceUnit), hunit.x(options.targetUnit), hunit.y(options.targetUnit))
+    end
+    if (dct0 < 300) then
+        height = dct0 / 2
     end
     local arrowToken = cj.AddSpecialEffect(options.missile, options.startX, options.startY)
-    local rotateYOri = -math.min(90, height * 0.075)
-    local rotateY = rotateYOri
-    hjapi.EXEffectMatRotateY(arrowToken, rotateY)
-    hjapi.EXEffectMatRotateZ(arrowToken, facOri)
+    hjapi.EXEffectMatRotateZ(arrowToken, fac0)
     hjapi.EXSetEffectSpeed(arrowToken, options.animateScale)
     hjapi.EXSetEffectSize(arrowToken, options.scale)
-    if (options.hover > 0) then
-        hjapi.EXSetEffectZ(arrowToken, options.hover)
+    local gsep = (dct0 / 2) / speed / frequency
+    local topH
+    local rotateY1 = 0
+    local rotateY2 = 0
+    local rotateY1i = 0
+    local rotateY2i = 0
+    local gravity1 = 0
+    local gravity2 = 0
+    local sd = (dct0 / speed / frequency / 2)
+    if (sourceH >= targetH) then
+        topH = sourceH + height
+        rotateY1 = math_rad2deg * math.atan(height, dct0 / 2)
+        rotateY1i = rotateY1 / sd
+        rotateY2 = math_rad2deg * math.atan(topH, dct0 / 2)
+        rotateY2i = rotateY2 / sd
+        gravity1 = height / gsep
+        gravity2 = (topH - 50) / gsep
+    else
+        topH = targetH + height
+        rotateY1 = math_rad2deg * math.atan(topH, dct0 / 2)
+        rotateY1i = rotateY1 / sd
+        rotateY2 = math_rad2deg * math.atan(height, dct0 / 2)
+        rotateY2i = rotateY2 / sd
+        gravity1 = (topH + math.abs(hunit.z(options.sourceUnit) - hunit.z(options.targetUnit))) / gsep
+        gravity2 = (height - 50) / gsep
     end
+
+    local rotateY = -rotateY1
+    if (fac0 > 90 and fac0 < 270) then
+        rotateY = -rotateY
+    end
+    speed = frequency * speed
+    hjapi.EXEffectMatRotateY(arrowToken, rotateY)
+    hjapi.EXSetEffectZ(arrowToken, sourceH)
     local ending = function(endX, endY, isFinish)
-        if (options.hover > 0) then
-            hjapi.EXSetEffectZ(arrowToken, options.hover)
-        end
         if (arrowToken ~= nil) then
             cj.DestroyEffect(arrowToken)
             arrowToken = nil
@@ -77,7 +109,7 @@ hskill.missile = function(options)
             res = options.onEnd(options.sourceUnit, options.targetUnit, endX, endY)
         end
     end
-    local dh = options.hover
+    local curH = sourceH
     local limit = 0
     local faraway = 0
     local prevDist
@@ -86,7 +118,7 @@ hskill.missile = function(options)
     local shake = options.shake
     local shakeDirect = 1
     if (shake == "rand") then
-        shake = math.rand(-1.00, 1.00)
+        shake = math.random(-1.00, 1.00)
     elseif (type(shake) == "number") then
         shake = math.min(1.00, math.max(0, shake))
     end
@@ -101,19 +133,22 @@ hskill.missile = function(options)
         end
         local tx = 0
         local ty = 0
+        local dct = 0
         if (options.targetX ~= nil and options.targetY ~= nil) then
             tx = options.targetX
             ty = options.targetY
+            dct = dct0
         else
             tx = hunit.x(options.targetUnit)
             ty = hunit.y(options.targetUnit)
-            dtcOri = math.getDistanceBetweenXY(options.startX, options.startY, hunit.x(options.targetUnit), hunit.y(options.targetUnit))
+            dct = math.getDistanceBetweenXY(options.startX, options.startY, hunit.x(options.targetUnit), hunit.y(options.targetUnit))
         end
-        local sh = 0
+        local fac
         if (shake ~= nil and shake ~= 0) then
-            sh = shake * 75 * shakeDirect * math.getDistanceBetweenXY(ax, ay, tx, ty) / dtcOri
+            fac = math.getDegBetweenXY(ax, ay, tx, ty) + shake * 75 * shakeDirect * math.getDistanceBetweenXY(ax, ay, tx, ty) / dct
+        else
+            fac = math.getDegBetweenXY(ax, ay, tx, ty)
         end
-        local fac = math.getDegBetweenXY(ax, ay, tx, ty) + sh
         local pp = math.polarProjection(ax, ay, speed, fac)
         local nx = pp.x
         local ny = pp.y
@@ -134,39 +169,30 @@ hskill.missile = function(options)
             end
         end
         hjapi.EXSetEffectXY(arrowToken, nx, ny)
-        hjapi.EXEffectMatRotateZ(arrowToken, fac - facOri)
+        hjapi.EXEffectMatRotateZ(arrowToken, fac - fac0)
         ax = nx
         ay = ny
-        facOri = fac
-        local curDist = math.getDistanceBetweenXY(ax, ay, tx, ty)
-        if (height > 0 and curDist < dtcOri) then
-            local gravity = options.height * frequency * speed * 0.35 * math.abs(0.5 - (curDist / dtcOri))
-            local rotateYNew = rotateY
-            if ((dtcOri - curDist) <= dtcOri / 2) then
-                dh = dh + gravity
-                local rateY = math.min(0.2, 0.3 / gravity)
-                if (facOri > 90 and facOri < 270) then
-                    rotateYNew = math.max(rotateYNew - rateY, -90)
-                else
-                    rotateYNew = math.min(rotateYNew + rateY, 0)
-                end
+        fac0 = fac
+        local curD = math.getDistanceBetweenXY(ax, ay, tx, ty)
+        if (curD < dct) then
+            local halfD = dct / 2
+            local rot = 0
+            local di = 2 * (math.disparity(curD, halfD) / halfD)
+            if (curD >= halfD) then
+                curH = curH + gravity1 * di
+                rot = rotateY1i * (2 - di)
             else
-                dh = dh - gravity
-                local rateY = -rotateYOri / 60
-                if (facOri > 90 and facOri < 270) then
-                    rotateYNew = math.max(rotateYNew - rateY, -105 + rotateYOri)
-                else
-                    rotateYNew = math.min(rotateYNew + rateY, -rotateYOri + 15)
-                end
+                curH = curH - gravity2 * di
+                rot = 1.3 * rotateY2i * (2 - di)
             end
-            if (rotateYNew ~= rotateY) then
-                hjapi.EXEffectMatRotateY(arrowToken, rotateYNew - rotateY)
-                rotateY = rotateYNew
+            if (fac0 > 90 and fac0 < 270) then
+                rot = -rot
             end
-            hjapi.EXSetEffectZ(arrowToken, math.max(dh, options.hover))
+            hjapi.EXEffectMatRotateY(arrowToken, rot)
+            hjapi.EXSetEffectZ(arrowToken, curH)
         end
         limit = limit + 1
-        if (limit > 500 or his.deleted(options.sourceUnit)) then
+        if (limit > 400 or his.deleted(options.sourceUnit)) then
             -- 超时消失
             htime.delTimer(curTimer)
             ending(nx, ny, false)
@@ -174,9 +200,9 @@ hskill.missile = function(options)
         else
             -- 逃离消失
             if (prevDist ~= nil) then
-                if (prevDist < curDist) then
+                if (prevDist < curD) then
                     faraway = faraway + 1
-                    if (faraway > 50 or (curDist - prevDist > speed * 10)) then
+                    if (faraway > 50 or (curD - prevDist > speed * 10)) then
                         htime.delTimer(curTimer)
                         ending(nx, ny, false)
                         return
@@ -185,9 +211,9 @@ hskill.missile = function(options)
                     faraway = 0
                 end
             end
-            prevDist = curDist
+            prevDist = curD
         end
-        if (curDist <= speed or speed <= 0) then
+        if (curD <= speed or speed <= 0) then
             htime.delTimer(curTimer)
             ending(nx, ny, true)
         end

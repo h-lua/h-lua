@@ -69,6 +69,17 @@ math.round = function(decimal, n)
     return tonumber(string.format('%.' .. n .. 'f', decimal))
 end
 
+--- 两数正差额
+---@param value1 number 数字1
+---@param value2 number 数字2
+---@return number
+math.disparity = function(value1, value2)
+    if (value1 >= value2) then
+        return value1 - value2
+    end
+    return value2 - value1
+end
+
 --- 数字格式化
 ---@param value number
 ---@param n number 小数最大截断位，默认2位
