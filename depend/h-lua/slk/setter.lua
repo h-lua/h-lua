@@ -1,37 +1,6 @@
 ---@private
 F6V_I_SYNTHESIS = function(formula)
-    local formulas = {}
-    for _, v in ipairs(formula) do
-        local profit = ''
-        local fragment = {}
-        if (type(v) == 'string') then
-            local f1 = string.explode('=', v)
-            if (string.strpos(f1[1], 'x') == false) then
-                profit = { f1[1], 1 }
-            else
-                local temp = string.explode('x', f1[1])
-                temp[2] = math.floor(temp[2])
-                profit = temp
-            end
-            local f2 = string.explode('+', f1[2])
-            for _, vv in ipairs(f2) do
-                if (string.strpos(vv, 'x') == false) then
-                    table.insert(fragment, { vv, 1 })
-                else
-                    local temp = string.explode('x', vv)
-                    temp[2] = math.floor(temp[2])
-                    table.insert(fragment, temp)
-                end
-            end
-        elseif (type(v) == 'table') then
-            profit = v[1]
-            for vi = 2, #v, 1 do
-                table.insert(fragment, v[vi])
-            end
-        end
-        table.insert(formulas, { profit = profit, fragment = fragment })
-    end
-    return formulas
+    return CONST_UBERTIP_SYNTHESIS_REGISTER(formula)
 end
 
 local F6_RING = function(_v)
@@ -135,7 +104,7 @@ F6V_COURIER_SKILL = function()
                     for ai, a in ipairs(allowFormulaIndex) do
                         local txt = {}
                         for _, frag in ipairs(formulas[a].fragment) do
-                            table.insert(txt, hitem.getName(it) .. 'x' .. frag[2] * charges)
+                            table.insert(txt, hslk.i2v(frag[1], "slk", "Name") .. 'x' .. frag[2] * charges)
                         end
                         table.insert(buttons, { value = ai, label = hcolor.gold(string.implode('+', txt)) })
                     end

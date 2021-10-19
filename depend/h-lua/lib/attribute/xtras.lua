@@ -142,7 +142,7 @@ end
 --        { on = CONST_EVENT.attack, action = "targetUnit.spec.bomb",odds = 0.0, radius = 0.0, val = 0.0, effect = nil},
 --        { on = CONST_EVENT.damage, action = "targetUnit.spec.lightning_chain", odds = 50, val = 100, qty = 0, rate = 0.0 },
 --        { on = CONST_EVENT.beDamage, action = "targetUnit.spec.crack_fly", odds = 50, val = 100, distance = 300, height = 200, during = 0.5 },
---        { on = CONST_EVENT.attack, action = "targetUnit.spec.paw", odds = 50, val = 'damage', effect = 'Abilities\\Weapons\\GargoyleMissile\\GargoyleMissile.mdl', radius = 50, odds = 50, speed = 10, deg = 30, distance = 500, qty = 3 },
+--        { on = CONST_EVENT.attack, action = "targetUnit.spec.paw", odds = 50, val = 'damage', effect = 'Abilities\\Weapons\\GargoyleMissile\\GargoyleMissile.mdl', radius = 50, speed = 10, deg = 30, distance = 500, qty = 3 },
 --      }
 --    },
 --  })

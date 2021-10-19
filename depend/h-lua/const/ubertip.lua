@@ -63,7 +63,7 @@ CONST_UBERTIP_IS_PERCENT = function(key)
     if (table.includes({
         "attack_speed", "avoid", "aim",
         "hemophagia", "hemophagia_skill",
-        "siphon","siphon_skill",
+        "siphon", "siphon_skill",
         "invincible",
         "knocking_odds", "knocking_extent",
         "damage_extent", "damage_decrease", "damage_rebound",
@@ -301,7 +301,7 @@ CONST_UBERTIP_RING_ITEM = function(data)
 end
 
 --- _attr学习文本构建
-CONST_RESEARCH_UBERTIP_ATTR = function(attr)
+CONST_UBERTIP_RESEARCH_ATTR = function(attr)
     local str = {}
     local strTable = {}
     for _, arr in ipairs(table.obj2arr(attr, CONST_ATTR_KEYS)) do
@@ -337,7 +337,7 @@ CONST_RESEARCH_UBERTIP_ATTR = function(attr)
 end
 
 --- 技能学习光环文本构建
-CONST_RESEARCH_UBERTIP_RING_ABILITY = function(data)
+CONST_UBERTIP_RESEARCH_RING_ABILITY = function(data)
     local d = {}
     if (data.radius ~= nil) then
         table.insert(d, data.radius .. CONST_UBERTIP_I18N.ringInRadius)
@@ -351,7 +351,73 @@ CONST_RESEARCH_UBERTIP_RING_ABILITY = function(data)
         labels = nil
     end
     if (data.attr ~= nil) then
-        table.insert(d, CONST_RESEARCH_UBERTIP_ATTR(data.attr))
+        table.insert(d, CONST_UBERTIP_RESEARCH_ATTR(data.attr))
     end
     return d
+end
+
+--- 合成文本构建
+CONST_UBERTIP_SYNTHESIS_LABEL = {}
+CONST_UBERTIP_SYNTHESIS_REGISTER = function(formula)
+    CONST_UBERTIP_SYNTHESIS_LABEL = { profit = {}, fragment = {} }
+    local formulas = {}
+    for _, v in ipairs(formula) do
+        local profit = ''
+        local fragment = {}
+        if (type(v) == 'string') then
+            local f1 = string.explode('=', v)
+            if (string.strpos(f1[1], 'x') == false) then
+                profit = { f1[1], 1 }
+            else
+                local temp = string.explode('x', f1[1])
+                temp[2] = math.floor(temp[2])
+                profit = temp
+            end
+            local f2 = string.explode('+', f1[2])
+            for _, vv in ipairs(f2) do
+                if (string.strpos(vv, 'x') == false) then
+                    table.insert(fragment, { vv, 1 })
+                else
+                    local temp = string.explode('x', vv)
+                    temp[2] = math.floor(tonumber(temp[2]))
+                    table.insert(fragment, temp)
+                end
+            end
+        elseif (type(v) == 'table') then
+            profit = v[1]
+            for vi = 2, table.len(v), 1 do
+                table.insert(fragment, v[vi])
+            end
+        end
+        table.insert(formulas, { profit = profit, fragment = fragment })
+        --
+        local fmStr = {}
+        for _, fm in ipairs(fragment) do
+            if (fm[2] <= 1) then
+                table.insert(fmStr, fm[1])
+            else
+                table.insert(fmStr, fm[1] .. 'x' .. fm[2])
+            end
+            if (CONST_UBERTIP_SYNTHESIS_LABEL.fragment[fm[1]] == nil) then
+                CONST_UBERTIP_SYNTHESIS_LABEL.fragment[fm[1]] = {}
+            end
+            if (table.includes(CONST_UBERTIP_SYNTHESIS_LABEL.fragment[fm[1]], profit[1]) == false) then
+                table.insert(CONST_UBERTIP_SYNTHESIS_LABEL.fragment[fm[1]], profit[1])
+            end
+        end
+        CONST_UBERTIP_SYNTHESIS_LABEL.profit[profit[1]] = string.implode('+', fmStr)
+    end
+    return formulas
+end
+--- 碎片可能合成目标文本
+CONST_UBERTIP_SYNTHESIS_FRAGMENT = function(v)
+    if (CONST_UBERTIP_SYNTHESIS_LABEL.fragment[v.Name] ~= nil and #CONST_UBERTIP_SYNTHESIS_LABEL.fragment[v.Name] > 0) then
+        return CONST_UBERTIP_I18N.fragment .. CONST_UBERTIP_I18N.colon .. string.implode('、', CONST_UBERTIP_SYNTHESIS_LABEL.fragment[v.Name])
+    end
+end
+--- 成品合成最低需求文本
+CONST_UBERTIP_SYNTHESIS_PROFIT = function(v)
+    if (CONST_UBERTIP_SYNTHESIS_LABEL.profit[v.Name] ~= nil) then
+        return CONST_UBERTIP_I18N.profit .. CONST_UBERTIP_I18N.colon .. CONST_UBERTIP_SYNTHESIS_LABEL.profit[v.Name]
+    end
 end

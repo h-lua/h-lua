@@ -87,11 +87,13 @@ function Array(params)
     ---@param action noteArrayEach | "function(key,value) end"
     this.forEach = function(action)
         if (type(action) == "function") then
-            for _, key in ipairs(this.__PROPERTIES__.keys) do
+            local keys = table.clone(this.__PROPERTIES__.keys)
+            for _, key in ipairs(keys) do
                 if (false == action(key, this.__PROPERTIES__.values[key])) then
                     break
                 end
             end
+            keys = nil
         end
     end
 
@@ -99,12 +101,16 @@ function Array(params)
     ---@param action noteArrayEach | "function(key,value) end"
     this.backEach = function(action)
         if (type(action) == "function") then
+            local keys = {}
             for i = #this.__PROPERTIES__.keys, 1, -1 do
-                local key = this.__PROPERTIES__.keys[i]
+                table.insert(keys, this.__PROPERTIES__.keys[i])
+            end
+            for _, key in ipairs(keys) do
                 if (false == action(key, this.__PROPERTIES__.values[key])) then
                     break
                 end
             end
+            keys = nil
         end
     end
 

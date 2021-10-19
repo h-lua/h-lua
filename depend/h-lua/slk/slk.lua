@@ -119,8 +119,11 @@ hslk_init = function()
                     profit = profitId,
                     index = profitIndex,
                 })
-                if (table.includes(HSLK_SYNTHESIS.fragmentNeeds, f[2]) == false) then
-                    table.insert(HSLK_SYNTHESIS.fragmentNeeds, f[2])
+                if (HSLK_SYNTHESIS.fragmentNeeds[f[1]] == nil) then
+                    HSLK_SYNTHESIS.fragmentNeeds[f[1]] = {}
+                end
+                if (table.includes(HSLK_SYNTHESIS.fragmentNeeds[f[1]], f[2]) == false) then
+                    table.insert(HSLK_SYNTHESIS.fragmentNeeds[f[1]], f[2])
                 end
             end
         end

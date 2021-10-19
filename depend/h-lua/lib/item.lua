@@ -458,49 +458,6 @@ hitem.subProperty = function(whichUnit, itId, charges)
         hring.remove(whichUnit, itId)
     end
 end
---- 临时处理虚假物品信息
----@private
-hitem.overlyingSlot = function(itemSlot)
-    for i = 1, (#itemSlot - 1), 1 do
-        local id1 = itemSlot[i].id
-        if (id1 ~= nil) then
-            local charges1 = itemSlot[i].charges
-            local overlie = hitem.getOverlie(id1)
-            if (charges1 < overlie) then
-                for j = i + 1, #itemSlot, 1 do
-                    local id2 = itemSlot[j].id
-                    if (id2 == nil) then
-                        break
-                    end
-                    local charges2 = itemSlot[j].charges
-                    if (id1 == id2 and charges2 < overlie) then
-                        local allow = overlie - charges1
-                        local addCharges = 0
-                        if (charges2 <= allow) then
-                            charges1 = charges1 + charges2
-                            addCharges = charges2
-                            charges2 = 0
-                        else
-                            charges1 = overlie
-                            addCharges = allow
-                            charges2 = charges2 - allow
-                        end
-                        itemSlot[i].charges = charges1
-                        if (charges2 > 0) then
-                            itemSlot[j].charges = charges2
-                        else
-                            itemSlot[j].id = nil
-                            itemSlot[j].charges = 0
-                        end
-                        if (charges1 >= overlie) then
-                            break
-                        end
-                    end
-                end
-            end
-        end
-    end
-end
 
 --- 单位合成物品
 ---@public
@@ -515,28 +472,17 @@ hitem.synthesis = function(whichUnit, items)
         items = { items }
     end
     -- 合成流程
-    local itemKind = {}
-    local itemSlot = {}
-    local itemStat = {
-        qty = {},
-        sub = { kv = {}, id = {} },
-        add = { kv = {}, id = {} },
-        profit = {}
-    }
+    local tempSlot = Array()
+    local tempProfit = {}
     hitem.forEach(whichUnit, function(slotItem)
         if (slotItem ~= nil) then
             local itId = hitem.getId(slotItem)
             local charges = hitem.getCharges(slotItem)
-            if (false == table.includes(itemKind, itId)) then
-                table.insert(itemKind, itId)
+            if (tempSlot.keyExists(itId)) then
+                tempSlot.set(itId, tempSlot.get(itId) + charges)
+            else
+                tempSlot.set(itId, charges)
             end
-            table.insert(itemSlot, { id = itId, charges = charges })
-            if (itemStat.qty[itId] == nil) then
-                itemStat.qty[itId] = 0
-            end
-            itemStat.qty[itId] = itemStat.qty[itId] + charges
-        else
-            table.insert(itemSlot, { id = nil, charges = 0 })
         end
     end)
     if (#items > 0) then
@@ -547,14 +493,11 @@ hitem.synthesis = function(whichUnit, items)
                 if (hitem.isShadowBack(itId)) then
                     itId = hitem.shadowID(itId)
                 end
-                if (false == table.includes(itemKind, itId)) then
-                    table.insert(itemKind, itId)
+                if (tempSlot.keyExists(itId)) then
+                    tempSlot.set(itId, tempSlot.get(itId) + charges)
+                else
+                    tempSlot.set(itId, charges)
                 end
-                table.insert(itemSlot, { id = itId, charges = charges })
-                if (itemStat.qty[itId] == nil) then
-                    itemStat.qty[itId] = 0
-                end
-                itemStat.qty[itId] = itemStat.qty[itId] + (hitem.getCharges(it))
                 hitem.del(it)
             else
                 hitem.backToLastHolder(it)
@@ -564,10 +507,10 @@ hitem.synthesis = function(whichUnit, items)
     local matchStack = 1
     while (matchStack > 0) do
         matchStack = 0
-        for _, itId in ipairs(itemKind) do
+        tempSlot.forEach(function(itId, _)
             if (HSLK_SYNTHESIS.fragment[itId] ~= nil) then
-                for _, need in ipairs(HSLK_SYNTHESIS.fragmentNeeds) do
-                    if ((itemStat.qty[itId] or 0) >= need) then
+                for _, need in ipairs(HSLK_SYNTHESIS.fragmentNeeds[itId]) do
+                    if ((tempSlot.get(itId) or 0) >= need) then
                         local maybeProfits = HSLK_SYNTHESIS.fragment[itId][need]
                         for _, mp in ipairs(maybeProfits) do
                             local profitId = mp.profit
@@ -576,110 +519,57 @@ hitem.synthesis = function(whichUnit, items)
                             local needFragments = whichProfit.fragment
                             local match = true
                             for _, frag in ipairs(needFragments) do
-                                if ((itemStat.qty[frag[1]] or 0) < frag[2]) then
+                                if ((tempSlot.get(frag[1]) or 0) < frag[2]) then
                                     match = false
                                     break
                                 end
                             end
-                            if (match == true) then
+                            if (match) then
                                 matchStack = matchStack + 1
                                 for _, frag in ipairs(needFragments) do
-                                    itemStat.qty[frag[1]] = itemStat.qty[frag[1]] - frag[2]
-                                    if (itemStat.qty[frag[1]] == 0) then
-                                        itemStat.qty[frag[1]] = nil
-                                        table.delete(itemKind, frag[1])
-                                    end
-                                    if (itemStat.sub.kv[frag[1]] == nil) then
-                                        itemStat.sub.kv[frag[1]] = frag[2]
-                                        table.insert(itemStat.sub.id, frag[1])
-                                    else
-                                        itemStat.sub.kv[frag[1]] = itemStat.sub.kv[frag[1]] + frag[2]
-                                    end
+                                    tempSlot.set(frag[1], tempSlot.get(frag[1]) - frag[2])
                                 end
-                                if (itemStat.add.kv[profitId] == nil) then
-                                    itemStat.add.kv[profitId] = whichProfit.qty
-                                    table.insert(itemStat.add.id, profitId)
+                                if (tempSlot.keyExists(profitId)) then
+                                    tempSlot.set(profitId, tempSlot.get(profitId) + whichProfit.qty)
                                 else
-                                    itemStat.add.kv[profitId] = itemStat.add.kv[profitId] + whichProfit.qty
+                                    tempSlot.set(profitId, whichProfit.qty)
+                                    tempProfit[profitId] = true
                                 end
-                                table.insert(itemStat.profit, profitId)
                             end
                         end
                     end
                 end
             end
-        end
+        end)
     end
-    hitem.overlyingSlot(itemSlot)
-    if (#itemStat.sub.id > 0) then
-        for _, subId in ipairs(itemStat.sub.id) do
-            for _, sIt in ipairs(itemSlot) do
-                if (itemStat.sub.kv[subId] <= 0) then
-                    break
-                end
-                if (sIt.id ~= nil and sIt.id == subId) then
-                    if (sIt.charges > itemStat.sub.kv[subId]) then
-                        sIt.charges = sIt.charges - itemStat.sub.kv[subId]
-                        itemStat.sub.kv[subId] = 0
-                        if (sIt.charges == 0) then
-                            sIt.id = nil
-                        end
-                    elseif (sIt.charges == itemStat.sub.kv[subId]) then
-                        itemStat.sub.kv[subId] = 0
-                        sIt.id = nil
-                        sIt.charges = 0
-                    elseif (sIt.charges < itemStat.sub.kv[subId]) then
-                        itemStat.sub.kv[subId] = itemStat.sub.kv[subId] - sIt.charges
-                        sIt.id = nil
-                        sIt.charges = 0
-                    end
-                end
+    local itemSlot = {}
+    tempSlot.forEach(function(itId, qty)
+        if (qty <= 0) then
+            tempSlot.splice(itId)
+        else
+            local overlie = hitem.getOverlie(itId)
+            while (qty > 0) do
+                table.insert(itemSlot, { id = itId, charges = math.min(overlie, qty) })
+                qty = qty - overlie
             end
         end
-    end
-    if (#itemStat.add.id > 0) then
-        for _, addId in ipairs(itemStat.add.id) do
-            for _, sIt in ipairs(itemSlot) do
-                if (itemStat.add.kv[addId] <= 0) then
-                    break
-                end
-                if (sIt.id == nil) then
-                    local overlie = hitem.getOverlie(addId)
-                    sIt.id = addId
-                    if (overlie >= itemStat.add.kv[addId]) then
-                        sIt.charges = itemStat.add.kv[addId]
-                        itemStat.add.kv[addId] = 0
-                    else
-                        sIt.charges = overlie
-                        itemStat.add.kv[addId] = itemStat.add.kv[addId] - overlie
-                    end
-                elseif (addId == sIt.id) then
-                    local overlie = hitem.getOverlie(addId)
-                    if (sIt.charges < overlie) then
-                        local allow = (overlie - sIt.charges)
-                        if (allow >= itemStat.add.kv[addId]) then
-                            sIt.charges = sIt.charges + itemStat.add.kv[addId]
-                            itemStat.add.kv[addId] = 0
-                        else
-                            sIt.charges = overlie
-                            itemStat.add.kv[addId] = itemStat.add.kv[addId] - allow
-                        end
-                    end
-                end
-            end
-        end
-    end
+    end)
     -- 处理结果,先删后加
+    local add = {}
     for i = 1, 6, 1 do
         local sIt = itemSlot[i]
+        local sCharge = 0
+        if (sIt ~= nil) then
+            sCharge = sIt.charges
+        end
         local it = cj.UnitItemInSlot(whichUnit, i - 1)
+        local itId = hitem.getId(it)
+        local charges = hitem.getCharges(it)
         if (it ~= nil) then
-            local itId = hitem.getId(it)
-            local charges = hitem.getCharges(it)
-            if (sIt.id == nil) then
+            if (sCharge <= 0) then
                 hitem.del(it, 0)
-            elseif (itId == sIt.id) then
-                local diff = sIt.charges - charges
+            elseif (itId == itemSlot[i].id) then
+                local diff = sCharge - charges
                 if (diff > 0) then
                     cj.SetItemCharges(it, charges + diff)
                     hitem.addProperty(whichUnit, itId, diff)
@@ -687,56 +577,39 @@ hitem.synthesis = function(whichUnit, items)
                     cj.SetItemCharges(it, charges + diff)
                     hitem.subProperty(whichUnit, itId, math.abs(diff))
                 end
+            else
+                hitem.del(it, 0)
+                table.insert(add, i)
             end
+        else
+            table.insert(add, i)
         end
     end
-    hitem.overlyingSlot(itemSlot)
-    for i = 1, 6, 1 do
+    for _, i in ipairs(add) do
         local sIt = itemSlot[i]
-        local isProfit = table.includes(itemStat.profit, sIt.id)
-        local it = cj.UnitItemInSlot(whichUnit, i - 1)
-        if (it ~= nil) then
-            local itId = hitem.getId(it)
-            if (sIt.id ~= nil and itId ~= sIt.id) then
-                hitem.del(it, 0)
-                local newIt = cj.CreateItem(string.char2id(sIt.id), hunit.x(whichUnit), hunit.y(whichUnit))
-                if (isProfit) then
-                    hevent.triggerEvent(whichUnit, CONST_EVENT.itemSynthesis, { triggerUnit = whichUnit, triggerItem = newIt }) -- 触发合成事件
-                end
-                cj.SetItemCharges(newIt, sIt.charges)
-                cj.UnitAddItem(whichUnit, newIt)
-            end
-        elseif (sIt.id ~= nil) then
-            local newIt = cj.CreateItem(string.char2id(sIt.id), hunit.x(whichUnit), hunit.y(whichUnit))
-            if (isProfit) then
+        local sCharge = 0
+        if (sIt ~= nil) then
+            sCharge = sIt.charges
+        end
+        if (sCharge > 0) then
+            local newIt = cj.CreateItem(string.char2id(itemSlot[i].id), hunit.x(whichUnit), hunit.y(whichUnit))
+            if (tempProfit[itemSlot[i].id] == true) then
                 hevent.triggerEvent(whichUnit, CONST_EVENT.itemSynthesis, { triggerUnit = whichUnit, triggerItem = newIt }) -- 触发合成事件
             end
-            cj.SetItemCharges(newIt, sIt.charges)
+            cj.SetItemCharges(newIt, sCharge)
             cj.UnitAddItem(whichUnit, newIt)
         end
     end
     if (#itemSlot > 6) then
-        hitem.overlyingSlot(itemSlot)
         for i = 7, #itemSlot, 1 do
-            local sIt = itemSlot[i]
-            if (sIt.id ~= nil) then
-                if (hitem.getEmptySlot(whichUnit) > 0) then
-                    local newIt = cj.CreateItem(string.char2id(sIt.id), hunit.x(whichUnit), hunit.y(whichUnit))
-                    cj.SetItemCharges(newIt, sIt.charges)
-                    if (isProfit) then
-                        hevent.triggerEvent(whichUnit, CONST_EVENT.itemSynthesis, { triggerUnit = whichUnit, triggerItem = newIt }) -- 触发合成事件
-                    end
-                    cj.UnitAddItem(whichUnit, newIt)
-                else
-                    -- 判断如果是真实物品并且有影子，转为影子物品
-                    if (hitem.isShadowFront(sIt.id)) then
-                        sIt.id = hitem.shadowID(sIt.id)
-                    end
-                    local newIt = cj.CreateItem(string.char2id(sIt.id), hunit.x(whichUnit), hunit.y(whichUnit))
-                    cj.SetItemCharges(newIt, sIt.charges)
-                    hitemPool.insert(CONST_CACHE.ITEM_POOL_PICK, newIt)
-                end
+            -- 判断如果是真实物品并且有影子，转为影子物品
+            local sItId = itemSlot[i].id
+            if (hitem.isShadowFront(sItId)) then
+                sItId = hitem.shadowID(sItId)
             end
+            local newIt = cj.CreateItem(string.char2id(sItId), hunit.x(whichUnit), hunit.y(whichUnit))
+            cj.SetItemCharges(newIt, itemSlot[i].charges)
+            hitemPool.insert(CONST_CACHE.ITEM_POOL_PICK, newIt)
         end
     end
 end
