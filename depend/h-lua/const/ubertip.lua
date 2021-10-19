@@ -357,7 +357,7 @@ CONST_UBERTIP_RESEARCH_RING_ABILITY = function(data)
 end
 
 --- 合成文本构建
-CONST_UBERTIP_SYNTHESIS_LABEL = {}
+CONST_UBERTIP_SYNTHESIS_LABEL = { profit = {}, fragment = {} }
 CONST_UBERTIP_SYNTHESIS_REGISTER = function(formula)
     CONST_UBERTIP_SYNTHESIS_LABEL = { profit = {}, fragment = {} }
     local formulas = {}
