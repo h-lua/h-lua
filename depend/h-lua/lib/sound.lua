@@ -84,7 +84,7 @@ hsound.voice2Rect = function(s, whichRect, during)
         cj.RegisterStackedSound(s, true, width, height)
         if (during > 0) then
             htime.setTimeout(during, function(curTimer)
-                htime.delTimer(curTimer)
+                curTimer.destroy()
                 cj.UnregisterStackedSound(s, true, width, height)
             end)
         end
@@ -120,7 +120,7 @@ hsound.bgm = function(musicFileName, whichPlayer)
             local bgmDelayTimer = hcache.get(whichPlayer, CONST_CACHE.PLAYER_BGM_DELAY_TIMER, nil)
             if (musicFileName ~= hcache.get(whichPlayer, CONST_CACHE.PLAYER_BGM_CURRENT, nil)) then
                 if (bgmDelayTimer ~= nil) then
-                    htime.delTimer(bgmDelayTimer)
+                    bgmDelayTimer.destroy()
                     hcache.set(whichPlayer, CONST_CACHE.PLAYER_BGM_DELAY_TIMER, nil)
                 end
                 hsound.bgmStop(whichPlayer)
@@ -128,7 +128,7 @@ hsound.bgm = function(musicFileName, whichPlayer)
                 hcache.set(
                     whichPlayer, CONST_CACHE.PLAYER_BGM_DELAY_TIMER,
                     htime.setTimeout(hsound.BREAK_DELAY, function(t)
-                        htime.delTimer(t)
+                        t.destroy()
                         hcache.set(whichPlayer, CONST_CACHE.PLAYER_BGM_DELAY_TIMER, nil)
                         if (hplayer.loc() == whichPlayer) then
                             cj.PlayMusic(musicFileName)
@@ -142,14 +142,14 @@ hsound.bgm = function(musicFileName, whichPlayer)
                 local bgmDelayTimer = hcache.get(hplayer.players[i], CONST_CACHE.PLAYER_BGM_DELAY_TIMER, nil)
                 if (musicFileName ~= hcache.get(hplayer.players[i], CONST_CACHE.PLAYER_BGM_CURRENT, nil)) then
                     if (bgmDelayTimer ~= nil) then
-                        htime.delTimer(bgmDelayTimer)
+                        bgmDelayTimer.destroy()
                         hcache.set(hplayer.players[i], CONST_CACHE.PLAYER_BGM_DELAY_TIMER, nil)
                     end
                     hcache.set(hplayer.players[i], CONST_CACHE.PLAYER_BGM_CURRENT, musicFileName)
                     hcache.set(
                         hplayer.players[i], CONST_CACHE.PLAYER_BGM_DELAY_TIMER,
                         htime.setTimeout(hsound.BREAK_DELAY, function(t)
-                            htime.delTimer(t)
+                            t.destroy()
                             hcache.set(hplayer.players[i], CONST_CACHE.PLAYER_BGM_DELAY_TIMER, nil)
                             if (hplayer.loc() == hplayer.players[i]) then
                                 cj.PlayMusic(musicFileName)

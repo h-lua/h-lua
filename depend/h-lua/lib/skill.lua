@@ -73,7 +73,7 @@ hskill.add = function(whichUnit, abilityId, level, during)
         end
         hskill.addProperty(whichUnit, id, level)
         htime.setTimeout(during, function(t)
-            htime.delTimer(t)
+            t.destroy()
             hskill.del(whichUnit, id)
         end)
     end
@@ -102,7 +102,7 @@ hskill.set = function(whichUnit, abilityId, level, during)
             hskill.addProperty(whichUnit, id, level)
         else
             htime.setTimeout(during, function(t)
-                htime.delTimer(t)
+                t.destroy()
                 hskill.set(whichUnit, abilityId, prevLv, nil)
             end)
         end
@@ -129,7 +129,7 @@ hskill.del = function(whichUnit, abilityId, delay)
         cj.UnitRemoveAbility(whichUnit, id)
         hskill.subProperty(whichUnit, id, lv)
         htime.setTimeout(delay, function(t)
-            htime.delTimer(t)
+            t.destroy()
             hskill.add(whichUnit, id, lv)
         end)
     end

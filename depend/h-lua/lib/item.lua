@@ -160,7 +160,7 @@ hitem.del = function(it, delay)
         cj.RemoveItem(it)
     else
         htime.setTimeout(delay, function(t)
-            htime.delTimer(t)
+            t.destroy()
             if (his.destroy(it)) then
                 return
             end
@@ -750,7 +750,7 @@ hitem.create = function(options)
         hitemPool.insert(CONST_CACHE.ITEM_POOL_PICK, it)
         if (options.whichUnit ~= nil and during > 0) then
             htime.setTimeout(during, function(t)
-                htime.delTimer(t)
+                t.destroy()
                 hitem.del(it, 0)
             end)
         end

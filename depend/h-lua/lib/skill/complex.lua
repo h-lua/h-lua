@@ -284,12 +284,13 @@ hskill.swim = function(options)
     end
     local damageString = "眩晕"
     local damageRGB = { 65, 105, 225 }
+    ---@type Timer
     local swimTimer = hcache.get(u, CONST_CACHE.SKILL_SWIM_TIMER)
-    if (swimTimer ~= nil and htime.getRemainTime(swimTimer) > 0) then
-        if (during <= htime.getRemainTime(swimTimer)) then
+    if (swimTimer ~= nil and swimTimer.remain() > 0) then
+        if (during <= swimTimer.remain()) then
             return
         else
-            htime.delTimer(swimTimer)
+            swimTimer.destroy()
             hcache.set(u, CONST_CACHE.SKILL_SWIM_TIMER, nil)
             cj.UnitRemoveAbility(u, HL_ID.buff_swim)
             damageRGB = { 100, 227, 242 }
@@ -326,7 +327,7 @@ hskill.swim = function(options)
         hcache.set(
             u, CONST_CACHE.SKILL_SWIM_TIMER,
             htime.setTimeout(during, function(t)
-                htime.delTimer(t)
+                t.destroy()
                 hcache.set(u, CONST_CACHE.SKILL_SWIM_TIMER, nil)
                 cj.UnitRemoveAbility(u, HL_ID.buff_swim)
                 hcache.set(u, CONST_CACHE.SKILL_SWIM, false)
@@ -463,7 +464,7 @@ hskill.silent = function(options)
         }
     )
     htime.setTimeout(during, function(t)
-        htime.delTimer(t)
+        t.destroy()
         hcache.set(u, CONST_CACHE.SKILL_SILENT_LEVEL, hcache.get(u, CONST_CACHE.SKILL_SILENT_LEVEL, 0) - 1)
         if (hcache.get(u, CONST_CACHE.SKILL_SILENT_LEVEL, 0) <= 0) then
             heffect.del(hcache.get(u, CONST_CACHE.SKILL_SILENT_EFFECT))
@@ -554,7 +555,7 @@ hskill.unarm = function(options)
         during = during
     })
     htime.setTimeout(during, function(t)
-        htime.delTimer(t)
+        t.destroy()
         hcache.set(u, CONST_CACHE.SKILL_UN_ARM_LEVEL, hcache.get(u, CONST_CACHE.SKILL_UN_ARM_LEVEL, 0) - 1)
         if (hcache.get(u, CONST_CACHE.SKILL_UN_ARM_LEVEL, 0) <= 0) then
             heffect.del(hcache.get(u, CONST_CACHE.SKILL_UN_ARM_EFFECT))
@@ -895,7 +896,7 @@ hskill.lightningChain = function(options)
         hgroup.clear(g, true, false)
         if (options.damage > 0) then
             htime.setTimeout(0.35, function(t)
-                htime.delTimer(t)
+                t.destroy()
                 hskill.lightningChain(options)
             end)
         end
@@ -1007,7 +1008,7 @@ hskill.crackFly = function(options)
     htime.setInterval(0.05, function(t)
         local dist = 0
         local z = 0
-        local timerSetTime = htime.getSetTime(t)
+        local timerSetTime = t.period()
         if (cost > during) then
             if (damage > 0) then
                 hskill.damage({
@@ -1032,7 +1033,7 @@ hskill.crackFly = function(options)
                 tempEff = "Abilities\\Spells\\Other\\CrushingWave\\CrushingWaveDamage.mdl"
             end
             heffect.toUnit(tempEff, options.targetUnit, 0)
-            htime.delTimer(t)
+            t.destroy()
             return
         end
         cost = cost + timerSetTime
@@ -1208,7 +1209,7 @@ hskill.whirlwind = function(options)
     htime.setInterval(frequency, function(t)
         time = time + frequency
         if (time > during) then
-            htime.delTimer(t)
+            t.destroy()
             if (options.animation) then
                 cj.AddUnitAnimationProperties(options.sourceUnit, options.animation, false)
             end
@@ -1463,7 +1464,7 @@ hskill.leap = function(options)
         local ax = hunit.x(arrowUnit)
         local ay = hunit.y(arrowUnit)
         if (his.dead(sourceUnit)) then
-            htime.delTimer(t)
+            t.destroy()
             ending(ax, ay)
             return
         end
@@ -1546,7 +1547,7 @@ hskill.leap = function(options)
             hunit.setFlyHeight(arrowUnit, ddh, 9999)
         end
         if (distance <= speed or speed <= 0 or his.dead(arrowUnit) == true) then
-            htime.delTimer(t)
+            t.destroy()
             ending(txy.x, txy.y)
         end
     end)
@@ -1879,7 +1880,7 @@ hskill.rectangleStrike = function(options)
             i = i + 1
             local d = i * radius * 0.5
             if (d >= distance) then
-                htime.delTimer(t)
+                t.destroy()
                 return
             end
             local txy = math.polarProjection(options.x, options.y, d, options.deg)

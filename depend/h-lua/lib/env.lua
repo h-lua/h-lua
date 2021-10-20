@@ -9,7 +9,7 @@ henv = {
             whichDestructable = nil
         else
             htime.setTimeout(delay, function(t)
-                htime.delTimer(t)
+                t.destroy()
                 cj.RemoveDestructable(whichDestructable)
                 whichDestructable = nil
             end)
@@ -79,12 +79,12 @@ henv.build = function(whichRect, typeStr, isInvulnerable, isDestroyRect, ground,
         end
     end
     local randomM = 2
-    htime.setInterval(0.01, function(t)
+    htime.setInterval(0.01, function(curTimer)
         local x = rectMinX + indexX * 80
         local y = rectMinY + indexY * 80
         local buildType = math.random(1, randomM)
         if (indexX == -1 or indexY == -1) then
-            htime.delTimer(t)
+            curTimer.destroy()
             if (isDestroyRect) then
                 hrect.del(whichRect)
             end

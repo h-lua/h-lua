@@ -127,7 +127,7 @@ hskill.missile = function(options)
     end
     htime.setInterval(frequency, function(curTimer)
         if (arrowToken == nil or his.deleted(options.sourceUnit) or (options.targetUnit ~= nil and his.deleted(options.targetUnit))) then
-            htime.delTimer(curTimer)
+            curTimer.destroy()
             ending(ax, ay, false)
             return
         end
@@ -156,14 +156,14 @@ hskill.missile = function(options)
             speed = speed + acceleration
         end
         if (his.borderMap(nx, ny)) then
-            htime.delTimer(curTimer)
+            curTimer.destroy()
             ending(ax, ay, false)
             return
         end
         if (type(options.onMove) == "function") then
             local mRes = options.onMove(options.sourceUnit, options.targetUnit, nx, ny)
             if (mRes == false) then
-                htime.delTimer(curTimer)
+                curTimer.destroy()
                 ending(ax, ay, false)
                 return
             end
@@ -194,7 +194,7 @@ hskill.missile = function(options)
         limit = limit + 1
         if (limit > 400 or his.deleted(options.sourceUnit)) then
             -- 超时消失
-            htime.delTimer(curTimer)
+            curTimer.destroy()
             ending(nx, ny, false)
             return
         else
@@ -203,7 +203,7 @@ hskill.missile = function(options)
                 if (prevDist < curD) then
                     faraway = faraway + 1
                     if (faraway > 50 or (curD - prevDist > speed * 10)) then
-                        htime.delTimer(curTimer)
+                        curTimer.destroy()
                         ending(nx, ny, false)
                         return
                     end
@@ -214,7 +214,7 @@ hskill.missile = function(options)
             prevDist = curD
         end
         if (curD <= speed or speed <= 0) then
-            htime.delTimer(curTimer)
+            curTimer.destroy()
             ending(nx, ny, true)
         end
     end)

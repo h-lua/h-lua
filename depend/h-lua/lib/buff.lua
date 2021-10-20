@@ -76,7 +76,7 @@ hbuff.create = function(during, handleUnit, groupKey, diff, purpose, rollback)
     table.insert(buffHandle[groupKey]._idx, uk)
     if (during > 0) then
         buffHandle[groupKey][uk].times = htime.setTimeout(during, function(curTimer)
-            htime.delTimer(curTimer)
+            curTimer.destroy()
             if (his.deleted(handleUnit)) then
                 return
             end

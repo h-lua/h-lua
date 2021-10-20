@@ -82,7 +82,7 @@ hevent_default_actions = {
             end
             hcache.set(triggerPlayer, CONST_CACHE.PLAYER_CLICK, click + 1)
             htime.setTimeout(0.3, function(ct)
-                htime.delTimer(ct)
+                ct.destroy()
                 hcache.set(triggerPlayer, CONST_CACHE.PLAYER_CLICK, hcache.get(triggerPlayer, CONST_CACHE.PLAYER_CLICK) - 1)
             end)
             for qty = 1, 10 do
@@ -306,7 +306,7 @@ hevent_default_actions = {
                 local isPhysical = hjapi.isEventPhysicalDamage() or true
                 local DType = cj.ConvertAttackType(hjapi.EXGetEventDamageData(EVENT_DAMAGE_DATA_DAMAGE_TYPE))
                 htime.setTimeout(0, function(t)
-                    htime.delTimer(t)
+                    t.destroy()
                     if (isLethal == true) then
                         cj.SetUnitInvulnerable(targetUnit, false)
                     else
@@ -394,7 +394,7 @@ hevent_default_actions = {
             -- * 只有框架内运行单位有效
             if (his.hero(u) == false) then
                 htime.setTimeout(3, function(curTimer)
-                    htime.delTimer(curTimer)
+                    curTimer.destroy()
                     if (his.dead(u) and true ~= hcache.get(u, CONST_CACHE.UNIT_NOT_DEL)) then
                         hunit.del(u, 0)
                     end
@@ -437,7 +437,7 @@ hevent_default_actions = {
                 lz = cj.GetLocationZ(loc)
                 cj.RemoveLocation(loc)
                 loc = nil
-            elseif (orderTargetItem ~= nil and not(orderId >= 852002 and orderId <= 852007)) then
+            elseif (orderTargetItem ~= nil and not (orderId >= 852002 and orderId <= 852007)) then
                 loc = cj.Location(cj.GetItemX(orderTargetItem), cj.GetItemY(orderTargetItem))
                 lx = cj.GetLocationX(loc)
                 ly = cj.GetLocationY(loc)
@@ -456,7 +456,7 @@ hevent_default_actions = {
                     htime.setInterval(0.25, function(curTimer)
                         local mov2 = hcache.get(triggerUnit, CONST_CACHE.MOVING, 0)
                         if (mov2 == 0) then
-                            htime.delTimer(curTimer)
+                            curTimer.destroy()
                             return
                         end
                         local tx = math.floor(cj.GetUnitX(triggerUnit))
@@ -670,7 +670,7 @@ hevent_default_actions = {
                 hitem.subProperty(u, itId, charges)
                 local xyk1 = math.round(cj.GetItemX(it)) .. "|" .. math.round(cj.GetItemY(it))
                 htime.setTimeout(0.05, function(t)
-                    htime.delTimer(t)
+                    t.destroy()
                     if (false == his.destroy(it)) then
                         local x = cj.GetItemX(it)
                         local y = cj.GetItemY(it)

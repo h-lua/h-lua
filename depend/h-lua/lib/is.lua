@@ -2,15 +2,17 @@
 his = {}
 
 --- 是否夜晚
+---@deprecated 可改用 htime.isNight()
 ---@return boolean
 his.night = function()
-    return (cj.GetFloatGameState(GAME_STATE_TIME_OF_DAY) <= 6.00 or cj.GetFloatGameState(GAME_STATE_TIME_OF_DAY) >= 18.00)
+    return htime.isNight()
 end
 
 --- 是否白天
+---@deprecated 可改用 htime.isDay()
 ---@return boolean
 his.day = function()
-    return (cj.GetFloatGameState(GAME_STATE_TIME_OF_DAY) > 6.00 and cj.GetFloatGameState(GAME_STATE_TIME_OF_DAY) < 18.00)
+    return htime.isDay()
 end
 
 --- 是否电脑(如果位置为电脑玩家或无玩家，则为true)

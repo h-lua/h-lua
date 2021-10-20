@@ -27,7 +27,7 @@ hshop = {
                 hevent.onItemSell(whichShop, function(evtData)
                     local itemId = cj.GetItemTypeId(evtData.soldItem)
                     htime.setTimeout(0, function(curTimer)
-                        htime.delTimer(curTimer)
+                        curTimer.destroy()
                         local c = hcache.get(whichShop, CONST_CACHE.SHOP_STOCK .. itemId, 0) - 1
                         if (c > 0) then
                             hshop.item.set(evtData.triggerUnit, itemId, c)
@@ -44,7 +44,7 @@ hshop = {
                 hevent.onUnitSell(whichShop, function(evtData)
                     local unitId = cj.GetUnitTypeId(evtData.soldUnit)
                     htime.setTimeout(0, function(curTimer)
-                        htime.delTimer(curTimer)
+                        curTimer.destroy()
                         local c = hcache.get(whichShop, CONST_CACHE.SHOP_STOCK .. unitId, 0) - 1
                         if (c > 0) then
                             hshop.unit.set(evtData.triggerUnit, unitId, c)

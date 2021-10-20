@@ -25,7 +25,7 @@ hweather.del = function(w, delay)
         cj.RemoveWeatherEffect(w)
     else
         htime.setTimeout(delay, function(t)
-            htime.delTimer(t)
+            t.destroy()
             cj.EnableWeatherEffect(w, false)
             cj.RemoveWeatherEffect(w)
         end)

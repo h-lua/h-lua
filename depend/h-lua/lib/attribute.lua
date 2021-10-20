@@ -125,6 +125,9 @@ hattribute.setHandle = function(whichUnit, attr, opr, val, during)
     if (params == nil) then
         return
     end
+    if (params[attr] == nil) then
+        return
+    end
     -- 机智转接 smart link~
     if (hattributeSetter.smart[attr] ~= nil) then
         attr = hattributeSetter.smart[attr]

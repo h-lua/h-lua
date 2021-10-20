@@ -9,7 +9,7 @@
 hslk_init()
 
 -- 全局秒钟
-cj.TimerStart(cj.CreateTimer(), 1.00, true, htime.clock)
+cj.TimerStart(cj.CreateTimer(), 0.01, true, htime.clock)
 
 -- 预读 preReadUnit
 local preReadUnit = cj.CreateUnit(hplayer.player_passive, HL_ID.unit_token, 0, 0, 0)
@@ -115,7 +115,6 @@ if (DEBUGGING) then
     }
     collectgarbage("collect")
     local rem0 = collectgarbage("count")
-    local timeKernel = { 0.01, 0.05, 0.1, 0.2 }
     local debugData = function()
         local count = { all = 0, max = JassDebug.handlemax() }
         for c = 1, count.max do
@@ -139,14 +138,10 @@ if (DEBUGGING) then
             table.insert(txts, "  " .. (typesLabel[t] or t) .. " : " .. (count[t] or 0))
         end
         table.insert(txts, " ————————————————")
-        for _, tk in ipairs(timeKernel) do
-            local tl = 0
-            if (htime.kernel[tk]) then
-                tl = #htime.kernel[tk]
-            end
-            table.insert(txts, hcolor.sky("  计时内核(" .. tk .. ") : " .. tl))
+        if (htime.debug) then
+            table.insert(txts, hcolor.sky("  计时内核 : " .. #htime.debug))
+            table.insert(txts, " ————————————————")
         end
-        table.insert(txts, " ————————————————")
         table.insert(txts, hcolor.gold("  内存消耗 : " .. math.round((collectgarbage("count") - rem0) / 1024, 2) .. ' MB'))
         table.insert(txts, " ————————————————")
         return txts

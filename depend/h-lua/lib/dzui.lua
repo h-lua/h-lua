@@ -283,7 +283,7 @@ hdzui.miniMapTrack = function(options)
     options.deleted = false
     htime.setInterval(options.frequency, function(curTimer)
         if (options.deleted == true or his.deleted(options.whichUnit)) then
-            htime.delTimer(curTimer)
+            curTimer.destroy()
             hjapi.DzFrameShow(options.frame, false)
             hjapi.DzFrameSetEnable(options.frame, false)
             return

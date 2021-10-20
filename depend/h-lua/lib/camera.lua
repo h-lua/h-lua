@@ -106,7 +106,7 @@ hcamera.shock = function(whichPlayer, whichType, during, scale)
     if (whichType == "shake") then
         cj.CameraSetTargetNoiseForPlayer(whichPlayer, scale, 1.00)
         htime.setTimeout(during, function(t)
-            htime.delTimer(t)
+            t.destroy()
             hplayer.setIsShocking(whichPlayer, false)
             if (hplayer.loc() == whichPlayer) then
                 cj.CameraSetTargetNoise(0, 0)
@@ -115,7 +115,7 @@ hcamera.shock = function(whichPlayer, whichType, during, scale)
     elseif (whichType == "quake") then
         cj.CameraSetEQNoiseForPlayer(whichPlayer, scale)
         htime.setTimeout(during, function(t)
-            htime.delTimer(t)
+            t.destroy()
             hplayer.setIsShocking(whichPlayer, false)
             if (hplayer.loc() == whichPlayer) then
                 cj.CameraClearNoiseForPlayer(0, 0)

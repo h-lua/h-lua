@@ -1,37 +1,227 @@
----@class htime
-htime = {
-    -- 获取开始游戏后经过的总秒数
-    count = 0,
-    -- 时
-    hour = 0,
-    -- 分
-    min = 0,
-    -- 秒
-    sec = 0,
-    -- 池
-    pool = {},
-    -- 内核
-    kernel = {},
-    -- 反射
-    reflect = {},
-}
---- 时钟
 ---@private
-htime.clock = function()
-    htime.count = htime.count + 1
-    htime.sec = htime.sec + 1
-    if (htime.sec >= 60) then
-        htime.sec = 0
-        htime.min = htime.min + 1
-        if (htime.min >= 60) then
-            htime.hour = htime.hour + 1
-            htime.min = 0
+---@param isInterval number
+---@param period number float
+---@param callFunc fun(curTimer:Timer):Timer
+---@param title string
+---@return Timer
+function Timer(isInterval, period, callFunc, title)
+    if (period == nil or type(isInterval) ~= "boolean" or type(callFunc) ~= "function") then
+        return
+    end
+
+    ---@class Timer
+    local this = {}
+
+    ---@private
+    this.__NAME__ = "Timer"
+    ---@private
+    this.__ID__ = "T:" .. htime.inc .. string.random(5)
+
+    ---@private
+    this.__PROPERTIES__ = {
+        kernel = nil,
+        pause = nil,
+        callFunc = callFunc,
+        isInterval = isInterval,
+        period = period,
+        title = title or "",
+    }
+    this.remain = function(fluctuate)
+        local remain = this.__PROPERTIES__.pause or (this.__PROPERTIES__.kernel - htime.inc)
+        if (type(fluctuate) == "number") then
+            if (htime.kernel[this.__PROPERTIES__.kernel] and htime.kernel[this.__PROPERTIES__.kernel].keyExists(this.__ID__)) then
+                remain = remain + fluctuate
+                htime.kernel[this.__PROPERTIES__.kernel].splice(this.__ID__)
+                htime.penetrate(this, remain)
+            end
+            return this
+        end
+        return math.max(0, remain / 100)
+    end
+    this.period = function(fluctuate)
+        if (type(fluctuate) == "number") then
+            this.__PROPERTIES__.period = this.__PROPERTIES__.period + fluctuate
+            if (this.remain() > this.__PROPERTIES__.period) then
+                htime.kernel[this.__PROPERTIES__.kernel].splice(this.__ID__)
+                htime.penetrate(this, this.__PROPERTIES__.period * 100)
+            end
+            return this
+        end
+        return this.__PROPERTIES__.period
+    end
+    this.elapsed = function()
+        return math.max(0, this.period() - this.remain())
+    end
+    this.title = function(modify)
+        if (type(modify) == "string") then
+            this.__PROPERTIES__.title = modify
+            return this
+        end
+        return this.__PROPERTIES__.title
+    end
+    this.pause = function()
+        local k = this.__PROPERTIES__.kernel or 0
+        if (k > htime.inc) then
+            htime.kernel[k].splice(this.__ID__)
+            this.__PROPERTIES__.pause = k - htime.inc
+        end
+        return this
+    end
+    this.resume = function()
+        if (this.__PROPERTIES__.pause ~= nil) then
+            htime.penetrate(this, this.__PROPERTIES__.pause / 100)
+            this.__PROPERTIES__.pause = nil
+        end
+        return this
+    end
+    this.destroy = function()
+        local k = this.__PROPERTIES__.kernel or 0
+        if (k > htime.inc) then
+            htime.kernel[k].splice(this.__ID__)
+        end
+        this.__PROPERTIES__.pause = nil
+        this.__PROPERTIES__.kernel = nil
+        return this
+    end
+    return this
+end
+
+---@class htime
+htime = htime or {}
+
+if (DEBUGGING) then
+    htime.debug = htime.debug or {}
+end
+
+htime.inc = htime.inc or 0 --- 获取开始游戏后经过的总秒数
+htime.hour = htime.hour or 0 --- 时
+htime.min = htime.min or 0 --- 分
+htime.sec = htime.sec or 0 --- 秒
+htime.msec = htime.msec or 0 --- 毫秒
+---@type Array[]
+htime.kernel = htime.kernel or {} --- 内核
+
+---@param t Timer
+---@param remain number msec
+---@private
+function htime.penetrate(t, remain)
+    remain = remain or t.__PROPERTIES__.period
+    local i = math.ceil(htime.inc + math.max(1, remain * 100))
+    if (htime.kernel[i] == nil) then
+        htime.kernel[i] = Array()
+    end
+    t.__PROPERTIES__.kernel = i
+    if (htime.debug ~= nil and false == table.includes(htime.debug, i)) then
+        table.insert(htime.debug, i)
+    end
+    htime.kernel[i].push(t, t.__ID__)
+end
+
+--- 系统时钟
+---@private
+function htime.clock()
+    htime.inc = htime.inc + 1
+    -- timer
+    htime.msec = htime.msec + 10
+    if (htime.msec >= 1000) then
+        htime.msec = 0
+        htime.sec = htime.sec + 1
+        if (htime.sec >= 60) then
+            htime.sec = 0
+            htime.min = htime.min + 1
+            if (htime.min >= 60) then
+                htime.min = 0
+                htime.hour = htime.hour + 1
+            end
+        end
+    end
+    -- trigger
+    local inc = math.floor(htime.inc)
+    if (htime.kernel[inc] ~= nil) then
+        ---@param t Timer
+        htime.kernel[inc].forEach(function(_, t)
+            local status, sErr = xpcall(t.__PROPERTIES__.callFunc, debug.traceback, t)
+            if (status == true) then
+                if (t.__PROPERTIES__.isInterval) then
+                    if (t.__PROPERTIES__.kernel ~= nil) then
+                        htime.penetrate(t)
+                    end
+                else
+                    t.destroy()
+                end
+            else
+                --执行出错时打印错误
+                print(sErr)
+            end
+        end)
+        htime.kernel[inc] = nil
+        if (htime.debug ~= nil) then
+            table.delete(htime.debug, inc)
         end
     end
 end
---- 获取时分秒
+
+--- 从内核中获取一个Timer对象
+---@param period number sec
+---@private
+function htime.periodic(isInterval, period, callFunc, title)
+    ---@type Timer
+    local t = Timer(isInterval, period, callFunc, title)
+    if (t ~= nil) then
+        htime.penetrate(t)
+    end
+    return t
+end
+
+--- 魔兽小时[0.00-24.00]
+function htime.timeOfDay(modify)
+    if (type(modify) == "number") then
+        cj.SetFloatGameState(GAME_STATE_TIME_OF_DAY, modify)
+    end
+    return cj.GetFloatGameState(GAME_STATE_TIME_OF_DAY)
+end
+
+--- 魔兽小时流逝速度[默认1.00]
+function htime.timeOfDayScale(modify)
+    if (type(modify) == "number") then
+        cj.SetTimeOfDayScale(modify)
+    end
+    return cj.GetTimeOfDayScale()
+end
+
+--- 是否夜晚
+---@return boolean
+function htime.isNight()
+    return (htime.timeOfDay() <= 6.00 or htime.timeOfDay() >= 18.00)
+end
+
+--- 是否白天
+---@return boolean
+function htime.isDay()
+    return (htime.timeOfDay() > 6.00 and htime.timeOfDay() < 18.00)
+end
+
+-- 设置一次性计时器
+---@param period number
+---@param callFunc fun(curTimer:Timer):void
+---@param title string
+---@return Timer
+function htime.setTimeout(period, callFunc, title)
+    return htime.periodic(false, period, callFunc, title)
+end
+
+--- 设置周期性计时器
+---@param period number
+---@param callFunc fun(curTimer:Timer):void
+---@param title string
+---@return Timer
+function htime.setInterval(period, callFunc, title)
+    return htime.periodic(true, period, callFunc, title)
+end
+
+--- 获取过去的时分秒
 ---@return string HH:ii:ss
-htime.his = function()
+function htime.gone()
     local str = ""
     if (htime.hour < 10) then
         str = str .. "0" .. htime.hour
@@ -52,213 +242,73 @@ htime.his = function()
     end
     return str
 end
---- 从池中获取一个带窗口计时器
----@private
-htime.timerInPool = function()
-    local t
-    local td
-    for _, v in ipairs(htime.pool) do
-        if (v.free == true) then
-            v.free = false
-            t = v.timer
-            td = v.dialog
-            break
-        end
-    end
-    if (t == nil) then
-        t = cj.CreateTimer()
-        td = cj.CreateTimerDialog(t)
-        table.insert(htime.pool, {
-            free = false,
-            timer = t,
-            dialog = td
-        })
-    end
-    return { t, td }
-end
---- 从内核中获取一个计时器（实际上这里获得的是timer key）
----@private
-htime.timerInKernel = function(period, yourFunc, isInterval)
-    local space = 0.01
-    if (period >= 30) then
-        space = 0.2
-    elseif (period >= 10) then
-        space = 0.1
-    elseif (period >= 0.5) then
-        space = 0.05
-    end
-    if (type(isInterval) ~= "boolean") then
-        isInterval = false
-    end
-    if (htime.kernel[space] == nil) then
-        htime.kernel[space] = {}
-        local t = cj.CreateTimer()
-        cj.TimerStart(t, space, true, function()
-            for k, v in ipairs(htime.kernel[space]) do
-                if (v.running == true) then
-                    if (v.abort ~= true) then
-                        v.remain = v.remain - space
-                    end
-                    if (v.remain < -space) then
-                        v.running = false --修改标志保留数据，可复用
-                    elseif (v.remain < 0.001) then
-                        local status, sErr = xpcall(v.yourFunc, debug.traceback, string.implode("_", { space, k }))
-                        if (status == true) then
-                            if (v.isInterval == true) then
-                                v.remain = v.set
-                            end
-                        else
-                            --执行出错时直接停跑，打印错误
-                            v.running = false
-                            print(sErr)
-                        end
-                    end
-                end
-            end
-        end)
-    end
-    local kernelClock = -1
-    for k, v in ipairs(htime.kernel[space]) do
-        if (v.running == false) then
-            kernelClock = k
-            break
-        end
-    end
-    if (kernelClock == -1) then
-        table.insert(htime.kernel[space], {
-            running = true,
-            isInterval = isInterval,
-            set = period,
-            remain = period,
-            yourFunc = yourFunc,
-        })
-        kernelClock = #htime.kernel[space]
-    else
-        htime.kernel[space][kernelClock] = {
-            running = true,
-            isInterval = isInterval,
-            set = period,
-            remain = period,
-            yourFunc = yourFunc
-        }
-    end
-    return string.implode("_", { space, kernelClock })
-end
---- 内核数据
----@private
-htime.kernelInfo = function(t)
-    local index = string.explode("_", t)
-    local space = tonumber(index[1])
-    local k = tonumber(index[2])
-    return { space, k }
+
+--- 获取服务器当前时间戳
+--- * 此方法在本地不能准确获取当前时间
+---@return number
+function htime.unix()
+    return (hjapi.DzAPI_Map_GetGameStartTime() or 0) + htime.sec
 end
 
---- 获取计时器设置时间
----@param t string
+--- 获取服务器当前时间对象
+--- * 此方法在本地不能准确获取当前时间，将从UNIX元秒开始(1970年)
+---@return table {Y:"年",m:"月",d:"日",H:"时",i:"分",s:"秒",w:"周[0-6]",W:"周[日-六]"}
+function htime.date()
+    return math.date(htime.unix())
+end
+
+
+
+
+--@see 下面都是过时的方法，由于计时器调用数量较多，故暂时保留
+--@see 日后所有@deprecated将被删除，请及时替换为Timer方式
+
+---@deprecated
+htime.kernelInfo = function()
+    print_err("kernelInfo@deprecated")
+end
+
+---@deprecated
+---@return string HH:ii:ss
+htime.his = function()
+    return htime.gone()
+end
+
+---@deprecated
+---@param t Timer
 ---@return number
 htime.getSetTime = function(t)
-    local k = htime.kernelInfo(t)
-    return htime.kernel[k[1]][k[2]].set
+    return t.period()
 end
 
---- 获取计时器剩余时间
----@param t string
+---@deprecated
+---@param t Timer
 ---@return number
 htime.getRemainTime = function(t)
-    local k = htime.kernelInfo(t)
-    return htime.kernel[k[1]][k[2]].remain
+    return t.remain()
 end
 
---- 获取计时器已过去时间
----@param t string
+---@deprecated
+---@param t Timer
 ---@return number
 htime.getElapsedTime = function(t)
-    local k = htime.kernelInfo(t)
-    local set = htime.kernel[k[1]][k[2]].set
-    local remain = htime.kernel[k[1]][k[2]].remain
-    return set - remain
+    return t.elapsed()
 end
 
---- 暂停一个计时器
----@param t string
+---@deprecated
+---@param t Timer
 htime.pause = function(t)
-    local k = htime.kernelInfo(t)
-    if (htime.kernel[k[1]] ~= nil and htime.kernel[k[1]][k[2]] ~= nil) then
-        htime.kernel[k[1]][k[2]].abort = true
-    end
-    if (htime.reflect[t] ~= nil) then
-        cj.PauseTimer(htime.reflect[t])
-    end
+    t.pause()
 end
 
---- 恢复一个被暂停的计时器
----@param t string
+---@deprecated
+---@param t Timer
 htime.resume = function(t)
-    local k = htime.kernelInfo(t)
-    if (htime.reflect[t] ~= nil) then
-        cj.ResumeTimer(htime.reflect[t])
-    end
-    if (htime.kernel[k[1]] ~= nil and htime.kernel[k[1]][k[2]] ~= nil) then
-        htime.kernel[k[1]][k[2]].abort = false
-    end
+    t.resume()
 end
 
---- 删除计时器
----@param t string
+---@deprecated
+---@param t Timer
 htime.delTimer = function(t)
-    if (t == nil) then
-        return
-    end
-    -- 清理反射的隐藏计时器
-    if (htime.reflect[t] ~= nil) then
-        cj.PauseTimer(htime.reflect[t])
-        for _, v in ipairs(htime.pool) do
-            if (htime.reflect[t] == v.timer) then
-                cj.TimerDialogDisplay(v.dialog, false)
-                v.free = true
-                break
-            end
-        end
-        htime.reflect[t] = nil
-    end
-    local k = htime.kernelInfo(t)
-    if (htime.kernel[k[1]] ~= nil and htime.kernel[k[1]][k[2]] ~= nil) then
-        htime.kernel[k[1]][k[2]].running = false
-    end
-end
--- 设置一次性计时器
----@param frequency number
----@param yourFunc function | "function(curTimer) end"
----@param title string
----@return string
-htime.setTimeout = function(frequency, yourFunc, title)
-    local t = htime.timerInKernel(frequency, yourFunc, false)
-    if (title ~= nil) then
-        local pool = htime.timerInPool()
-        local t2 = pool[1]
-        local td = pool[2]
-        cj.TimerDialogSetTitle(td, title)
-        cj.TimerDialogDisplay(td, true)
-        cj.TimerStart(t2, frequency, false, nil)
-        htime.reflect[t] = t2
-    end
-    return t
-end
---- 设置周期性计时器
----@param frequency number
----@param yourFunc function | "function(curTimer) end"
----@param title string
----@return string
-htime.setInterval = function(frequency, yourFunc, title)
-    local t = htime.timerInKernel(frequency, yourFunc, true)
-    if (title ~= nil) then
-        local pool = htime.timerInPool()
-        local t2 = pool[1]
-        local td = pool[2]
-        cj.TimerDialogSetTitle(td, title)
-        cj.TimerDialogDisplay(td, true)
-        cj.TimerStart(t2, frequency, true, nil)
-        htime.reflect[t] = t2
-    end
-    return t
+    t.destroy()
 end

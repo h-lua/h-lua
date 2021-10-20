@@ -24,7 +24,7 @@ hlightning.del = function(lightning, delay)
     delay = delay or 0
     if (delay > 0) then
         htime.setTimeout(delay, function(t)
-            htime.delTimer(t)
+            t.destroy()
             hlightning.del(lightning)
         end)
     else

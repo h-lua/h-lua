@@ -7,7 +7,7 @@ local _damageTtg = function(targetUnit, damage, fix, rgb, speed)
     local y = hunit.y(targetUnit)
     htextTag.model({ msg = fix .. math.floor(damage), x = x, y = y, red = rgb[1], green = rgb[2], blue = rgb[3], speed = speed })
     htime.setTimeout(during, function(t)
-        htime.delTimer(t)
+        t.destroy()
         _damageTtgQty = _damageTtgQty - 1
     end)
 end
@@ -314,14 +314,14 @@ hskill.damage = function(options)
         -- 设置单位|玩家正在受伤
         local isBeDamagingTimer = hcache.get(targetUnit, CONST_CACHE.ATTR_BE_DAMAGING_TIMER, nil)
         if (isBeDamagingTimer ~= nil) then
-            htime.delTimer(isBeDamagingTimer)
+            isBeDamagingTimer.destroy()
             hcache.set(targetUnit, CONST_CACHE.ATTR_BE_DAMAGING_TIMER, nil)
         end
         hcache.set(targetUnit, CONST_CACHE.ATTR_BE_DAMAGING, true)
         hcache.set(
             targetUnit, CONST_CACHE.ATTR_BE_DAMAGING_TIMER,
             htime.setTimeout(3.5, function(t)
-                htime.delTimer(t)
+                t.destroy()
                 hcache.set(targetUnit, CONST_CACHE.ATTR_BE_DAMAGING_TIMER, nil)
                 hcache.set(targetUnit, CONST_CACHE.ATTR_BE_DAMAGING, false)
                 if (his.enablePunish(targetUnit)) then
@@ -333,14 +333,14 @@ hskill.damage = function(options)
         hplayer.addBeDamage(targetPlayer, lastDamage)
         local isPlayerBeDamagingTimer = hcache.get(targetPlayer, CONST_CACHE.ATTR_BE_DAMAGING_TIMER, nil)
         if (isPlayerBeDamagingTimer ~= nil) then
-            htime.delTimer(isPlayerBeDamagingTimer)
+            isPlayerBeDamagingTimer.destroy()
             hcache.set(targetPlayer, CONST_CACHE.ATTR_BE_DAMAGING_TIMER, nil)
         end
         hcache.set(targetPlayer, CONST_CACHE.ATTR_BE_DAMAGING, true)
         hcache.set(
             targetPlayer, CONST_CACHE.ATTR_BE_DAMAGING_TIMER,
             htime.setTimeout(3.5, function(t)
-                htime.delTimer(t)
+                t.destroy()
                 hcache.set(targetPlayer, CONST_CACHE.ATTR_BE_DAMAGING_TIMER, nil)
                 hcache.set(targetPlayer, CONST_CACHE.ATTR_BE_DAMAGING, false)
             end)
@@ -349,7 +349,7 @@ hskill.damage = function(options)
         if (sourceUnit ~= nil and his.deleted(sourceUnit) == false) then
             local isDamagingTimer = hcache.get(sourceUnit, CONST_CACHE.ATTR_DAMAGING_TIMER, nil)
             if (isDamagingTimer ~= nil) then
-                htime.delTimer(isDamagingTimer)
+                isDamagingTimer.destroy()
                 hcache.set(sourceUnit, CONST_CACHE.ATTR_DAMAGING_TIMER, nil)
             end
             hcache.set(sourceUnit, CONST_CACHE.ATTR_DAMAGING, true)
@@ -357,7 +357,7 @@ hskill.damage = function(options)
             hcache.set(
                 sourceUnit, CONST_CACHE.ATTR_DAMAGING_TIMER,
                 htime.setTimeout(3.5, function(t)
-                    htime.delTimer(t)
+                    t.destroy()
                     hcache.set(sourceUnit, CONST_CACHE.ATTR_DAMAGING_TIMER, nil)
                     hcache.set(sourceUnit, CONST_CACHE.ATTR_DAMAGING, false)
                     hevent.setLastDamage(sourceUnit, nil)
@@ -367,14 +367,14 @@ hskill.damage = function(options)
             hplayer.addDamage(sourcePlayer, lastDamage)
             local isPlayerDamagingTimer = hcache.get(sourcePlayer, CONST_CACHE.ATTR_DAMAGING_TIMER, nil)
             if (isPlayerDamagingTimer ~= nil) then
-                htime.delTimer(isPlayerDamagingTimer)
+                isPlayerDamagingTimer.destroy()
                 hcache.set(sourcePlayer, CONST_CACHE.ATTR_DAMAGING_TIMER, nil)
             end
             hcache.set(sourcePlayer, CONST_CACHE.ATTR_DAMAGING, true)
             hcache.set(
                 sourcePlayer, CONST_CACHE.ATTR_DAMAGING_TIMER,
                 htime.setTimeout(3.5, function(t)
-                    htime.delTimer(t)
+                    t.destroy()
                     hcache.set(sourcePlayer, CONST_CACHE.ATTR_DAMAGING_TIMER, nil)
                     hcache.set(sourcePlayer, CONST_CACHE.ATTR_DAMAGING, false)
                 end)
@@ -661,7 +661,7 @@ hskill.damage = function(options)
                 hcache.set(targetUnit, CONST_CACHE.ATTR_PUNISHING, true)
                 hunit.setRGBA(targetUnit, 77, 77, 77, 1, punishDuring)
                 htime.setTimeout(punishDuring + 1, function(t)
-                    htime.delTimer(t)
+                    t.destroy()
                     hattribute.set(targetUnit, 0, { punish_current = "=" .. hattribute.get(targetUnit, "punish") })
                     hcache.set(targetUnit, CONST_CACHE.ATTR_PUNISHING, false)
                 end)
@@ -759,7 +759,7 @@ hskill.damageStep = function(options)
         htime.setInterval(frequency, function(t)
             ti = ti + 1
             if (ti > times) then
-                htime.delTimer(t)
+                t.destroy()
                 return
             end
             hskill.damage(options)
@@ -854,7 +854,7 @@ hskill.damageRange = function(options)
         htime.setInterval(frequency, function(t)
             ti = ti + 1
             if (ti > times) then
-                htime.delTimer(t)
+                t.destroy()
                 return
             end
             local g = hgroup.createByXY(x, y, radius, filter)
@@ -932,7 +932,7 @@ hskill.damageGroup = function(options)
         htime.setInterval(frequency, function(t)
             ti = ti + 1
             if (ti > times) then
-                htime.delTimer(t)
+                t.destroy()
                 return
             end
             hgroup.forEach(options.whichGroup, function(eu)

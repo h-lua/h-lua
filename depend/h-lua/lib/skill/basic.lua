@@ -5,7 +5,7 @@ hskill.avoid = function(whichUnit)
     cj.SetUnitAbilityLevel(whichUnit, HL_ID.avoid.add, 2)
     cj.UnitRemoveAbility(whichUnit, HL_ID.avoid.add)
     htime.setTimeout(0, function(t)
-        htime.delTimer(t)
+        t.destroy()
         cj.UnitAddAbility(whichUnit, HL_ID.avoid.sub)
         cj.SetUnitAbilityLevel(whichUnit, HL_ID.avoid.sub, 2)
         cj.UnitRemoveAbility(whichUnit, HL_ID.avoid.sub)
@@ -28,7 +28,7 @@ hskill.invulnerable = function(whichUnit, during, effect)
         heffect.bindUnit(effect, whichUnit, "origin", during)
     end
     htime.setTimeout(during, function(t)
-        htime.delTimer(t)
+        t.destroy()
         cj.UnitRemoveAbility(whichUnit, HL_ID.ability_invulnerable)
     end)
 end
@@ -55,7 +55,7 @@ hskill.invulnerableRange = function(x, y, radius, filter, during, effect)
         end
     end)
     htime.setTimeout(during, function(t)
-        htime.delTimer(t)
+        t.destroy()
         hgroup.forEach(g, function(eu)
             hunit.setInvulnerable(eu, false)
         end)
@@ -84,12 +84,13 @@ hskill.pause = function(whichUnit, during, pauseColor)
     elseif (pauseColor == "green") then
         rgba = { 30, 220, 30 }
     end
+    ---@type Timer
     local prevTimer = hcache.get(whichUnit, CONST_CACHE.SKILL_PAUSE_TIMER)
     local prevTimeRemaining = 0
     if (prevTimer ~= nil) then
-        prevTimeRemaining = htime.getRemainTime(prevTimer)
+        prevTimeRemaining = prevTimer.remain()
         if (prevTimeRemaining > 0) then
-            htime.delTimer(prevTimer)
+            prevTimer.destroy()
             hcache.set(whichUnit, CONST_CACHE.SKILL_PAUSE_TIMER, nil)
         else
             prevTimeRemaining = 0
@@ -104,7 +105,7 @@ hskill.pause = function(whichUnit, during, pauseColor)
     hcache.set(
         whichUnit, CONST_CACHE.SKILL_PAUSE_TIMER,
         htime.setTimeout(during + prevTimeRemaining, function(t)
-            htime.delTimer(t)
+            t.destroy()
             cj.PauseUnit(whichUnit, false)
             if (colorBuff ~= nil) then
                 hunit.delRGBA(whichUnit, colorBuff)
@@ -132,7 +133,7 @@ hskill.invisible = function(whichUnit, during, transition, effect)
     end
     if (transition > 0) then
         htime.setTimeout(transition, function(t)
-            htime.delTimer(t)
+            t.destroy()
             hskill.add(whichUnit, HL_ID.ability_invisible, 1, during)
         end)
     else
@@ -158,7 +159,7 @@ hskill.visible = function(whichUnit, during, transition, effect)
     end
     if (transition > 0) then
         htime.setTimeout(transition, function(t)
-            htime.delTimer(t)
+            t.destroy()
             hskill.del(whichUnit, HL_ID.ability_invisible, during)
         end)
     else
@@ -179,7 +180,7 @@ hskill.modelEffect = function(whichUnit, whichAbility, abilityLevel, during)
             cj.SetUnitAbilityLevel(whichUnit, whichAbility, abilityLevel)
         end
         htime.setTimeout(during, function(t)
-            htime.delTimer(t)
+            t.destroy()
             cj.UnitRemoveAbility(whichUnit, whichAbility)
         end)
     end

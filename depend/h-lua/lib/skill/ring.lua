@@ -60,7 +60,7 @@ hring.insert = function(whichUnit, id, level)
     if (hring.ACTIVE_TIMER == nil and #hring.ACTIVE_RING > 0) then
         hring.ACTIVE_TIMER = htime.setInterval(0.3, function(curTimer)
             if (#hring.ACTIVE_RING == 0) then
-                htime.delTimer(curTimer)
+                curTimer.destroy()
                 curTimer = nil
                 hring.ACTIVE_TIMER = nil
                 hring.ACTIVE_RING = {}

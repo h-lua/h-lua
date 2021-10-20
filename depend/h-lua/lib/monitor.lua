@@ -39,7 +39,7 @@ end
 ---@param key string 唯一key
 hmonitor.destroy = function(key)
     if (hmonitor._monitors[key] ~= nil) then
-        htime.delTimer(hmonitor._monitors[key].timer)
+        hmonitor._monitors[key].timer.destroy()
         hmonitor._monitors[key] = nil
     end
 end

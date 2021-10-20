@@ -14,7 +14,7 @@ htextTag.del = function(ttg, delay)
         cj.DestroyTextTag(ttg)
     else
         htime.setTimeout(delay, function(t)
-            htime.delTimer(t)
+            t.destroy()
             htextTag.qty = htextTag.qty - 1
             hcache.free(ttg)
             cj.DestroyTextTag(ttg)
@@ -106,7 +106,7 @@ htextTag.createFollowUnit = function(u, msg, size, color, opacity, during, zOffs
     local ttg = htextTag.create2Unit(u, msg, size, color, opacity, during, zOffset)
     if (ttg == nil) then
         htime.setTimeout(0.1, function(t)
-            htime.delTimer(t)
+            t.destroy()
             htextTag.createFollowUnit(u, msg, size, color, opacity, during, zOffset)
         end)
         return
@@ -115,7 +115,7 @@ htextTag.createFollowUnit = function(u, msg, size, color, opacity, during, zOffs
     local scale = 0.5
     htime.setInterval(0.03, function(t)
         if (txt == nil) then
-            htime.delTimer(t)
+            t.destroy()
             return
         end
         cj.SetTextTagPos(ttg, hunit.x(u) - cj.StringLength(txt) * size * scale, hunit.y(u), zOffset)
@@ -189,10 +189,10 @@ htextTag.style = function(ttg, showType, xSpeed, ySpeed)
         -- 放大
         local tnow = 0
         htime.setInterval(0.03, function(t)
-            tnow = tnow + htime.getSetTime(t)
+            tnow = tnow + t.period()
             local msg = htextTag.getMsg(ttg)
             if (msg == nil or tnow >= tend) then
-                htime.delTimer(t)
+                t.destroy()
                 return
             end
             cj.SetTextTagText(ttg, msg, (size * (1 + tnow * 0.5 / tend)) * 0.023 / 10)
@@ -201,10 +201,10 @@ htextTag.style = function(ttg, showType, xSpeed, ySpeed)
         -- 缩小
         local tnow = 0
         htime.setInterval(0.03, function(t)
-            tnow = tnow + htime.getSetTime(t)
+            tnow = tnow + t.period()
             local msg = htextTag.getMsg(ttg)
             if (msg == nil or tnow >= tend) then
-                htime.delTimer(t)
+                t.destroy()
                 return
             end
             cj.SetTextTagText(ttg, msg, (size * (1 - tnow * 0.5 / tend)) * 0.023 / 10)
@@ -217,10 +217,10 @@ htextTag.style = function(ttg, showType, xSpeed, ySpeed)
         local tend3 = tend - tend1 - tend2
         local scale = tend * 0.002
         htime.setInterval(0.03, function(t)
-            tnow = tnow + htime.getSetTime(t)
+            tnow = tnow + t.period()
             local msg = htextTag.getMsg(ttg)
             if (msg == nil or tnow >= tend1 + tend2 + tend3) then
-                htime.delTimer(t)
+                t.destroy()
                 return
             end
             if (tnow <= tend1) then
@@ -280,7 +280,7 @@ htextTag.model = function(options)
         if (heffect._ttg[site] == nil) then
             heffect._ttg[site] = true
             htime.setTimeout(0.12, function(curTimer)
-                htime.delTimer(curTimer)
+                curTimer.destroy()
                 heffect._ttg[site] = nil
             end)
             if (red == 255 and green == 255 and blue == 255) then
@@ -301,7 +301,7 @@ htextTag.model = function(options)
                         htime.setInterval(0.03, function(curTimer)
                             dur = dur + 0.03
                             if (dur >= e) then
-                                htime.delTimer(curTimer)
+                                curTimer.destroy()
                                 cj.DestroyEffect(eff)
                                 return
                             end
@@ -331,7 +331,7 @@ htextTag.model = function(options)
                         htime.setInterval(0.03, function(curTimer)
                             dur = dur + 0.03
                             if (dur >= e) then
-                                htime.delTimer(curTimer)
+                                curTimer.destroy()
                                 cj.DestroyEffect(eff)
                                 cj.RemoveUnit(u)
                                 return

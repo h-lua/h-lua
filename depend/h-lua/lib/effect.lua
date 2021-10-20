@@ -27,7 +27,7 @@ heffect.toXY = function(effectModel, x, y, during)
     if (during > 0) then
         eff = cj.AddSpecialEffect(effectModel, x, y)
         htime.setTimeout(during, function(t)
-            htime.delTimer(t)
+            t.destroy()
             cj.DestroyEffect(eff)
         end)
     else
@@ -53,7 +53,7 @@ heffect.toUnit = function(effectModel, targetUnit, during)
     if (during > 0) then
         eff = cj.AddSpecialEffect(effectModel, x, y)
         htime.setTimeout(during, function(t)
-            htime.delTimer(t)
+            t.destroy()
             cj.DestroyEffect(eff)
         end)
     else
@@ -78,7 +78,7 @@ heffect.bindUnit = function(effectModel, targetUnit, attach, during)
     if (during > 0) then
         eff = cj.AddSpecialEffectTarget(effectModel, targetUnit, attach)
         htime.setTimeout(during, function(t)
-            htime.delTimer(t)
+            t.destroy()
             cj.DestroyEffect(eff)
         end)
     elseif (during == -1) then

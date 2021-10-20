@@ -156,7 +156,7 @@ hrect.del = function(whichRect, delay)
         cj.RemoveRect(whichRect)
     else
         htime.setTimeout(delay, function(t)
-            htime.delTimer(t)
+            t.destroy()
             hevent.free(whichRect)
             hcache.free(whichRect)
             cj.RemoveRect(whichRect)
@@ -197,7 +197,7 @@ hrect.lock = function(options)
     htime.setInterval(0.1, function(t)
         inc = inc + 1
         if (inc > (options.during / 0.10)) then
-            htime.delTimer(t)
+            t.destroy()
             hgroup.clear(lockGroup, true, false)
             return
         end
@@ -208,7 +208,7 @@ hrect.lock = function(options)
         --单位优先
         if (options.lockUnit) then
             if (his.dead(options.lockUnit)) then
-                htime.delTimer(t)
+                t.destroy()
                 return
             end
             x = hunit.x(options.lockUnit)

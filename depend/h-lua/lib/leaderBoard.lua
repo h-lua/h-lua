@@ -46,7 +46,7 @@ hleaderBoard.show = function(key)
         cj.LeaderboardDisplay(lb, true)
         htime.setInterval(refreshFrequency, function(curTimer)
             if (hleaderBoard.CURRENT ~= key) then
-                htime.delTimer(curTimer)
+                curTimer.destroy()
                 if (hleaderBoard.CURRENT == nil) then
                     cj.LeaderboardDisplay(lb, false)
                 end

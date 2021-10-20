@@ -199,7 +199,7 @@ hhero.reborn = function(whichHero, delay, invulnerable, x, y, showDialog)
                 title = hunit.getName(whichHero)
             end
             htime.setTimeout(delay, function(t)
-                htime.delTimer(t)
+                t.destroy()
                 if (his.deleted(whichHero) == false) then
                     if (his.alive(whichHero)) then
                         return
@@ -416,7 +416,7 @@ hhero.buildSelector = function(options)
         end
         -- 还剩10秒给个选英雄提示
         htime.setTimeout(during - 10.0, function(t)
-            htime.delTimer(t)
+            t.destroy()
             local x2 = buildX + buildRowQty * buildDistanceX * 0.5
             local y2 = buildY - math.floor(#heroIds / buildRowQty) * buildDistanceY * 0.5
             hhero.selectorPool = {}
@@ -426,7 +426,7 @@ hhero.buildSelector = function(options)
         -- 逾期不选赶出游戏
         -- 对于可以选择多个的玩家，有选即可，不要求全选
         htime.setTimeout(during - 0.5, function(t)
-            htime.delTimer(t)
+            t.destroy()
             for _, hero in ipairs(hhero.selectorClearPool) do
                 hunit.del(hero)
             end

@@ -67,7 +67,7 @@ htexture.mark = function(path, during, whichPlayer, red, green, blue)
             red, green, blue, 0
         )
         htime.setTimeout(during, function(t)
-            htime.delTimer(t)
+            t.destroy()
             htexture.cinematicFilterGeneric(
                 0.50,
                 BLEND_MODE_ADDITIVE,
@@ -89,7 +89,7 @@ htexture.mark = function(path, during, whichPlayer, red, green, blue)
                 )
             end
             htime.setTimeout(during, function(t)
-                htime.delTimer(t)
+                t.destroy()
                 hcache.set(whichPlayer, CONST_CACHE.PLAYER_MARKING, false)
                 if (whichPlayer == hplayer.loc()) then
                     htexture.cinematicFilterGeneric(

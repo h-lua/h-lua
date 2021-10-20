@@ -306,7 +306,7 @@ hunit.setAnimateSpeed = function(whichUnit, speed, during)
     hcache.set(whichUnit, CONST_CACHE.UNIT_ANIMATE_SPEED, speed)
     if (during > 0) then
         htime.setTimeout(during, function(t)
-            htime.delTimer(t)
+            t.destroy()
             cj.SetUnitTimeScale(u, prevSpeed)
             hcache.set(whichUnit, CONST_CACHE.UNIT_ANIMATE_SPEED, prevSpeed)
         end)
@@ -713,7 +713,7 @@ hunit.setUserData = function(u, val, during)
     during = during or 0
     if (during > 0) then
         htime.setTimeout(during, function(t)
-            htime.delTimer(t)
+            t.destroy()
             cj.SetUnitUserData(u, oldData)
         end)
     end
@@ -745,7 +745,7 @@ hunit.del = function(targetUnit, delay)
         cj.RemoveUnit(targetUnit)
     else
         htime.setTimeout(delay, function(t)
-            htime.delTimer(t)
+            t.destroy()
             if (his.deleted(targetUnit)) then
                 return
             end
@@ -765,7 +765,7 @@ hunit.kill = function(targetUnit, delay)
         cj.KillUnit(targetUnit)
     else
         htime.setTimeout(delay, function(t)
-            htime.delTimer(t)
+            t.destroy()
             cj.KillUnit(targetUnit)
         end)
     end
@@ -779,7 +779,7 @@ hunit.exploded = function(targetUnit, delay)
         cj.KillUnit(targetUnit)
     else
         htime.setTimeout(delay, function(t)
-            htime.delTimer(t)
+            t.destroy()
             cj.SetUnitExploded(targetUnit, true)
             cj.KillUnit(targetUnit)
         end)

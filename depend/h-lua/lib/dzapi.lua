@@ -80,16 +80,18 @@ end
 
 --- 获取服务器当前时间戳
 --- * 此方法在本地不能准确获取当前时间
+---@deprecated 请改用 htime.unix()
 ---@return number
 hdzapi.timestamp = function()
     if (cache.gameStartTime == nil) then
         cache.gameStartTime = hjapi.DzAPI_Map_GetGameStartTime() or 0
     end
-    return cache.gameStartTime + htime.count
+    return cache.gameStartTime + htime.sec
 end
 
 --- 获取服务器当前时间对象
 --- * 此方法在本地不能准确获取当前时间，将从UNIX元秒开始(1970年)
+---@deprecated 请改用 htime.date()
 ---@return table {Y:"年",m:"月",d:"日",H:"时",i:"分",s:"秒",w:"周[0-6]",W:"周[日-六]"}
 hdzapi.date = function()
     return math.date(hdzapi.timestamp())
@@ -138,7 +140,7 @@ hdzapi.roulette = function(whichPlayer, method, params)
     table.insert(cache.roulette, { whichPlayer = whichPlayer, method = method, params = params })
     htime.setInterval(2, function(curTimer)
         if (#cache.roulette <= 0) then
-            htime.delTimer(curTimer)
+            curTimer.destroy()
             cache.roulette = nil
             return
         end

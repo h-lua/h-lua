@@ -365,7 +365,7 @@ hplayer.diffGoldRatio = function(whichPlayer, diff, during)
         hcache.set(whichPlayer, CONST_CACHE.PLAYER_GOLD_RATIO, hcache.get(whichPlayer, CONST_CACHE.PLAYER_GOLD_RATIO) + diff)
         if (during > 0) then
             htime.setTimeout(during, function(t)
-                htime.delTimer(t)
+                t.destroy()
                 hcache.set(whichPlayer, CONST_CACHE.PLAYER_GOLD_RATIO, hcache.get(whichPlayer, CONST_CACHE.PLAYER_GOLD_RATIO) - diff)
             end)
         end
@@ -403,7 +403,7 @@ hplayer.diffLumberRatio = function(whichPlayer, diff, during)
         hcache.set(whichPlayer, CONST_CACHE.PLAYER_LUMBER_RATIO, hcache.get(whichPlayer, CONST_CACHE.PLAYER_LUMBER_RATIO) + diff)
         if (during > 0) then
             htime.setTimeout(during, function(t)
-                htime.delTimer(t)
+                t.destroy()
                 hcache.set(whichPlayer, CONST_CACHE.PLAYER_LUMBER_RATIO, hcache.get(whichPlayer, CONST_CACHE.PLAYER_LUMBER_RATIO) - diff)
             end)
         end
@@ -441,7 +441,7 @@ hplayer.diffExpRatio = function(whichPlayer, diff, during)
         hcache.set(whichPlayer, CONST_CACHE.PLAYER_EXP_RATIO, hcache.get(whichPlayer, CONST_CACHE.PLAYER_EXP_RATIO) + diff)
         if (during > 0) then
             htime.setTimeout(during, function(t)
-                htime.delTimer(t)
+                t.destroy()
                 hcache.set(whichPlayer, CONST_CACHE.PLAYER_EXP_RATIO, hcache.get(whichPlayer, CONST_CACHE.PLAYER_EXP_RATIO) - diff)
             end)
         end
@@ -478,7 +478,7 @@ hplayer.diffSellRatio = function(whichPlayer, diff, during)
         hcache.set(whichPlayer, CONST_CACHE.PLAYER_SELL_RATIO, hcache.get(whichPlayer, CONST_CACHE.PLAYER_SELL_RATIO) + diff)
         if (during > 0) then
             htime.setTimeout(during, function(t)
-                htime.delTimer(t)
+                t.destroy()
                 hcache.set(whichPlayer, CONST_CACHE.PLAYER_SELL_RATIO, hcache.get(whichPlayer, CONST_CACHE.PLAYER_SELL_RATIO) - diff)
             end)
         end

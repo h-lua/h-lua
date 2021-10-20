@@ -89,8 +89,10 @@ function Array(params)
         if (type(action) == "function") then
             local keys = table.clone(this.__PROPERTIES__.keys)
             for _, key in ipairs(keys) do
-                if (false == action(key, this.__PROPERTIES__.values[key])) then
-                    break
+                if (this.__PROPERTIES__.values[key] ~= nil) then
+                    if (false == action(key, this.__PROPERTIES__.values[key])) then
+                        break
+                    end
                 end
             end
             keys = nil
@@ -106,8 +108,10 @@ function Array(params)
                 table.insert(keys, this.__PROPERTIES__.keys[i])
             end
             for _, key in ipairs(keys) do
-                if (false == action(key, this.__PROPERTIES__.values[key])) then
-                    break
+                if (this.__PROPERTIES__.values[key] ~= nil) then
+                    if (false == action(key, this.__PROPERTIES__.values[key])) then
+                        break
+                    end
                 end
             end
             keys = nil
