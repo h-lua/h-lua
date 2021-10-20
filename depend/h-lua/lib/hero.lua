@@ -178,8 +178,7 @@ end
 ---@param invulnerable number 复活后的无敌时间
 ---@param x number
 ---@param y number
----@param showDialog boolean 是否显示倒计时窗口
-hhero.reborn = function(whichHero, delay, invulnerable, x, y, showDialog)
+hhero.reborn = function(whichHero, delay, invulnerable, x, y)
     if (his.hero(whichHero)) then
         if (delay < 0.3 and his.deleted(whichHero) == false) then
             cj.ReviveHero(whichHero, x, y, true)
@@ -194,10 +193,6 @@ hhero.reborn = function(whichHero, delay, invulnerable, x, y, showDialog)
                 triggerUnit = whichHero
             })
         else
-            local title
-            if (showDialog == true) then
-                title = hunit.getName(whichHero)
-            end
             htime.setTimeout(delay, function(t)
                 t.destroy()
                 if (his.deleted(whichHero) == false) then
@@ -216,7 +211,7 @@ hhero.reborn = function(whichHero, delay, invulnerable, x, y, showDialog)
                         triggerUnit = whichHero
                     })
                 end
-            end, title)
+            end, hunit.getName(whichHero))
         end
     end
 end

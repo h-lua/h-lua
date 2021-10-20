@@ -262,6 +262,7 @@ end
 
 --@see 下面都是过时的方法，由于计时器调用数量较多，故暂时保留
 --@see 日后所有@deprecated将被删除，请及时替换为Timer方式
+--@see 正则替换参考 htime.delTimer\((.*?)\) $1.destroy()
 
 ---@deprecated
 htime.kernelInfo = function()

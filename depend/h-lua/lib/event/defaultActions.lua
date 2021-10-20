@@ -163,7 +163,7 @@ hevent_default_actions = {
                     timeScale = 10 / rebornSec,
                 })
             end
-            hhero.reborn(u, rebornSec, 1, x, y, true)
+            hhero.reborn(u, rebornSec, 1, x, y)
         end,
     },
     unit = {
