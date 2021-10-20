@@ -512,6 +512,9 @@ hitem.synthesis = function(whichUnit, items)
                 for _, need in ipairs(HSLK_SYNTHESIS.fragmentNeeds[itId]) do
                     if ((tempSlot.get(itId) or 0) >= need) then
                         local maybeProfits = HSLK_SYNTHESIS.fragment[itId][need]
+                        if maybeProfits == nil then
+                            return
+                        end
                         for _, mp in ipairs(maybeProfits) do
                             local profitId = mp.profit
                             local profitIndex = mp.index
