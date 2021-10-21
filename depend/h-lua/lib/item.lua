@@ -539,7 +539,7 @@ hitem.synthesis = function(whichUnit, items)
                                 end
                             end
                         else
-                            print_err("Synthesis Unexpected  Error")
+                            print_err("Synthesis Unexpected Error")
                             print("ITEM ID:", itId)
                             print("ITEM NEED:", need)
                             print_r(HSLK_SYNTHESIS.fragment)

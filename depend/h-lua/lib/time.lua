@@ -26,24 +26,27 @@ function Timer(isInterval, period, callFunc, title)
         period = period,
         title = title or "",
     }
+    ---@type fun(fluctuate:number sec)
     this.remain = function(fluctuate)
-        local remain = this.__PROPERTIES__.pause or (this.__PROPERTIES__.kernel - htime.inc)
-        if (type(fluctuate) == "number") then
-            if (htime.kernel[this.__PROPERTIES__.kernel] and htime.kernel[this.__PROPERTIES__.kernel].keyExists(this.__ID__)) then
-                remain = remain + fluctuate
-                htime.kernel[this.__PROPERTIES__.kernel].splice(this.__ID__)
-                htime.penetrate(this, remain)
+        local k = this.__PROPERTIES__.kernel or 0
+        local remain = math.max(0, this.__PROPERTIES__.pause or (k - htime.inc) / 100)
+        if (k > 0 and type(fluctuate) == "number") then
+            if (htime.kernel[k] and htime.kernel[k].keyExists(this.__ID__)) then
+                htime.kernel[k].splice(this.__ID__)
+                htime.penetrate(this, math.min(this.__PROPERTIES__.period, math.max(0, remain + fluctuate)))
             end
             return this
         end
-        return math.max(0, remain / 100)
+        return remain
     end
+    ---@type fun(fluctuate:number sec)
     this.period = function(fluctuate)
-        if (type(fluctuate) == "number") then
+        local k = this.__PROPERTIES__.kernel or 0
+        if (k > 0 and type(fluctuate) == "number") then
             this.__PROPERTIES__.period = this.__PROPERTIES__.period + fluctuate
             if (this.remain() > this.__PROPERTIES__.period) then
-                htime.kernel[this.__PROPERTIES__.kernel].splice(this.__ID__)
-                htime.penetrate(this, this.__PROPERTIES__.period * 100)
+                htime.kernel[k].splice(this.__ID__)
+                htime.penetrate(this, this.__PROPERTIES__.period)
             end
             return this
         end
@@ -102,7 +105,7 @@ htime.msec = htime.msec or 0 --- 毫秒
 htime.kernel = htime.kernel or {} --- 内核
 
 ---@param t Timer
----@param remain number msec
+---@param remain number sec
 ---@private
 function htime.penetrate(t, remain)
     remain = remain or t.__PROPERTIES__.period
