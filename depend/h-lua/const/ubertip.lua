@@ -358,6 +358,12 @@ end
 
 --- 合成文本构建
 CONST_UBERTIP_SYNTHESIS_LABEL = { profit = {}, fragment = {} }
+--[[
+formula = {
+    "双铁剑=铁剑x3+铁盾x3",
+    { { "双铁剑", 1 }, { "铁剑", 3 }, { "铁盾", 3 } },
+}
+]]
 CONST_UBERTIP_SYNTHESIS_REGISTER = function(formula)
     CONST_UBERTIP_SYNTHESIS_LABEL = { profit = {}, fragment = {} }
     local formulas = {}
@@ -406,6 +412,10 @@ CONST_UBERTIP_SYNTHESIS_REGISTER = function(formula)
             end
         end
         CONST_UBERTIP_SYNTHESIS_LABEL.profit[profit[1]] = string.implode('+', fmStr)
+    end
+    -- 处理合成公式
+    if (type(hslk_synthesis) == "function") then
+        hslk_synthesis(formulas)
     end
     return formulas
 end

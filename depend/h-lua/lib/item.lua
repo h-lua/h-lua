@@ -24,7 +24,7 @@ end
 ---@param it userdata
 ---@return number
 hitem.z = function(it)
-    return hjapi.GetZ(cj.GetItemX(u), cj.GetItemY(u))
+    return hjapi.GetZ(cj.GetItemX(it), cj.GetItemY(it))
 end
 
 -- 单位嵌入到物品到框架系统
@@ -510,7 +510,7 @@ hitem.synthesis = function(whichUnit, items)
         tempSlot.forEach(function(itId, _)
             if (HSLK_SYNTHESIS.fragment[itId] ~= nil) then
                 for _, need in ipairs(HSLK_SYNTHESIS.fragmentNeeds[itId]) do
-                    if ((tempSlot.get(itId) or 0) >= need) then
+                    if ((tempSlot.get(itId) or 0) >= tonumber(need)) then
                         local maybeProfits = HSLK_SYNTHESIS.fragment[itId][need]
                         for _, mp in ipairs(maybeProfits) do
                             local profitId = mp.profit

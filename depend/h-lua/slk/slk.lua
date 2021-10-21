@@ -23,6 +23,58 @@ HSLK_FIX = {
     unit = { "sight", "nsight" } -- 视野设“0”会被w2l优化干掉
 }
 
+hslk_synthesis = function(formulas)
+    if (#formulas > 0 and hslk_cli_ids == nil) then
+        HSLK_SYNTHESIS = {
+            profit = {},
+            fragment = {},
+            fragmentNeeds = {},
+        }
+        for _, data in ipairs(formulas) do
+            -- 数据格式化
+            -- 碎片名称转ID
+            local jsonFragment = {}
+            for k, v in ipairs(data.fragment) do
+                data.fragment[k][2] = math.floor(v[2])
+                local fragmentId = HSLK_N2V[v[1]][1]._id or nil
+                if (fragmentId ~= nil) then
+                    table.insert(jsonFragment, { fragmentId, v[2] })
+                end
+            end
+            local profitId = HSLK_N2V[data.profit[1]][1]._id or nil
+            if (profitId == nil) then
+                return
+            end
+            if (HSLK_SYNTHESIS.profit[profitId] == nil) then
+                HSLK_SYNTHESIS.profit[profitId] = {}
+            end
+            table.insert(HSLK_SYNTHESIS.profit[profitId], {
+                qty = data.profit[2],
+                fragment = jsonFragment,
+            })
+            local profitIndex = #HSLK_SYNTHESIS.profit[profitId]
+            for _, f in ipairs(jsonFragment) do
+                local itId = f[1]
+                local need = tostring(f[2])
+                if (HSLK_SYNTHESIS.fragment[itId] == nil) then
+                    HSLK_SYNTHESIS.fragment[itId] = {}
+                end
+                if (HSLK_SYNTHESIS.fragmentNeeds[itId] == nil) then
+                    HSLK_SYNTHESIS.fragmentNeeds[itId] = {}
+                end
+                if (HSLK_SYNTHESIS.fragment[itId][need] == nil) then
+                    HSLK_SYNTHESIS.fragment[itId][need] = {}
+                    table.insert(HSLK_SYNTHESIS.fragmentNeeds[itId], need)
+                end
+                table.insert(HSLK_SYNTHESIS.fragment[itId][need], {
+                    profit = profitId,
+                    index = profitIndex,
+                })
+            end
+        end
+    end
+end
+
 hslk_init = function()
     -- 载入平衡常数数据
     HSLK_MISC = JassSlk.misc
@@ -83,51 +135,8 @@ hslk_init = function()
             end
         end
     end
-    -- 处理合成公式
-    if (#hslk_cli_synthesis > 0) then
-        for _, data in ipairs(hslk_cli_synthesis) do
-            -- 数据格式化
-            -- 碎片名称转ID
-            local jsonFragment = {}
-            for k, v in ipairs(data.fragment) do
-                data.fragment[k][2] = math.floor(v[2])
-                local fragmentId = HSLK_N2V[v[1]][1]._id or nil
-                if (fragmentId ~= nil) then
-                    table.insert(jsonFragment, { fragmentId, v[2] })
-                end
-            end
-            local profitId = HSLK_N2V[data.profit[1]][1]._id or nil
-            if (profitId == nil) then
-                return
-            end
-            if (HSLK_SYNTHESIS.profit[profitId] == nil) then
-                HSLK_SYNTHESIS.profit[profitId] = {}
-            end
-            table.insert(HSLK_SYNTHESIS.profit[profitId], {
-                qty = data.profit[2],
-                fragment = jsonFragment,
-            })
-            local profitIndex = #HSLK_SYNTHESIS.profit[profitId]
-            for _, f in ipairs(jsonFragment) do
-                if (HSLK_SYNTHESIS.fragment[f[1]] == nil) then
-                    HSLK_SYNTHESIS.fragment[f[1]] = {}
-                end
-                if (HSLK_SYNTHESIS.fragment[f[1]][f[2]] == nil) then
-                    HSLK_SYNTHESIS.fragment[f[1]][f[2]] = {}
-                end
-                table.insert(HSLK_SYNTHESIS.fragment[f[1]][f[2]], {
-                    profit = profitId,
-                    index = profitIndex,
-                })
-                if (HSLK_SYNTHESIS.fragmentNeeds[f[1]] == nil) then
-                    HSLK_SYNTHESIS.fragmentNeeds[f[1]] = {}
-                end
-                if (table.includes(HSLK_SYNTHESIS.fragmentNeeds[f[1]], f[2]) == false) then
-                    table.insert(HSLK_SYNTHESIS.fragmentNeeds[f[1]], f[2])
-                end
-            end
-        end
-    end
+    hslk_cli_ids = nil
+    hslk_synthesis(hslk_cli_synthesis)
     HL_ID_INIT()
 end
 
@@ -196,7 +205,7 @@ end
 ---例子3 "精灵神水x2=精灵的眼泪x50" 50个一样的合一种,但得到2个
 ---例子4 {{"小刀割大树",1},{"小刀",1},{"大树",1}} 对象型配置，第一项为结果物品(适合物品名称包含特殊字符的物品，如+/=影响公式的符号)
 hslk_item_synthesis = function(formula)
-    hslk_cli_synthesis = F6V_I_SYNTHESIS(formula)
+    hslk_cli_synthesis = CONST_UBERTIP_SYNTHESIS_REGISTER(formula)
 end
 
 ---@param _v{abilList,Requires,Requiresamount,Name,Description,Tip,Ubertip,Hotkey,Art,scale,file,Buttonpos_1,Buttonpos_2,selSize,colorR,colorG,colorB,armor,Level,oldLevel,class,goldcost,lumbercost,HP,stockStart,stockRegen,stockMax,prio,cooldownID,ignoreCD,morph,drop,powerup,sellable,pawnable,droppable,pickRandom,uses,perishable,usable,_id_force,_class,_type,_parent,_overlie,_weight,_attr,_ring,_remarks,_cooldown,_cooldownTarget,_shadow,_onItemGet,_onItemUsed,_onRing}

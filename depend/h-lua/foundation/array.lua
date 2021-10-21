@@ -120,7 +120,7 @@ function Array(params)
 
     --- 将一个元素插入数组的末尾（入栈）
     this.push = function(value, key)
-        key = key or ("Ar:" .. time.inc .. string.rand(5))
+        key = key or ("Ar:" .. (htime.inc or 0) .. string.random(5))
         if (this.__PROPERTIES__.values[key] == nil) then
             table.insert(this.__PROPERTIES__.keys, key)
         end
@@ -161,7 +161,7 @@ function Array(params)
             for i, k in ipairs(this.__PROPERTIES__.keys) do
                 this.__PROPERTIES__.keys[i + 1] = k
             end
-            key = key or ("Ar:" .. time.inc .. string.rand(5))
+            key = key or ("Ar:" .. (htime.inc or 0) .. string.random(5))
             this.__PROPERTIES__.keys[1] = key
             this.__PROPERTIES__.values[key] = value
         end

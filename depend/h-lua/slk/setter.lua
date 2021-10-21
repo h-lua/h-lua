@@ -1,8 +1,3 @@
----@private
-F6V_I_SYNTHESIS = function(formula)
-    return CONST_UBERTIP_SYNTHESIS_REGISTER(formula)
-end
-
 local F6_RING = function(_v)
     if (_v._ring ~= nil) then
         _v._ring.effect = _v._ring.effect or nil
