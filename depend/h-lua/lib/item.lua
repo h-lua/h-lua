@@ -512,30 +512,37 @@ hitem.synthesis = function(whichUnit, items)
                 for _, need in ipairs(HSLK_SYNTHESIS.fragmentNeeds[itId]) do
                     if ((tempSlot.get(itId) or 0) >= tonumber(need)) then
                         local maybeProfits = HSLK_SYNTHESIS.fragment[itId][need]
-                        for _, mp in ipairs(maybeProfits) do
-                            local profitId = mp.profit
-                            local profitIndex = mp.index
-                            local whichProfit = HSLK_SYNTHESIS.profit[profitId][profitIndex]
-                            local needFragments = whichProfit.fragment
-                            local match = true
-                            for _, frag in ipairs(needFragments) do
-                                if ((tempSlot.get(frag[1]) or 0) < frag[2]) then
-                                    match = false
-                                    break
-                                end
-                            end
-                            if (match) then
-                                matchStack = matchStack + 1
+                        if (maybeProfits ~= nil) then
+                            for _, mp in ipairs(maybeProfits) do
+                                local profitId = mp.profit
+                                local profitIndex = mp.index
+                                local whichProfit = HSLK_SYNTHESIS.profit[profitId][profitIndex]
+                                local needFragments = whichProfit.fragment
+                                local match = true
                                 for _, frag in ipairs(needFragments) do
-                                    tempSlot.set(frag[1], tempSlot.get(frag[1]) - frag[2])
+                                    if ((tempSlot.get(frag[1]) or 0) < frag[2]) then
+                                        match = false
+                                        break
+                                    end
                                 end
-                                if (tempSlot.keyExists(profitId)) then
-                                    tempSlot.set(profitId, tempSlot.get(profitId) + whichProfit.qty)
-                                else
-                                    tempSlot.set(profitId, whichProfit.qty)
-                                    tempProfit[profitId] = true
+                                if (match) then
+                                    matchStack = matchStack + 1
+                                    for _, frag in ipairs(needFragments) do
+                                        tempSlot.set(frag[1], tempSlot.get(frag[1]) - frag[2])
+                                    end
+                                    if (tempSlot.keyExists(profitId)) then
+                                        tempSlot.set(profitId, tempSlot.get(profitId) + whichProfit.qty)
+                                    else
+                                        tempSlot.set(profitId, whichProfit.qty)
+                                        tempProfit[profitId] = true
+                                    end
                                 end
                             end
+                        else
+                            print_err("Synthesis Unexpected  Error")
+                            print("ITEM ID:", itId)
+                            print("ITEM NEED:", need)
+                            print_r(HSLK_SYNTHESIS.fragment)
                         end
                     end
                 end
