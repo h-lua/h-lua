@@ -381,6 +381,21 @@ hunit.getOwner = function(whichUnit)
     return cj.GetOwningPlayer(whichUnit)
 end
 
+--- 设置单位当前归属玩家
+---@param whichUnit userdata
+---@param ownerPlayer userdata
+---@param changeColor boolean
+---@return void
+hunit.setOwner = function(whichUnit, ownerPlayer, changeColor)
+    if (whichUnit == nil or ownerPlayer == nil) then
+        return
+    end
+    if (type(changeColor) ~= "boolean") then
+        changeColor = true
+    end
+    cj.SetUnitOwner(whichUnit, ownerPlayer, changeColor)
+end
+
 --- 瞬间传送单位到X,Y坐标
 ---@param whichUnit userdata
 ---@param x number
