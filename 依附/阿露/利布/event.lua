@@ -1179,3 +1179,15 @@ end
 hevent.onStop = function(whichUnit, callFunc)
     return hevent.registerEvent(whichUnit, CONST_EVENT.stop, callFunc)
 end
+
+--- 任意单位改变所有者时
+---@alias onUnitChangeOwner fun(evtData: {triggerUnit:"被改变所有者的单位",prevOwner:"原所有者"}):void
+---@param whichPlayer userdata
+---@param callFunc onUnitChangeOwner | "function(evtData) end"
+---@return any
+hevent.onUnitChangeOwner = function(whichPlayer, callFunc)
+    hevent.pool(whichPlayer, hevent_default_actions.player.changeOwner, function(tgr)
+        cj.TriggerRegisterPlayerUnitEvent(tgr, whichPlayer, EVENT_PLAYER_UNIT_CHANGE_OWNER, nil)
+    end)
+    return hevent.registerEvent(whichPlayer, CONST_EVENT.changeOwner, callFunc)
+end
