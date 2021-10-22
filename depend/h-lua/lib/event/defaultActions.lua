@@ -105,6 +105,12 @@ hevent_default_actions = {
                 chatString = cj.GetEventPlayerChatString()
             })
         end),
+        changeOwner = cj.Condition(function()
+            hevent.triggerEvent(hunit.getOwner(cj.GetTriggerUnit()), CONST_EVENT.changeOwner, {
+                triggerUnit = cj.GetChangingUnit(),
+                prevOwner = cj.GetChangingUnitPrevOwner()
+            })
+        end),
     },
     hero = {
         levelUp = cj.Condition(function()

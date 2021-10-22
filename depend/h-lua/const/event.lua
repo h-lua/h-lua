@@ -95,6 +95,7 @@ CONST_EVENT = {
     moveStop = "moveStop",
     holdOn = "holdOn",
     stop = "stop",
+    changeOwner = "changeOwner",
 }
 
 CONST_EVENT_LABELS = {
@@ -170,6 +171,7 @@ CONST_EVENT_LABELS = {
     [CONST_EVENT.moveStop] = '停止移动',
     [CONST_EVENT.holdOn] = '伫立',
     [CONST_EVENT.stop] = '停止',
+    [CONST_EVENT.changeOwner] = '改变所有者',
 }
 
 CONST_EVENT_TARGET_LABELS = {
@@ -244,4 +246,5 @@ CONST_EVENT_TARGET_LABELS = {
     [CONST_EVENT.moveStop] = { triggerUnit = '己' },
     [CONST_EVENT.holdOn] = { triggerUnit = '己' },
     [CONST_EVENT.stop] = { triggerUnit = '己' },
+    [CONST_EVENT.changeOwner] = { triggerUnit = '己' },
 }
