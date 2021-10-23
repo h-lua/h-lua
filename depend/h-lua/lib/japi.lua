@@ -2242,15 +2242,15 @@ hjapi.RY = function(y)
     return y / hjapi.DzGetClientHeight() * 0.6
 end
 
---- 鼠标窗口内X像素
+--- 鼠标客户端内X像素
 ---@type fun():number
 hjapi.MousePX = function()
-    return hjapi.DzGetMouseX() - hjapi.DzGetWindowX() + hjapi.DzGetClientWidth() - hjapi.DzGetWindowWidth()
+    return hjapi.DzGetMouseXRelative()
 end
---- 鼠标窗口内Y像素
+--- 鼠标客户端内Y像素
 ---@type fun():number
 hjapi.MousePY = function()
-    return hjapi.DzGetWindowHeight() - hjapi.DzGetMouseY() + hjapi.DzGetWindowY()
+    return hjapi.DzGetClientHeight() - hjapi.DzGetMouseYRelative()
 end
 
 --- 鼠标X像素 转 比例
@@ -2264,12 +2264,12 @@ hjapi.MouseRY = function()
     return hjapi.RY(hjapi.MousePY())
 end
 
---- 判断XY是否在窗口内
+--- 判断XY是否在客户端内
 ---@type fun(rx:number,ry:number):boolean
 hjapi.InWindow = function(rx, ry)
     return rx > 0 and rx < 0.8 and ry > 0 and ry < 0.6
 end
---- 判断鼠标是否在窗口内
+--- 判断鼠标是否在客户端内
 ---@type fun():boolean
 hjapi.InWindowMouse = function()
     return hjapi.InWindow(hjapi.MouseRX(), hjapi.MouseRY())
