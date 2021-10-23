@@ -2223,34 +2223,34 @@ end
 --- X比例 转 像素
 ---@type fun(x:number):number
 hjapi.PX = function(x)
-    return hjapi.DzGetWindowWidth() * x / 0.8
+    return hjapi.DzGetClientWidth() * x / 0.8
 end
 --- Y比例 转 像素
 ---@type fun(y:number):number
 hjapi.PY = function(y)
-    return hjapi.DzGetWindowHeight() * y / 0.6
+    return hjapi.DzGetClientHeight() * y / 0.6
 end
 
 --- X像素 转 比例
 ---@type fun(x:number):number
 hjapi.RX = function(x)
-    return x / hjapi.DzGetWindowWidth() * 0.8
+    return x / hjapi.DzGetClientWidth() * 0.8
 end
 --- Y像素 转 比例
 ---@type fun(y:number):number
 hjapi.RY = function(y)
-    return y / hjapi.DzGetWindowHeight() * 0.6
+    return y / hjapi.DzGetClientHeight() * 0.6
 end
 
 --- 鼠标窗口内X像素
 ---@type fun():number
 hjapi.MousePX = function()
-    return hjapi.DzGetMouseX() - hjapi.DzGetWindowX()
+    return hjapi.DzGetMouseX() - hjapi.DzGetWindowX() + hjapi.DzGetClientWidth() - hjapi.DzGetWindowWidth()
 end
 --- 鼠标窗口内Y像素
 ---@type fun():number
 hjapi.MousePY = function()
-    return hjapi.DzGetWindowHeight() - (hjapi.DzGetMouseY() - hjapi.DzGetWindowY())
+    return hjapi.DzGetWindowHeight() - hjapi.DzGetMouseY() + hjapi.DzGetWindowY()
 end
 
 --- 鼠标X像素 转 比例
