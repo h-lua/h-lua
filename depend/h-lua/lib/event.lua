@@ -878,7 +878,7 @@ hevent.onUpgradeFinish = function(whichUnit, callFunc)
 end
 
 --- 进入某单位（whichUnit）半径范围内
----@alias onEnterUnitRange fun(evtData: {centerUnit:"被进入范围的中心单位",enterUnit:"进入范围的单位",radius:"设定的半径范围"}):void
+---@alias onEnterUnitRange fun(evtData: {centerUnit:"被进入范围的中心单位",triggerUnit:"进入范围的单位",radius:"设定的半径范围"}):void
 ---@param whichUnit userdata
 ---@param radius number
 ---@param callFunc onEnterUnitRange | "function(evtData) end"
