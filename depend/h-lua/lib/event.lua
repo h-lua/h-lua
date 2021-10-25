@@ -890,7 +890,7 @@ hevent.onEnterUnitRange = function(whichUnit, radius, callFunc)
         func = function()
             hevent.triggerEvent(whichUnit, key, {
                 centerUnit = whichUnit,
-                enterUnit = cj.GetTriggerUnit(),
+                triggerUnit = cj.GetTriggerUnit(),
                 radius = radius
             })
         end
