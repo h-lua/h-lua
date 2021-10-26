@@ -29,7 +29,7 @@ function Timer(isInterval, period, callFunc, title)
     ---@type fun(fluctuate:number sec)
     this.remain = function(fluctuate)
         local k = this.__PROPERTIES__.kernel or 0
-        local remain = math.max(0, this.__PROPERTIES__.pause or (k - htime.inc) / 100)
+        local remain = math.max(0, (this.__PROPERTIES__.pause or (k - htime.inc)) / 100)
         if (k > 0 and type(fluctuate) == "number") then
             if (htime.kernel[k] and htime.kernel[k].keyExists(this.__ID__)) then
                 htime.kernel[k].splice(this.__ID__)
