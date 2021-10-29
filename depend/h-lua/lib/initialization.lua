@@ -139,7 +139,7 @@ if (DEBUGGING) then
         end
         table.insert(txts, " ————————————————")
         local i = 0
-        for _, _ in pairs(time.kernel) do
+        for _, _ in pairs(htime.kernel) do
             i = i + 1
         end
         table.insert(txts, hcolor.sky("  计时内核 : " .. i))
