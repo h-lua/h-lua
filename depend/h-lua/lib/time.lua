@@ -2,9 +2,8 @@
 ---@param isInterval number
 ---@param period number float
 ---@param callFunc fun(curTimer:Timer):Timer
----@param title string
 ---@return Timer
-function Timer(isInterval, period, callFunc, title)
+function Timer(isInterval, period, callFunc)
     if (period == nil or type(isInterval) ~= "boolean" or type(callFunc) ~= "function") then
         return
     end
@@ -24,7 +23,6 @@ function Timer(isInterval, period, callFunc, title)
         callFunc = callFunc,
         isInterval = isInterval,
         period = period,
-        title = title or "",
     }
     ---@type fun(fluctuate:number sec)
     this.remain = function(fluctuate)
@@ -54,13 +52,6 @@ function Timer(isInterval, period, callFunc, title)
     end
     this.elapsed = function()
         return math.max(0, this.period() - this.remain())
-    end
-    this.title = function(modify)
-        if (type(modify) == "string") then
-            this.__PROPERTIES__.title = modify
-            return this
-        end
-        return this.__PROPERTIES__.title
     end
     this.pause = function()
         local k = this.__PROPERTIES__.kernel or 0
@@ -165,11 +156,13 @@ function htime.clock()
 end
 
 --- 从内核中获取一个Timer对象
+---@param isInterval boolean
 ---@param period number sec
+---@param callFunc function
 ---@private
-function htime.periodic(isInterval, period, callFunc, title)
+function htime.periodic(isInterval, period, callFunc)
     ---@type Timer
-    local t = Timer(isInterval, period, callFunc, title)
+    local t = Timer(isInterval, period, callFunc)
     if (t ~= nil) then
         htime.penetrate(t)
     end
@@ -207,19 +200,17 @@ end
 -- 设置一次性计时器
 ---@param period number
 ---@param callFunc fun(curTimer:Timer):void
----@param title string
 ---@return Timer
-function htime.setTimeout(period, callFunc, title)
-    return htime.periodic(false, period, callFunc, title)
+function htime.setTimeout(period, callFunc)
+    return htime.periodic(false, period, callFunc)
 end
 
 --- 设置周期性计时器
 ---@param period number
 ---@param callFunc fun(curTimer:Timer):void
----@param title string
 ---@return Timer
-function htime.setInterval(period, callFunc, title)
-    return htime.periodic(true, period, callFunc, title)
+function htime.setInterval(period, callFunc)
+    return htime.periodic(true, period, callFunc)
 end
 
 --- 获取过去的时分秒
