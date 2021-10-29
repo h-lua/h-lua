@@ -82,11 +82,6 @@ end
 
 ---@class htime
 htime = htime or {}
-
-if (DEBUGGING) then
-    htime.debug = htime.debug or {}
-end
-
 htime.inc = htime.inc or 0 --- 获取开始游戏后经过的总秒数
 htime.hour = htime.hour or 0 --- 时
 htime.min = htime.min or 0 --- 分
@@ -105,9 +100,6 @@ function htime.penetrate(t, remain)
         htime.kernel[i] = Array()
     end
     t.__PROPERTIES__.kernel = i
-    if (htime.debug ~= nil and false == table.includes(htime.debug, i)) then
-        table.insert(htime.debug, i)
-    end
     htime.kernel[i].push(t, t.__ID__)
 end
 
@@ -149,9 +141,6 @@ function htime.clock()
             end
         end)
         htime.kernel[inc] = nil
-        if (htime.debug ~= nil) then
-            table.delete(htime.debug, inc)
-        end
     end
 end
 

@@ -138,10 +138,12 @@ if (DEBUGGING) then
             table.insert(txts, "  " .. (typesLabel[t] or t) .. " : " .. (count[t] or 0))
         end
         table.insert(txts, " ————————————————")
-        if (htime.debug) then
-            table.insert(txts, hcolor.sky("  计时内核 : " .. #htime.debug))
-            table.insert(txts, " ————————————————")
+        local i = 0
+        for _, _ in pairs(time.kernel) do
+            i = i + 1
         end
+        table.insert(txts, hcolor.sky("  计时内核 : " .. i))
+        table.insert(txts, " ————————————————")
         table.insert(txts, hcolor.gold("  内存消耗 : " .. math.round((collectgarbage("count") - rem0) / 1024, 2) .. ' MB'))
         table.insert(txts, " ————————————————")
         return txts
